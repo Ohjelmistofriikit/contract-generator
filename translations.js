@@ -139,6 +139,12 @@ const translations = {
     supplierPhone: "Puhelinnumero",
     freelancer: "Freelancer",
 
+    // Validation messages
+    emailRequired: "Sähköposti on pakollinen",
+    emailInvalid: "Virheellinen sähköpostiosoite",
+    phoneRequired: "Puhelinnumero on pakollinen",
+    phoneInvalid: "Virheellinen puhelinnumero",
+
     // Hours section
     agreedAllocation: "Sovittu allokaatio",
     zeroHourContract: "Nollatuntisopimus",
@@ -379,6 +385,12 @@ const translations = {
     supplierEmail: "Email",
     supplierPhone: "Phone",
     freelancer: "Freelancer",
+
+    // Validation messages
+    emailRequired: "Email is required",
+    emailInvalid: "Invalid email address",
+    phoneRequired: "Phone number is required",
+    phoneInvalid: "Invalid phone number",
 
     // Hours section
     agreedAllocation: "Agreed allocation",

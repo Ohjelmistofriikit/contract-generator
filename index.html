@@ -952,7 +952,9 @@
                         autocomplete="off"
                         tabindex="0"
                         class="input-text px-3 py-2"
+                        :class="tilaajanEmailError ? 'border-red-500' : ''"
                       />
+                      <div x-show="tilaajanEmailError" x-text="tilaajanEmailError" class="text-red-500 text-sm mt-1"></div>
                     </div>
                     <div class="flex flex-col">
                       <label for="tilaajanPuhelin" class="text-whiteish mb-2" x-text="t('clientPhone')"></label>
@@ -968,7 +970,9 @@
                         autocomplete="off"
                         tabindex="0"
                         class="input-text px-3 py-2"
+                        :class="tilaajanPuhelinError ? 'border-red-500' : ''"
                       />
+                      <div x-show="tilaajanPuhelinError" x-text="tilaajanPuhelinError" class="text-red-500 text-sm mt-1"></div>
                     </div>
                   </div>
                 </div>
@@ -1106,7 +1110,9 @@
                         autocomplete="off"
                         tabindex="0"
                         class="input-text px-3 py-2"
+                        :class="toimittajanEmailError ? 'border-red-500' : ''"
                       />
+                      <div x-show="toimittajanEmailError" x-text="toimittajanEmailError" class="text-red-500 text-sm mt-1"></div>
                     </div>
                     <div class="flex flex-col">
                       <label for="toimittajanPuhelin" class="text-whiteish mb-2" x-text="t('supplierPhone')"></label>
@@ -1122,7 +1128,9 @@
                         autocomplete="off"
                         tabindex="0"
                         class="input-text px-3 py-2"
+                        :class="toimittajanPuhelinError ? 'border-red-500' : ''"
                       />
+                      <div x-show="toimittajanPuhelinError" x-text="toimittajanPuhelinError" class="text-red-500 text-sm mt-1"></div>
                     </div>
                   </div>
                 </div>
