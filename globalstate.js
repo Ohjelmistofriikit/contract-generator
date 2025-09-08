@@ -11,6 +11,24 @@ function getAlpineState() {
       return translations[this.currentLanguage]?.[key] || key;
     },
 
+    // Validation functions
+    validateEmail(email) {
+      if (!email || !email.trim()) {
+        return false;
+      }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email.trim());
+    },
+
+    validatePhone(phone) {
+      if (!phone || !phone.trim()) {
+        return false;
+      }
+      // Finnish phone number validation: accepts formats like +358401234567, 0401234567, 050-1234567, etc.
+      const phoneRegex = /^(\+358|0)[-\s]?[4-5]\d{1}[-\s]?\d{3}[-\s]?\d{4}$/;
+      return phoneRegex.test(phone.trim().replace(/\s/g, ''));
+    },
+
     // Prevents issues with initial page load
     piilotaFormi: true,
 
@@ -129,13 +147,29 @@ function getAlpineState() {
     },
     tilaajanEmailRaaka: '',
     tilaajanEmailValmis: '',
+    tilaajanEmailError: '',
     kirjaaValmisTilaajanEmail() {
-      this.tilaajanEmailValmis = this.tilaajanEmailRaaka.trim();
+      const trimmedEmail = this.tilaajanEmailRaaka.trim();
+      if (this.validateEmail(trimmedEmail)) {
+        this.tilaajanEmailValmis = trimmedEmail;
+        this.tilaajanEmailError = '';
+      } else {
+        this.tilaajanEmailValmis = '';
+        this.tilaajanEmailError = trimmedEmail ? this.t('emailInvalid') : this.t('emailRequired');
+      }
     },
     tilaajanPuhelinRaaka: '',
     tilaajanPuhelinValmis: '',
+    tilaajanPuhelinError: '',
     kirjaaValmisTilaajanPuhelin() {
-      this.tilaajanPuhelinValmis = this.tilaajanPuhelinRaaka.trim();
+      const trimmedPhone = this.tilaajanPuhelinRaaka.trim();
+      if (this.validatePhone(trimmedPhone)) {
+        this.tilaajanPuhelinValmis = trimmedPhone;
+        this.tilaajanPuhelinError = '';
+      } else {
+        this.tilaajanPuhelinValmis = '';
+        this.tilaajanPuhelinError = trimmedPhone ? this.t('phoneInvalid') : this.t('phoneRequired');
+      }
     },
     onkoValmisFieldsetTilaajanTiedot() {
       return this.tilaajanYritysValmis && this.tilaajanYtunnusValmis && this.tilaajanYhteyshenkiloValmis && this.tilaajanEmailValmis && this.tilaajanPuhelinValmis;
@@ -159,13 +193,29 @@ function getAlpineState() {
     },
     toimittajanEmailRaaka: '',
     toimittajanEmailValmis: '',
+    toimittajanEmailError: '',
     kirjaaValmisToimittajanEmail() {
-      this.toimittajanEmailValmis = this.toimittajanEmailRaaka.trim();
+      const trimmedEmail = this.toimittajanEmailRaaka.trim();
+      if (this.validateEmail(trimmedEmail)) {
+        this.toimittajanEmailValmis = trimmedEmail;
+        this.toimittajanEmailError = '';
+      } else {
+        this.toimittajanEmailValmis = '';
+        this.toimittajanEmailError = trimmedEmail ? this.t('emailInvalid') : this.t('emailRequired');
+      }
     },
     toimittajanPuhelinRaaka: '',
     toimittajanPuhelinValmis: '',
+    toimittajanPuhelinError: '',
     kirjaaValmisToimittajanPuhelin() {
-      this.toimittajanPuhelinValmis = this.toimittajanPuhelinRaaka.trim();
+      const trimmedPhone = this.toimittajanPuhelinRaaka.trim();
+      if (this.validatePhone(trimmedPhone)) {
+        this.toimittajanPuhelinValmis = trimmedPhone;
+        this.toimittajanPuhelinError = '';
+      } else {
+        this.toimittajanPuhelinValmis = '';
+        this.toimittajanPuhelinError = trimmedPhone ? this.t('phoneInvalid') : this.t('phoneRequired');
+      }
     },
     onkoValmisFieldsetToimittajanTiedot() {
       return this.toimittajanYritysValmis && this.toimittajanYtunnusValmis && this.toimittajanYhteyshenkiloValmis && this.toimittajanEmailValmis && this.toimittajanPuhelinValmis;
