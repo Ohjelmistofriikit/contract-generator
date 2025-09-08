@@ -29,6 +29,39 @@ function getAlpineState() {
       return phoneRegex.test(phone.trim().replace(/\s/g, ''));
     },
 
+    validateYtunnus(ytunnus) {
+      if (!ytunnus || !ytunnus.trim()) {
+        return false;
+      }
+
+      const trimmedYtunnus = ytunnus.trim();
+
+      // Check format: XXXXXXX-Y (7 digits, dash, 1 digit)
+      const ytunnusRegex = /^\d{7}-\d{1}$/;
+      if (!ytunnusRegex.test(trimmedYtunnus)) {
+        return false;
+      }
+
+      // Extract digits and check digit
+      const digits = trimmedYtunnus.replace('-', '');
+      const checkDigit = parseInt(digits.charAt(7));
+
+      // Weights for Y-tunnus validation
+      const weights = [7, 9, 10, 5, 8, 4, 2];
+      let sum = 0;
+
+      // Calculate weighted sum
+      for (let i = 0; i < 7; i++) {
+        sum += parseInt(digits.charAt(i)) * weights[i];
+      }
+
+      // Calculate check digit
+      let calculatedCheckDigit = (11 - (sum % 11)) % 11;
+
+      // Validate check digit
+      return checkDigit === calculatedCheckDigit;
+    },
+
     // Prevents issues with initial page load
     piilotaFormi: true,
 
@@ -137,8 +170,16 @@ function getAlpineState() {
     },
     tilaajanYtunnusRaaka: '',
     tilaajanYtunnusValmis: '',
+    tilaajanYtunnusError: '',
     kirjaaValmisTilaajanYtunnus() {
-      this.tilaajanYtunnusValmis = this.tilaajanYtunnusRaaka;
+      const trimmedYtunnus = this.tilaajanYtunnusRaaka.trim();
+      if (this.validateYtunnus(trimmedYtunnus)) {
+        this.tilaajanYtunnusValmis = trimmedYtunnus;
+        this.tilaajanYtunnusError = '';
+      } else {
+        this.tilaajanYtunnusValmis = '';
+        this.tilaajanYtunnusError = trimmedYtunnus ? this.t('ytunnusInvalid') : this.t('ytunnusRequired');
+      }
     },
     tilaajanYhteyshenkiloRaaka: '',
     tilaajanYhteyshenkiloValmis: '',
@@ -183,8 +224,16 @@ function getAlpineState() {
     },
     toimittajanYtunnusRaaka: '',
     toimittajanYtunnusValmis: '',
+    toimittajanYtunnusError: '',
     kirjaaValmisToimittajanYtunnus() {
-      this.toimittajanYtunnusValmis = this.toimittajanYtunnusRaaka;
+      const trimmedYtunnus = this.toimittajanYtunnusRaaka.trim();
+      if (this.validateYtunnus(trimmedYtunnus)) {
+        this.toimittajanYtunnusValmis = trimmedYtunnus;
+        this.toimittajanYtunnusError = '';
+      } else {
+        this.toimittajanYtunnusValmis = '';
+        this.toimittajanYtunnusError = trimmedYtunnus ? this.t('ytunnusInvalid') : this.t('ytunnusRequired');
+      }
     },
     toimittajanYhteyshenkiloRaaka: '',
     toimittajanYhteyshenkiloValmis: '',
