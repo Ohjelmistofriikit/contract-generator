@@ -144,6 +144,8 @@ const translations = {
     emailInvalid: "Virheellinen sähköpostiosoite",
     phoneRequired: "Puhelinnumero on pakollinen",
     phoneInvalid: "Virheellinen puhelinnumero",
+    ytunnusRequired: "Y-tunnus on pakollinen",
+    ytunnusInvalid: "Virheellinen Y-tunnus",
 
     // Hours section
     agreedAllocation: "Sovittu allokaatio",
@@ -391,6 +393,8 @@ const translations = {
     emailInvalid: "Invalid email address",
     phoneRequired: "Phone number is required",
     phoneInvalid: "Invalid phone number",
+    ytunnusRequired: "Business ID is required",
+    ytunnusInvalid: "Invalid business ID",
 
     // Hours section
     agreedAllocation: "Agreed allocation",
