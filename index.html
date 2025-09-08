@@ -253,17 +253,22 @@
     </style>
   </head>
   <body class="bg-blueish" x-data="getAlpineState()">
+    <!-- Logo -->
+    <div class="absolute top-4 left-4 z-50 flex items-center p-2">
+      <img src="./assets/logo.svg" alt="Ohjelmistofriikit logo" class="h-8 md:h-10 w-auto">
+    </div>
+
     <!-- Language buttons -->
     <div class="absolute top-4 right-4 z-50">
       <div class="flex items-center space-x-2 bg-gray-800 bg-opacity-90 rounded-lg p-2">
-        <button 
+        <button
           @click="changeLanguage('fi')"
           :class="currentLanguage === 'fi' ? 'text-yellowish bg-gray-700' : 'text-whiteish hover:text-yellowish hover:bg-gray-600'"
           class="px-3 py-1 rounded text-sm font-bold transition-colors"
         >
           FI
         </button>
-        <button 
+        <button
           @click="changeLanguage('en')"
           :class="currentLanguage === 'en' ? 'text-yellowish bg-gray-700' : 'text-whiteish hover:text-yellowish hover:bg-gray-600'"
           class="px-3 py-1 rounded text-sm font-bold transition-colors"
