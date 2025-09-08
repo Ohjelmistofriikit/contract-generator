@@ -2,7 +2,7 @@ For purposes of licensing, we state that the contract-generator is comprised of 
 
 We apply different licenses to these parts:
 
-1. Legal text (specifically pdfgeneration.js and contract.txt) licensed via [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), which requires attribution.
+1. Legal text (pdfgeneration.js) licensed via [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), which requires attribution.
 
 2. Other files licensed via MIT license.
 

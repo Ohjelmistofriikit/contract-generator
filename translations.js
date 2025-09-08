@@ -68,7 +68,8 @@ const translations = {
     step3Desc: "Tarkista sopimus ja allekirjoita yhdessä asiakkaan kanssa.",
     importantNotice: "Tärkeä huomautus",
     disclaimer: "Ohjelmistofriikit ei vastaa sopimuksen käytöstä aiheutuvista seurauksista. Tarkista aina sopimuksen sisältö ennen allekirjoittamista.",
-    openSource: "Sopimuspohja on avointa lähdekoodia:",
+    openSource: "Sopimuspohja on avointa lähdekoodia",
+    googledocLink: "https://docs.google.com/document/d/1JotIerKLs3uVF7vTsnuyz1EzujCtkTSfwnFcK7fxwyc/edit?usp=sharing",
 
     // Form sections
     formStart: "Luonnostele sopimus",
@@ -308,7 +309,8 @@ const translations = {
     step3Desc: "Review the contract and sign together with the client.",
     importantNotice: "Important notice",
     disclaimer: "Ohjelmistofriikit is not responsible for the consequences of using the contract. You should always read your contract before signing it.",
-    openSource: "The contract template is open source:",
+    openSource: "The contract template is open source",
+    googledocLink: "https://docs.google.com/document/d/1xfQ-sxhk4n_5Zr5eBm9NOEbIZQ6UsRTO4R-FeW-VhfA/edit?usp=sharing",
 
     // Form sections
     formStart: "Draft a contract",
