@@ -58,11 +58,6 @@ function getAlpineState() {
       // Calculate check digit
       let calculatedCheckDigit = (11 - (sum % 11)) % 11;
 
-      // If result is 11, check digit becomes 0
-      if (calculatedCheckDigit === 11) {
-        calculatedCheckDigit = 0;
-      }
-
       // Validate check digit
       return checkDigit === calculatedCheckDigit;
     },
