@@ -1,0 +1,2289 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Freelancer Contract Template by Ohjelmistofriikit Osuuskunta</title>
+    
+    <!-- Open Graph meta tags -->
+    <meta property="og:title" content="Freelancer Contract Template by Ohjelmistofriikit Osuuskunta" />
+    <meta property="og:description" content="Generate professional freelancer contracts in minutes. Fill out the form and get a customized PDF contract template for your freelance work." />
+    <meta property="og:image" content="https://sopimusgeneraattori.ohjelmistofriikit.fi/assets/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Freelancer Contract Template - Generate professional contracts in minutes" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:url" content="https://sopimusgeneraattori.ohjelmistofriikit.fi/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Ohjelmistofriikit Contract Generator" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="fi_FI" />
+    
+    <!-- Twitter Card meta tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Freelancer Contract Template by Ohjelmistofriikit Osuuskunta" />
+    <meta name="twitter:description" content="Generate professional freelancer contracts in minutes. Fill out the form and get a customized PDF contract template for your freelance work." />
+    <meta name="twitter:image" content="https://sopimusgeneraattori.ohjelmistofriikit.fi/assets/og-image.png" />
+    
+    <!-- Additional meta tags -->
+    <meta name="description" content="Generate professional freelancer contracts in minutes. Fill out the form and get a customized PDF contract template for your freelance work." />
+    <!-- These need to be loaded before HTML is parsed. -->
+    <script src="./translations.js"></script>
+    <script src="./globalstate.js"></script>
+
+    <!-- AlpineJS dependency -->
+    <script defer src="./assets/alpinejs.min.js"></script>
+
+    <!-- PDF related stuff -->
+    <script src="./assets/jspdf.umd.min.js"></script>
+    <script src="./assets/pdfjs/fonts/PlusJakartaSans-bold.js"></script>
+    <script src="./assets/pdfjs/fonts/PlusJakartaSans-normal.js"></script>
+    <script src="./assets/pdfjs/fonts/PlusJakartaSans-italic.js"></script>
+    <script src="./pdfgeneration.js"></script>
+
+    <!-- Tailwind, old version 2.2.19 -->
+    <link
+      href="./assets/tailwind.min.css" 
+      rel="stylesheet"
+    />
+
+    <style>
+      @font-face {
+        font-family: 'Plus Jakarta Sans';
+        font-style: normal;
+        font-weight: 200 800;
+        font-display: swap;
+        src: url('./assets/PlusJakartaSans-VariableFont_wght.ttf') format('woff2');
+      }
+
+      * {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+
+      /* Decorative background. */
+      .mesh:before {
+        content: '';
+        z-index: -1;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: -60px;
+        bottom: -30px;
+        background-image: url(assets/bg-mesh.svg);
+        background-position: top;
+        background-repeat: repeat-y;
+        background-size: contain;
+      }
+
+      /** Since we are using v2 of Tailwind,
+        * we don't have w-fit that newer Tailwind versions have,
+        * so we are declaring w-fit here. */
+      .w-fit {
+        width: fit-content;
+      }
+
+      /** Since we are not using proper Tailwind config, we do this hacky thing
+        * to get Ohjelmistofriikit color palette available for use with a syntax
+        * that will be similar to using Tailwind with proper Tailwind config. */
+
+      :root {
+        --yellowish: #f2ff66;
+        --blueish: #011627;
+        --light-blue: #09ceff;
+        --whiteish: #fafafb;
+        --grayish: #e1e3e5;
+      }
+      .bg-blueish {
+        background-color: var(--blueish);
+      }
+      .text-blueish {
+        color: var(--blueish);
+      }
+      .bg-yellowish {
+        background-color: var(--yellowish);
+      }
+      .text-gray-300 {
+        color: #d1d5dbde;
+      }
+      .text-yellowish {
+        color: var(--yellowish);
+      }
+      .text-grayish {
+        color: var(--grayish);
+      }
+      .text-whiteish {
+        color: var(--whiteish);
+      }
+
+      a {
+        color: var(--light-blue);
+      }
+
+      a:hover {
+        color: var(--yellowish);
+      }
+
+      * {
+        caret-color: var(--blueish);
+      }
+
+      .badge {
+        display: inline-block;
+        position: absolute;
+        bottom: -5px;
+        background-color: #2ecc71;
+        color: white;
+        font-weight: bold;
+        font-size: 0.85rem;
+        padding: 0.3rem 0.6rem;
+        border-radius: 4px;
+        margin-left: 0.5rem;
+        transform: rotate(-2deg);
+        vertical-align: middle;
+      }
+
+      .badge::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(242, 255, 102, 0.2) 0%, rgba(46, 204, 113, 0) 60%);
+        border-radius: inherit;
+      }
+
+      @media (max-width: 768px) {
+        .badge {
+          display: none;
+        }
+      }
+
+      .radio-input {
+        position: relative;
+        overflow: hidden;
+        appearance: none;
+
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        top: 4px;
+        margin-right: 4px;
+        
+        width: 20px;
+        height: 20px;
+        background-color: transparent;
+        border: 0;
+        border-color: var(--yellowish);
+        border-radius: 50%;
+        outline: none;
+        position: relative;
+      }
+
+      /* Transition box-shadow size to create a "fill-in" effect from the border. */
+      .radio-input {
+        box-shadow: inset 0 0 0 2px var(--yellowish);
+        transition: box-shadow 0.4s ease-out;
+      }
+      .radio-input:checked {
+        box-shadow: inset 0 0 0 8px var(--yellowish);
+      }
+
+      /* Hacky solution to overlay a visual element on top of unchecked radio-inputs
+       * so that they appear visually to be white. This is needed to avoid a transition
+       * for the color. We only want transition for the box-shadow size, not color. */
+      .radio-input:not(:checked)::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        pointer-events: none;
+        box-shadow: inset 0 0 0 2px white;
+        z-index: 5;
+      }
+
+      .radio-input:checked + label {
+        color: var(--yellowish);
+      }
+
+      /* Checkbox styles - reuse radio styles but make square */
+      input[type="checkbox"].radio-input {
+        border-radius: 4px;
+      }
+      
+      input[type="checkbox"].radio-input:not(:checked)::after {
+        border-radius: 4px;
+      }
+
+      /* Input text elements */
+      .input-text {
+        color: var(--blueish);
+        caret-color: var(--blueish);
+        background-color: var(--whiteish);
+        font-weight: 700;
+        border-radius: 0.25rem;
+        overflow: hidden;
+      }
+
+      /* Labels adjacent to input text elements */
+      label {
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+        color: var(--whiteish);
+        display: inline-block;
+      }
+
+      /* Hacky way of fixing AlpineJS issue where elements flash during page load. */
+      [x-cloak] {
+        display: none !important;
+      }
+      
+      label {
+        /* All labels are clickable. Declaring here to reduce Tailwind boilerplate. */
+        cursor: pointer;
+
+        /* Prevent accidentally selecting text when trying to click radio input labels. */
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none; 
+      }
+    </style>
+  </head>
+  <body class="bg-blueish" x-data="getAlpineState()">
+    <!-- Language buttons -->
+    <div class="absolute top-4 right-4 z-50">
+      <div class="flex items-center space-x-2 bg-gray-800 bg-opacity-90 rounded-lg p-2">
+        <button 
+          @click="changeLanguage('fi')"
+          :class="currentLanguage === 'fi' ? 'text-yellowish bg-gray-700' : 'text-whiteish hover:text-yellowish hover:bg-gray-600'"
+          class="px-3 py-1 rounded text-sm font-bold transition-colors"
+        >
+          FI
+        </button>
+        <button 
+          @click="changeLanguage('en')"
+          :class="currentLanguage === 'en' ? 'text-yellowish bg-gray-700' : 'text-whiteish hover:text-yellowish hover:bg-gray-600'"
+          class="px-3 py-1 rounded text-sm font-bold transition-colors"
+        >
+          EN
+        </button>
+      </div>
+    </div>
+
+    <!-- Hero Section - Full Viewport -->
+    <section class="min-h-screen flex items-center justify-center p-4 py-8 md:py-4 pt-24 md:pt-8 relative">
+      <div class="max-w-6xl w-full mx-auto text-left flex flex-col justify-center min-h-0 relative mesh">
+        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 text-whiteish text-center" x-text="t('title')">
+        </h1>
+        <p class="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 md:mb-8 text-grayish font-medium text-center" x-text="t('subtitle')">
+        </p>
+        
+
+        <!-- Action Button -->
+        <div class="flex justify-center mb-6 md:mb-8">
+          <button 
+            onclick="document.querySelector('#form-section').scrollIntoView({ behavior: 'smooth' })"
+            class="px-6 py-3 bg-yellowish text-blueish font-bold rounded-lg text-base hover:opacity-90 transition-opacity w-full lg:w-auto max-w-sm"
+            x-text="t('startButton')"
+          >
+          </button>
+        </div>
+
+        <!-- Key Benefits -->
+        <div class="flex justify-center mb-6 md:mb-8">
+          <div class="flex flex-col lg:flex-row lg:flex-wrap gap-4 lg:gap-10 justify-center lg:w-full max-w-6xl">
+            <div class="flex items-center justify-start space-x-3 w-full lg:w-auto">
+              <div class="flex-shrink-0">
+                <span class="text-whiteish text-lg font-bold"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12.5672 6.68281C12.6253 6.74086 12.6714 6.80979 12.7029 6.88566C12.7343 6.96154 12.7505 7.04287 12.7505 7.125C12.7505 7.20713 12.7343 7.28846 12.7029 7.36434C12.6714 7.44021 12.6253 7.50914 12.5672 7.56719L8.19219 11.9422C8.13415 12.0003 8.06522 12.0464 7.98934 12.0779C7.91347 12.1093 7.83214 12.1255 7.75 12.1255C7.66787 12.1255 7.58654 12.1093 7.51067 12.0779C7.43479 12.0464 7.36586 12.0003 7.30782 11.9422L5.43282 10.0672C5.31554 9.94991 5.24966 9.79085 5.24966 9.625C5.24966 9.45915 5.31554 9.30009 5.43282 9.18281C5.55009 9.06554 5.70915 8.99965 5.875 8.99965C6.04086 8.99965 6.19992 9.06554 6.31719 9.18281L7.75 10.6164L11.6828 6.68281C11.7409 6.6247 11.8098 6.5786 11.8857 6.54715C11.9615 6.5157 12.0429 6.49951 12.125 6.49951C12.2071 6.49951 12.2885 6.5157 12.3643 6.54715C12.4402 6.5786 12.5091 6.6247 12.5672 6.68281ZM17.125 9C17.125 10.607 16.6485 12.1779 15.7557 13.514C14.8629 14.8502 13.594 15.8916 12.1093 16.5065C10.6247 17.1215 8.99099 17.2824 7.4149 16.9689C5.8388 16.6554 4.39106 15.8815 3.25476 14.7452C2.11846 13.6089 1.34463 12.1612 1.03112 10.5851C0.717618 9.00901 0.87852 7.37535 1.49348 5.8907C2.10844 4.40605 3.14985 3.1371 4.486 2.24431C5.82214 1.35152 7.39303 0.875 9 0.875C11.1542 0.877275 13.2195 1.73403 14.7427 3.25727C16.266 4.78051 17.1227 6.84581 17.125 9ZM15.875 9C15.875 7.64025 15.4718 6.31104 14.7164 5.18045C13.9609 4.04987 12.8872 3.16868 11.631 2.64833C10.3747 2.12798 8.99238 1.99183 7.65876 2.2571C6.32514 2.52237 5.10013 3.17716 4.13864 4.13864C3.17716 5.10013 2.52238 6.32513 2.2571 7.65875C1.99183 8.99237 2.12798 10.3747 2.64833 11.6309C3.16868 12.8872 4.04987 13.9609 5.18046 14.7164C6.31105 15.4718 7.64026 15.875 9 15.875C10.8227 15.8729 12.5702 15.1479 13.8591 13.8591C15.1479 12.5702 15.8729 10.8227 15.875 9Z" fill="#F2FF66"></path>
+                </svg></span>
+              </div>
+              <div>
+                <span class="text-whiteish font-medium" x-text="t('benefit1')"></span>
+              </div>
+            </div>
+            <div class="flex items-center justify-start space-x-3 w-full lg:w-auto">
+              <div class="flex-shrink-0">
+                <span class="text-whiteish text-lg font-bold"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12.5672 6.68281C12.6253 6.74086 12.6714 6.80979 12.7029 6.88566C12.7343 6.96154 12.7505 7.04287 12.7505 7.125C12.7505 7.20713 12.7343 7.28846 12.7029 7.36434C12.6714 7.44021 12.6253 7.50914 12.5672 7.56719L8.19219 11.9422C8.13415 12.0003 8.06522 12.0464 7.98934 12.0779C7.91347 12.1093 7.83214 12.1255 7.75 12.1255C7.66787 12.1255 7.58654 12.1093 7.51067 12.0779C7.43479 12.0464 7.36586 12.0003 7.30782 11.9422L5.43282 10.0672C5.31554 9.94991 5.24966 9.79085 5.24966 9.625C5.24966 9.45915 5.31554 9.30009 5.43282 9.18281C5.55009 9.06554 5.70915 8.99965 5.875 8.99965C6.04086 8.99965 6.19992 9.06554 6.31719 9.18281L7.75 10.6164L11.6828 6.68281C11.7409 6.6247 11.8098 6.5786 11.8857 6.54715C11.9615 6.5157 12.0429 6.49951 12.125 6.49951C12.2071 6.49951 12.2885 6.5157 12.3643 6.54715C12.4402 6.5786 12.5091 6.6247 12.5672 6.68281ZM17.125 9C17.125 10.607 16.6485 12.1779 15.7557 13.514C14.8629 14.8502 13.594 15.8916 12.1093 16.5065C10.6247 17.1215 8.99099 17.2824 7.4149 16.9689C5.8388 16.6554 4.39106 15.8815 3.25476 14.7452C2.11846 13.6089 1.34463 12.1612 1.03112 10.5851C0.717618 9.00901 0.87852 7.37535 1.49348 5.8907C2.10844 4.40605 3.14985 3.1371 4.486 2.24431C5.82214 1.35152 7.39303 0.875 9 0.875C11.1542 0.877275 13.2195 1.73403 14.7427 3.25727C16.266 4.78051 17.1227 6.84581 17.125 9ZM15.875 9C15.875 7.64025 15.4718 6.31104 14.7164 5.18045C13.9609 4.04987 12.8872 3.16868 11.631 2.64833C10.3747 2.12798 8.99238 1.99183 7.65876 2.2571C6.32514 2.52237 5.10013 3.17716 4.13864 4.13864C3.17716 5.10013 2.52238 6.32513 2.2571 7.65875C1.99183 8.99237 2.12798 10.3747 2.64833 11.6309C3.16868 12.8872 4.04987 13.9609 5.18046 14.7164C6.31105 15.4718 7.64026 15.875 9 15.875C10.8227 15.8729 12.5702 15.1479 13.8591 13.8591C15.1479 12.5702 15.8729 10.8227 15.875 9Z" fill="#F2FF66"></path>
+                </svg></span>
+              </div>
+              <div>
+                <span class="text-whiteish font-medium" x-text="t('benefit2')"></span>
+              </div>
+            </div>
+            <div class="flex items-center justify-start space-x-3 w-full lg:w-auto">
+              <div class="flex-shrink-0">
+                <span class="text-whiteish text-lg font-bold"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12.5672 6.68281C12.6253 6.74086 12.6714 6.80979 12.7029 6.88566C12.7343 6.96154 12.7505 7.04287 12.7505 7.125C12.7505 7.20713 12.7343 7.28846 12.7029 7.36434C12.6714 7.44021 12.6253 7.50914 12.5672 7.56719L8.19219 11.9422C8.13415 12.0003 8.06522 12.0464 7.98934 12.0779C7.91347 12.1093 7.83214 12.1255 7.75 12.1255C7.66787 12.1255 7.58654 12.1093 7.51067 12.0779C7.43479 12.0464 7.36586 12.0003 7.30782 11.9422L5.43282 10.0672C5.31554 9.94991 5.24966 9.79085 5.24966 9.625C5.24966 9.45915 5.31554 9.30009 5.43282 9.18281C5.55009 9.06554 5.70915 8.99965 5.875 8.99965C6.04086 8.99965 6.19992 9.06554 6.31719 9.18281L7.75 10.6164L11.6828 6.68281C11.7409 6.6247 11.8098 6.5786 11.8857 6.54715C11.9615 6.5157 12.0429 6.49951 12.125 6.49951C12.2071 6.49951 12.2885 6.5157 12.3643 6.54715C12.4402 6.5786 12.5091 6.6247 12.5672 6.68281ZM17.125 9C17.125 10.607 16.6485 12.1779 15.7557 13.514C14.8629 14.8502 13.594 15.8916 12.1093 16.5065C10.6247 17.1215 8.99099 17.2824 7.4149 16.9689C5.8388 16.6554 4.39106 15.8815 3.25476 14.7452C2.11846 13.6089 1.34463 12.1612 1.03112 10.5851C0.717618 9.00901 0.87852 7.37535 1.49348 5.8907C2.10844 4.40605 3.14985 3.1371 4.486 2.24431C5.82214 1.35152 7.39303 0.875 9 0.875C11.1542 0.877275 13.2195 1.73403 14.7427 3.25727C16.266 4.78051 17.1227 6.84581 17.125 9ZM15.875 9C15.875 7.64025 15.4718 6.31104 14.7164 5.18045C13.9609 4.04987 12.8872 3.16868 11.631 2.64833C10.3747 2.12798 8.99238 1.99183 7.65876 2.2571C6.32514 2.52237 5.10013 3.17716 4.13864 4.13864C3.17716 5.10013 2.52238 6.32513 2.2571 7.65875C1.99183 8.99237 2.12798 10.3747 2.64833 11.6309C3.16868 12.8872 4.04987 13.9609 5.18046 14.7164C6.31105 15.4718 7.64026 15.875 9 15.875C10.8227 15.8729 12.5702 15.1479 13.8591 13.8591C15.1479 12.5702 15.8729 10.8227 15.875 9Z" fill="#F2FF66"></path>
+                </svg></span>
+              </div>
+              <div>
+                <span class="text-whiteish font-medium" x-text="t('benefit3')"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Details Section -->
+        <div id="details" class="max-w-5xl mx-auto mb-8 md:mb-12 mt-4">
+          <div class="bg-gray-800 bg-opacity-50 rounded-lg p-4 sm:p-8 border border-gray-700">
+            
+            <!-- How it works -->
+            <div class="mb-6 md:mb-8">
+              <h3 class="text-lg sm:text-xl md:text-2xl font-bold mb-4 md:mb-6 text-whiteish" x-text="t('howItWorks')">
+              </h3>
+              <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="flex items-start space-x-3">
+                  <div class="w-8 h-8 bg-yellowish rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <span class="text-blueish font-bold">1</span>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-whiteish mb-2" x-text="t('step1Title')"></h4>
+                    <p class="text-grayish" x-text="t('step1Desc')"></p>
+                  </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                  <div class="w-8 h-8 bg-yellowish rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <span class="text-blueish font-bold">2</span>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-whiteish mb-2" x-text="t('step2Title')"></h4>
+                    <p class="text-grayish mb-2">
+                      <span x-text="t('step2DescPart1')"></span>
+                      <span x-show="currentLanguage === 'fi'">
+                        <a href="sample_output_fi.pdf" target="_blank" class="text-yellowish hover:underline font-medium" x-text="t('step2LinkText')"></a><span>.</span>
+                      </span>
+                      <span x-show="currentLanguage === 'en'">
+                        <a href="sample_output_en.pdf" target="_blank" class="text-yellowish hover:underline font-medium" x-text="t('step2LinkText')"></a><span>.</span>
+                      </span>
+                    </p>
+                  </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                  <div class="w-8 h-8 bg-yellowish rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <span class="text-blueish font-bold">3</span>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-whiteish mb-2" x-text="t('step3Title')"></h4>
+                    <p class="text-grayish" x-text="t('step3Desc')"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Legal Disclaimer -->
+            <div class="bg-yellow-900 bg-opacity-30 border border-yellow-600 rounded-lg p-4 sm:p-6 flex justify-around">
+              <p class="text-yellow-200 text-sm leading-relaxed">
+                <span class="mr-2 text-yellowish">⚠️</span>
+                <span x-text="t('disclaimer')"></span>
+              </p>
+            </div>
+
+            <!-- GitHub Link -->
+            <div class="mt-6 text-center">
+              <p class="text-grayish">
+                <span x-text="t('openSource')"></span>
+                <a href="https://github.com/Ohjelmistofriikit/contract-generator" target="_blank" class="text-yellowish hover:underline font-medium">
+                  Github →
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+    </section>
+
+    <!-- Bouncing Arrow -->
+    <button 
+      onclick="document.querySelector('#form-section').scrollIntoView({ behavior: 'smooth' })"
+      class="hidden md:block absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer"
+      aria-label="Scroll to form section"
+      title="Click to scroll to form"
+    >
+      <svg class="w-6 h-6 text-whiteish" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+      </svg>
+    </button>
+
+    <div class="p-0 m-0 pb-12"></div>
+
+    <!-- Form Section -->
+    <section id="form-section" class="max-w-6xl mx-auto min-h-screen p-4 pt-0 relative">
+      <div class="max-w-5xl mx-auto">
+        <!-- Form Start Indicator -->
+        <div class="text-left md:text-center mb-8">
+          <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-whiteish mb-4" x-text="t('formStart')">
+          </h2>
+        </div>
+
+        <!-- Formi alkaa. -->
+        <div
+          x-cloak
+          x-show="!piilotaFormi"
+          x-init="setTimeout(() => { piilotaFormi = false; }, 30);"
+          x-transition:enter.duration.400ms 
+          class="text-lg mb-8 text-gray-100 relative" 
+          style="top: -2px;"
+        >
+
+          <!-- Fieldset Laskutusperuste -->
+          <fieldset
+            x-ref="fieldsetLaskutusperuste"
+            x-data="{ onFocus: false }"
+            @focusin="onFocus = true"
+            @focusout="onFocus = false"
+            tabindex="0"
+            class="border-2 p-4 pl-5 rounded"
+            :class="onFocus || !onkoValmisFieldsetLaskutusperuste() ? 'border-gray-500 border-dashed' : 'border-gray-700 border-solid'"
+          >
+            <legend
+              class="ml-5 px-2 cursor-default flex items-center"
+              :class="onFocus || !onkoValmisFieldsetLaskutusperuste() ? 'text-whiteish' : 'text-gray-700'"
+            >
+              <span x-text="t('billingBasis')"></span>
+              <span 
+                x-show="onkoValmisFieldsetLaskutusperuste()" 
+                class="ml-2 text-green-400 text-sm"
+                title="Valmis"
+              >
+                ✓
+              </span>
+            </legend>
+
+            <!-- Collapsed state Laskutusperuste -->
+            <div
+              x-show="!onFocus && onkoValmisFieldsetLaskutusperuste()"
+              @click="$refs.fieldsetLaskutusperuste.focus()"
+              class="mb-2 cursor-pointer"
+            >
+              <div class="flex justify-between">
+                <div class="text-gray-300">
+                <div x-show="radioLaskutusmuoto === 'tuntilaskutus'">
+                  <span x-text="t('hourlyRate')"></span>
+                  <span x-text="tuntihintaRaaka" class="text-yellowish"></span>
+                  <span class="text-yellowish" x-text="t('hourlyRateLabel')"></span>
+                  +
+                  <span x-text="t('vat')"></span>
+                </div>
+                <div x-show="radioLaskutusmuoto === 'urakkalaskutus'">
+                  <span x-text="t('projectPrice')"></span>
+                  <span x-text="urakkahintaRaaka" class="text-yellowish"></span>
+                  <span class="text-yellowish" x-text="t('projectRateLabel')"></span>
+                  +
+                  <span x-text="t('vat')"></span>
+                </div>
+
+                </div>
+                <div class="flex items-center" title="Muokkaa">
+                  <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+
+
+            <!-- Expanded state Laskutusperuste -->
+            <div x-show="onFocus || !onkoValmisFieldsetLaskutusperuste()">
+
+              <!-- Radio Tuntilaskutus -->
+              <div
+                @keydown.enter="const el = $el.querySelector('input[type=radio]'); el.focus(); el.click();"
+                tabindex="0"
+                class="mb-2 w-fit"
+              >
+                <input
+                  x-model="radioLaskutusmuoto"
+                  type="radio"
+                  id="tuntilaskutus"
+                  name="radioLaskutusmuoto"
+                  value="tuntilaskutus"
+                  tabindex="-1"
+                  class="radio-input cursor-pointer"
+                />
+              <label for="tuntilaskutus" class="text-whiteish" x-text="t('hourlyBilling')"></label>
+              </div>
+
+              <!-- Radio Urakkalaskutus -->
+              <div
+                @keydown.enter="const el = $el.querySelector('input[type=radio]'); el.focus(); el.click();"
+                tabindex="0"
+                class="mb-2 w-fit"
+              >
+                <input
+                  id="urakkalaskutus"
+                  x-model="radioLaskutusmuoto"
+                  type="radio"
+                  name="radioLaskutusmuoto"
+                  value="urakkalaskutus"
+                  tabindex="-1"
+                  class="radio-input cursor-pointer"
+                />
+              <label for="urakkalaskutus" class="text-whiteish" x-text="t('projectBilling')"></label>
+              </div>
+
+              <!-- Input Tuntihinta -->
+              <fieldset
+                x-show="radioLaskutusmuoto === 'tuntilaskutus'"
+                x-transition:enter.duration.400ms
+                @transitionstart.once="$refs.tuntihintaRaaka.focus({ preventScroll: true }); tarvittaessaScrollaaAlas();"
+                class="p-4 pl-5 mt-4 pt-4 border-2 border-gray-700 border-dotted rounded"
+              >
+                <label for="tuntihinta" class="mr-1" x-text="t('hourlyRate')"></label>
+                <input
+                  id="tuntihinta"
+                  x-model="tuntihintaRaaka"
+                  x-ref="tuntihintaRaaka"
+                  @keydown.enter.prevent="$el.blur()"
+                  @blur="kirjaaValmisTuntihinta();"
+                  type="text"
+                  name="tuntihinta"
+                  title="Numero, esimerkiksi 100 tai 100,00"
+                  autocomplete="off"
+                  tabindex="0"
+                  class="w-16 input-text text-center"
+                />
+                <label for="tuntihinta" class="ml-1">
+                  <span x-text="t('hourlyRateLabel')"></span>
+                  +
+                  <span x-text="t('vat')"></span>
+                </label>
+              </fieldset>
+
+              <!-- Input Urakkahinta -->
+              <fieldset
+                x-show="radioLaskutusmuoto === 'urakkalaskutus'"
+                x-transition:enter.duration.400ms
+                @transitionstart.once="$refs.urakkahintaRaaka.focus({ preventScroll: true }); tarvittaessaScrollaaAlas();"
+                class="p-4 pl-5 mt-4 pt-4 border-2 border-gray-700 border-dotted rounded"
+              >
+                <label for="urakkahinta" class="mr-1" x-text="t('projectPrice')"></label>
+                <input
+                  id="urakkahinta"
+                  x-model="urakkahintaRaaka"
+                  x-ref="urakkahintaRaaka"
+                  @keydown.enter.prevent="$el.blur()"
+                  @blur="kirjaaValmisUrakkahinta();"
+                  type="text"
+                  name="urakkahinta"
+                  title="Numero, esimerkiksi 100 tai 100,00"
+                  autocomplete="off"
+                  tabindex="0"
+                  class="w-28 input-text text-center"
+                />
+                <label for="urakkahinta" class="ml-1">
+                  <span x-text="t('projectRateLabel')"></span>
+                  +
+                  <span x-text="t('vat')"></span>
+                </label>
+              </fieldset>
+            </div>
+          </fieldset>
+
+          <!-- Fieldset Tuntimäärä -->
+          <fieldset
+            x-show="showTuntimaara()"
+            x-ref="fieldsetTuntimaara"
+            x-data="{ onFocus: false }"
+            @focusin="onFocus = true"
+            @focusout="onFocus = false"
+            x-transition:enter.duration.400ms
+            @transitionstart.once="$refs.fieldsetTuntimaara.focus({ preventScroll: true }); tarvittaessaScrollaaAlas();"
+            tabindex="0"
+            class="border-2 p-4 pl-5 mt-4 rounded"
+            :class="onFocus || !onkoValmisFieldsetTuntimaara() ? 'border-gray-500 border-dashed' : 'border-gray-700 border-solid'"
+          >
+            <legend
+              class="ml-5 px-2 cursor-default flex items-center"
+              :class="onFocus || !onkoValmisFieldsetTuntimaara() ? 'text-whiteish' : 'text-gray-700'"
+            >
+              <span x-text="t('numberOfHours')"></span>
+              <span 
+                x-show="onkoValmisFieldsetTuntimaara()" 
+                class="ml-2 text-green-400 text-sm"
+                title="Valmis"
+              >
+                ✓
+              </span>
+            </legend>
+
+            <!-- Collapsed state Tuntimaara -->
+            <div
+              x-show="!onFocus && onkoValmisFieldsetTuntimaara()"
+              @click="$refs.fieldsetTuntimaara.focus()"
+              class="mb-2 cursor-pointer"
+            >
+              <div class="flex justify-between">
+                <div x-show="radioAllokaatio === 'sovittu-allokaatio'" class="text-gray-300">
+                  <span x-text="t('averageHours')"></span>
+                  <span x-text="tuntejaViikossaValmis" class="text-yellowish"></span>
+                  <span x-text="t('hours')" class="text-yellowish"></span>
+                  <span x-text="t('perWeek')"></span>
+                  <span x-text="t('startingFrom')"></span>
+                  <span x-text="alkupaivamaaraValmis" class="text-yellowish"></span>
+                  <span x-show="radioVoimassaolo === 'eraantyy'">
+                    <span x-text="t('endingOn')"></span>
+                    <span x-text="loppupaivamaaraValmis" class="text-yellowish"></span>
+                  </span>
+                  <span x-show="radioVoimassaolo === 'toistaiseksi'" x-text="t('indefinitelyValid')"></span>
+                </div>
+                <div x-show="radioAllokaatio === 'nollatuntisopimus'" class="text-gray-300">
+                  <span x-text="t('zeroHourContractLabel')"></span>
+                  <span x-show="radioVoimassaolo === 'toistaiseksi'" x-text="t('indefinitelyValid')"></span>
+                  <span x-show="radioVoimassaolo === 'eraantyy'">
+                    <span x-text="t('validUntil')"></span>
+                    <span x-text="loppupaivamaaraValmis" class="text-yellowish"></span>
+                    <span x-text="t('until')"></span>
+                  </span>
+                </div>
+                <div class="flex items-center" title="Muokkaa">
+                  <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Expanded state Tuntimaara -->
+            <div x-show="onFocus || !onkoValmisFieldsetTuntimaara()" class="relative">
+
+              <!-- Radio Sovittu allokaatio -->
+              <div
+                @keydown.enter.prevent="const el = $el.querySelector('input[type=radio]'); el.focus(); el.click();"
+                tabindex="0"
+                class="mb-2 w-fit"
+              >
+                <input
+                  id="sovittu-allokaatio"
+                  x-ref="sovittuAllokaatio"
+                  x-model="radioAllokaatio"
+                  type="radio"
+                  name="radioAllokaatio"
+                  value="sovittu-allokaatio"
+                  tabindex="-1"
+                  class="radio-input cursor-pointer"
+                />
+                <label for="sovittu-allokaatio" class="text-whiteish" x-text="t('agreedAllocation')"></label>
+              </div>
+
+              <!-- Radio Nollatuntisopimus -->
+              <div
+                @keydown.enter.prevent="const el = $el.querySelector('input[type=radio]'); el.focus(); el.click();"
+                tabindex="0"
+                class="mb-2 w-fit"
+              >
+                <input
+                  id="nollatuntisopimus"
+                  x-model="radioAllokaatio"
+                  type="radio"
+                  name="radioAllokaatio"
+                  value="nollatuntisopimus"
+                  tabindex="-1"
+                  class="radio-input cursor-pointer"
+                />
+                <label for="nollatuntisopimus" class="text-whiteish" x-text="t('zeroHourContract')"></label>
+              </div>
+
+              <!-- Fieldset Sovittu allokaatio -->
+              <fieldset
+                x-show="radioLaskutusmuoto === 'tuntilaskutus' && radioAllokaatio === 'sovittu-allokaatio'"
+                x-transition:enter.duration.400ms
+                @transitionstart.once="$refs.tuntejaViikossaRaaka.focus({ preventScroll: true }); tarvittaessaScrollaaAlas();"
+                class="p-4 pl-5 pt-4 mt-4 border-2 border-gray-700 border-dotted rounded"
+              >
+                <!-- Input viikossa tunteja -->
+                <div>
+                  <input
+                    id="tuntejaViikossa"
+                    x-model="tuntejaViikossaRaaka"
+                    x-ref="tuntejaViikossaRaaka"
+                    @keydown.enter.prevent="$el.blur()"
+                    @blur="kirjaaValmisTuntejaViikossa();"
+                    type="text"
+                    name="tuntejaViikossa"
+                    title="t('placeholderInputWeeklyHours')"
+                    :placeholder="t('placeholderInputWeeklyHours')"
+                    autocomplete="off"
+                    tabindex="0"
+                    class="w-40 input-text text-center"
+                  />
+                  <label for="tuntejaViikossa" class="ml-1" x-text="t('hoursPerWeek')"></label>
+                </div>
+
+                <!-- Input aloituspäivämäärä -->
+                <div class="pt-4">
+                  <input
+                    id="alkupaivamaara"
+                    x-model="alkupaivamaaraRaaka"
+                    x-ref="alkupaivamaaraRaaka"
+                    @keydown.enter="$el.blur()"
+                    @change="if (!alkupaivamaaraValmis) kirjaaValmisAlkupaivamaara();"
+                    @blur="kirjaaValmisAlkupaivamaara();"
+                    type="date"
+                    name="alkupaivamaara"
+                    title="Valitse päivämäärä jolloin työ alkaa"
+                    autocomplete="off"
+                    tabindex="0"
+                    class="w-40 input-text text-center"
+                  />
+                  <label for="alkupaivamaara" class="ml-1" x-text="t('startDate')"></label>
+                </div>
+              </fieldset>
+
+              <!-- Fieldset sopimuksen voimassaolo -->
+              <fieldset
+                x-show="alkupaivamaaraValmis || radioAllokaatio === 'nollatuntisopimus'"
+                x-transition:enter.duration.400ms
+                @transitionstart.once="tarvittaessaScrollaaAlas();"
+                class="p-4 pl-5 pt-4 mt-4 border-2 border-gray-700 border-dotted rounded"
+              >
+
+                <!-- Radio toistaiseksi voimassa -->
+                <div
+                  @keydown.enter.prevent="const el = $el.querySelector('input[type=radio]'); el.focus(); el.click();"
+                  tabindex="0"
+                  class="mb-2 w-fit"
+                >
+                  <input
+                    id="toistaiseksi"
+                    x-model="radioVoimassaolo"
+                    @change="$refs.afterRadioSopimuksenVoimassaolo.focus();"
+                    type="radio"
+                    name="radioVoimassaolo"
+                    value="toistaiseksi"
+                    tabindex="-1"
+                    class="radio-input cursor-pointer"
+                  />
+                  <label for="toistaiseksi" class="text-whiteish" x-text="t('indefinite')"></label>
+                </div>
+
+                <!-- Radio tiettyyn päivään saakka voimassa -->
+                <div
+                  @keydown.enter.prevent="const el = $el.querySelector('input[type=radio]'); el.focus(); el.click();"
+                  tabindex="0"
+                  class="mb-2 w-fit"
+                >
+                  <input
+                    id="eraantyy"
+                    x-model="radioVoimassaolo"
+                    type="radio"
+                    name="radioVoimassaolo"
+                    value="eraantyy"
+                    tabindex="-1"
+                    class="radio-input cursor-pointer"
+                  />
+                  <label for="eraantyy" class="text-whiteish" x-text="t('fixedTerm')"></label>
+                </div>
+
+                <!-- Input Loppupäivämäärä -->
+                <div
+                  x-show="radioVoimassaolo === 'eraantyy'"
+                  x-transition:enter.duration.400ms
+                  @transitionstart.once="tarvittaessaScrollaaAlas();"
+                  class="p-0 m-0 mt-4 border-0"
+                >
+                  <input
+                    id="loppupaivamaara"
+                    x-model="loppupaivamaaraRaaka"
+                    x-ref="loppupaivamaaraRaaka"
+                    @keydown.enter="$el.blur()"
+                    @change="if (!loppupaivamaaraValmis) kirjaaValmisLoppupaivamaara();"
+                    @blur="kirjaaValmisLoppupaivamaara(); tuntimaaraValmis = true;"
+                    type="date"
+                    name="loppupaivamaara"
+                    :title="t('endDate')"
+                    autocomplete="off"
+                    tabindex="0"
+                    class="w-40 input-text text-center"
+                  />
+                  <label for="loppupaivamaara" class="ml-1" x-text="t('endDate')"></label>
+                </div>
+
+                <div
+                  x-ref="afterRadioSopimuksenVoimassaolo"
+                  @blur="tuntimaaraValmis = true;"
+                  @keydown.enter.prevent="$el.blur();"
+                  tabindex="0"
+                >
+                </div>
+              </fieldset>
+            </div>
+          </fieldset>
+
+          <!-- Fieldset Tilaajan tiedot -->
+          <fieldset
+            x-show="showTilaajanTiedot()"
+            x-ref="fieldsetTilaajanTiedot"
+            x-data="{ onFocus: false }"
+            @focusin="onFocus = true"
+            @focusout="onFocus = false"
+            x-transition:enter.duration.400ms
+            @transitionstart.once="$refs.tilaajanYritysRaaka.focus({ preventScroll: true }); tarvittaessaScrollaaAlas();"
+            tabindex="0"
+            class="border-2 p-4 pl-5 rounded mb-4 mt-4"
+            :class="onFocus || !onkoValmisFieldsetTilaajanTiedot() ? 'border-gray-500 border-dashed' : 'border-gray-700 border-solid'"
+          >
+            <legend
+              class="ml-5 px-2 cursor-default flex items-center"
+              :class="onFocus || !onkoValmisFieldsetTilaajanTiedot() ? 'text-whiteish' : 'text-gray-700'"
+            >
+              <span x-text="t('clientInfo')"></span>
+              <span 
+                x-show="onkoValmisFieldsetTilaajanTiedot()" 
+                class="ml-2 text-green-400 text-sm"
+                title="Valmis"
+              >
+                ✓
+              </span>
+            </legend>
+
+            <!-- Collapsed state Tilaajan tiedot -->
+            <div
+              x-show="!onFocus && onkoValmisFieldsetTilaajanTiedot()"
+              @click="$refs.fieldsetTilaajanTiedot.focus()"
+              class="mb-2 cursor-pointer"
+            >
+              <div class="flex justify-between">
+                <div class="text-gray-300">
+                  <div>
+                    <span x-text="t('client')"></span>:
+                    <span class="text-yellowish" x-text="tilaajanYritysValmis"></span>
+                    (<span class="text-yellowish" x-text="tilaajanYtunnusValmis"></span>)
+                  </div>
+                  <div>
+                    <span x-text="t('clientContact')"></span>:
+                    <span class="text-yellowish" x-text="tilaajanYhteyshenkiloValmis"></span>
+                    (<span x-text="tilaajanEmailValmis"></span>,
+                    <span x-text="tilaajanPuhelinValmis"></span>)
+                  </div>
+                </div>
+                <div class="flex items-center" title="Muokkaa">
+                  <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Expanded state Tilaajan tiedot -->
+            <div x-show="onFocus || !onkoValmisFieldsetTilaajanTiedot()">
+              <div class="p-4 pl-5 pt-4 border-2 border-gray-700 border-dotted rounded">
+                <!-- Grid layout for better alignment -->
+                <div class="grid grid-cols-1 gap-4">
+                  <!-- Tilaajan yritystiedot -->
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="flex flex-col">
+                      <label for="tilaajanYritys" class="text-whiteish mb-2" x-text="t('clientCompany')"></label>
+                      <input
+                        id="tilaajanYritys"
+                        x-model="tilaajanYritysRaaka"
+                        x-ref="tilaajanYritysRaaka"
+                        @keydown.enter.prevent="$el.blur(); setTimeout(() => { $refs.tilaajanYtunnusRaaka.focus({ preventScroll: true }); }, 10);"
+                        @blur="kirjaaValmisTilaajanYritys();"
+                        type="text"
+                        name="tilaajanYritys"
+                        :placeholder="t('placeholderInputClientCompany')"
+                        autocomplete="off"
+                        tabindex="0"
+                        class="input-text px-3 py-2"
+                      />
+                    </div>
+                    <div class="flex flex-col">
+                      <label for="tilaajanYtunnus" class="text-whiteish mb-2" x-text="t('clientBusinessId')"></label>
+                      <input
+                        id="tilaajanYtunnus"
+                        x-model="tilaajanYtunnusRaaka"
+                        x-ref="tilaajanYtunnusRaaka"
+                        @keydown.enter.prevent="$el.blur(); setTimeout(() => { $refs.tilaajanYhteyshenkiloRaaka.focus({ preventScroll: true }); }, 10);"
+                        @blur="kirjaaValmisTilaajanYtunnus();"
+                        type="text"
+                        name="tilaajanYtunnus"
+                        placeholder="1234567-8"
+                        autocomplete="off"
+                        tabindex="0"
+                        class="input-text px-3 py-2"
+                      />
+                    </div>
+                  </div>
+ 
+                  <!-- Tilaajan yhteyshenkilö -->
+                  <div class="flex flex-col mt-4">
+                    <label for="tilaajanYhteyshenkilo" class="text-whiteish mb-2" x-text="t('clientContact')"></label>
+                    <input
+                      id="tilaajanYhteyshenkilo"
+                      x-model="tilaajanYhteyshenkiloRaaka"
+                      x-ref="tilaajanYhteyshenkiloRaaka"
+                      @keydown.enter.prevent="$el.blur(); setTimeout(() => { $refs.tilaajanEmailRaaka.focus({ preventScroll: true }); }, 10);"
+                      @blur="kirjaaValmisTilaajanYhteyshenkilo();"
+                      type="text"
+                      name="tilaajanYhteyshenkilo"
+                      :placeholder="t('placeholderInputClientContactPerson')"
+                      autocomplete="off"
+                      tabindex="0"
+                      class="input-text px-3 py-2"
+                    />
+                  </div>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <div class="flex flex-col">
+                      <label for="tilaajanEmail" class="text-whiteish mb-2" x-text="t('clientEmail')"></label>
+                      <input
+                        id="tilaajanEmail"
+                        x-model="tilaajanEmailRaaka"
+                        x-ref="tilaajanEmailRaaka"
+                        @keydown.enter.prevent="$el.blur(); setTimeout(() => { $refs.tilaajanPuhelinRaaka.focus({ preventScroll: true }); }, 10);"
+                        @blur="kirjaaValmisTilaajanEmail();"
+                        type="email"
+                        name="tilaajanEmail"
+                        :placeholder="t('placeholderInputClientEmail')"
+                        autocomplete="off"
+                        tabindex="0"
+                        class="input-text px-3 py-2"
+                      />
+                    </div>
+                    <div class="flex flex-col">
+                      <label for="tilaajanPuhelin" class="text-whiteish mb-2" x-text="t('clientPhone')"></label>
+                      <input
+                        id="tilaajanPuhelin"
+                        x-model="tilaajanPuhelinRaaka"
+                        x-ref="tilaajanPuhelinRaaka"
+                        @keydown.enter.prevent="$el.blur();"
+                        @blur="kirjaaValmisTilaajanPuhelin();"
+                        type="tel"
+                        name="tilaajanPuhelin"
+                        placeholder="040 123 4567"
+                        autocomplete="off"
+                        tabindex="0"
+                        class="input-text px-3 py-2"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </fieldset>
+
+          <!-- Fieldset Toimittajan tiedot -->
+          <fieldset
+            x-show="showToimittajanTiedot()"
+            x-ref="fieldsetToimittajanTiedot"
+            x-data="{ onFocus: false }"
+            @focusin="onFocus = true"
+            @focusout="onFocus = false"
+            x-transition:enter.duration.400ms
+            @transitionstart.once="$refs.toimittajanYritysRaaka.focus({ preventScroll: true }); tarvittaessaScrollaaAlas();"
+            tabindex="0"
+            class="border-2 p-4 pl-5 rounded mb-4 mt-4"
+            :class="onFocus || !onkoValmisFieldsetToimittajanTiedot() ? 'border-gray-500 border-dashed' : 'border-gray-700 border-solid'"
+          >
+            <legend
+              class="ml-5 px-2 cursor-default flex items-center"
+              :class="onFocus || !onkoValmisFieldsetToimittajanTiedot() ? 'text-whiteish' : 'text-gray-700'"
+            >
+              <span x-text="t('supplierInfo')"></span>
+              <span 
+                x-show="onkoValmisFieldsetToimittajanTiedot()" 
+                class="ml-2 text-green-400 text-sm"
+                title="Valmis"
+              >
+                ✓
+              </span>
+            </legend>
+
+            <!-- Collapsed state Toimittajan tiedot -->
+            <div
+              x-show="!onFocus && onkoValmisFieldsetToimittajanTiedot()"
+              @click="$refs.fieldsetToimittajanTiedot.focus()"
+              class="mb-2 cursor-pointer"
+            >
+              <div class="flex justify-between">
+                <div class="text-gray-300">
+                  <div>
+                    <span x-text="t('supplierCompany')"></span>:
+                    <span class="text-yellowish" x-text="toimittajanYritysValmis"></span>
+                    (<span class="text-yellowish" x-text="toimittajanYtunnusValmis"></span>)
+                  </div>
+                  <div>
+                    <span x-text="t('freelancer')"></span>:
+                    <span class="text-yellowish" x-text="toimittajanYhteyshenkiloValmis"></span>
+                    (<span x-text="toimittajanEmailValmis"></span>,
+                    <span x-text="toimittajanPuhelinValmis"></span>)
+                  </div>
+                </div>
+                <div class="flex items-center" title="Muokkaa">
+                  <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Expanded state Toimittajan tiedot -->
+            <div x-show="onFocus || !onkoValmisFieldsetToimittajanTiedot()">
+              <div class="p-4 pl-5 pt-4 border-2 border-gray-700 border-dotted rounded">
+                <!-- Grid layout for better alignment -->
+                <div class="grid grid-cols-1 gap-4">
+                  <!-- Toimittajan tiedot -->
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="flex flex-col">
+                      <label for="toimittajanYritys" class="text-whiteish mb-2" x-text="t('supplierCompany')"></label>
+                      <input
+                        id="toimittajanYritys"
+                        x-model="toimittajanYritysRaaka"
+                        x-ref="toimittajanYritysRaaka"
+                        @keydown.enter.prevent="$el.blur(); setTimeout(() => { $refs.toimittajanYtunnusRaaka.focus({ preventScroll: true }); }, 10);"
+                        @blur="kirjaaValmisToimittajanYritys();"
+                        type="text"
+                        name="toimittajanYritys"
+                        :placeholder="t('placeholderInputFreelancerCompany')"
+                        autocomplete="off"
+                        tabindex="0"
+                        class="input-text px-3 py-2"
+                      />
+                    </div>
+                    <div class="flex flex-col">
+                      <label for="toimittajanYtunnus" class="text-whiteish mb-2" x-text="t('supplierBusinessId')"></label>
+                      <input
+                        id="toimittajanYtunnus"
+                        x-model="toimittajanYtunnusRaaka"
+                        x-ref="toimittajanYtunnusRaaka"
+                        @keydown.enter.prevent="$el.blur(); setTimeout(() => { $refs.toimittajanYhteyshenkiloRaaka.focus({ preventScroll: true }); }, 10);"
+                        @blur="kirjaaValmisToimittajanYtunnus();"
+                        type="text"
+                        name="toimittajanYtunnus"
+                        placeholder="9876543-2"
+                        autocomplete="off"
+                        tabindex="0"
+                        class="input-text px-3 py-2"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Toimittajan yhteyshenkilö -->
+                  <div class="flex flex-col mt-4">
+                    <label for="toimittajanYhteyshenkilo" class="text-whiteish mb-2" x-text="t('supplierContact')"></label>
+                    <input
+                      id="toimittajanYhteyshenkilo"
+                      x-model="toimittajanYhteyshenkiloRaaka"
+                      x-ref="toimittajanYhteyshenkiloRaaka"
+                      @keydown.enter.prevent="$el.blur(); setTimeout(() => { $refs.toimittajanEmailRaaka.focus({ preventScroll: true }); }, 10);"
+                      @blur="kirjaaValmisToimittajanYhteyshenkilo();"
+                      type="text"
+                      name="toimittajanYhteyshenkilo"
+                      :placeholder="t('placeholderInputFreelancerContactPerson')"
+                      autocomplete="off"
+                      tabindex="0"
+                      class="input-text px-3 py-2"
+                    />
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <div class="flex flex-col">
+                      <label for="toimittajanEmail" class="text-whiteish mb-2" x-text="t('supplierEmail')"></label>
+                      <input
+                        id="toimittajanEmail"
+                        x-model="toimittajanEmailRaaka"
+                        x-ref="toimittajanEmailRaaka"
+                        @keydown.enter.prevent="$el.blur(); setTimeout(() => { $refs.toimittajanPuhelinRaaka.focus({ preventScroll: true }); }, 10);"
+                        @blur="kirjaaValmisToimittajanEmail();"
+                        type="email"
+                        name="toimittajanEmail"
+                        :placeholder="t('placeholderInputFreelancerEmail')"
+                        autocomplete="off"
+                        tabindex="0"
+                        class="input-text px-3 py-2"
+                      />
+                    </div>
+                    <div class="flex flex-col">
+                      <label for="toimittajanPuhelin" class="text-whiteish mb-2" x-text="t('supplierPhone')"></label>
+                      <input
+                        id="toimittajanPuhelin"
+                        x-model="toimittajanPuhelinRaaka"
+                        x-ref="toimittajanPuhelinRaaka"
+                        @keydown.enter.prevent="$el.blur();"
+                        @blur="kirjaaValmisToimittajanPuhelin();"
+                        type="tel"
+                        name="toimittajanPuhelin"
+                        placeholder="050 987 6543"
+                        autocomplete="off"
+                        tabindex="0"
+                        class="input-text px-3 py-2"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Fieldset Projektin tiedot -->
+          <fieldset
+            x-show="showProjektinTiedot()"
+            x-ref="fieldsetProjektinTiedot"
+            x-data="{ onFocus: false }"
+            @focusin="onFocus = true"
+            @focusout="onFocus = false"
+            x-transition:enter.duration.400ms
+            @transitionstart.once="$refs.projektinNimiRaaka.focus({ preventScroll: true }); tarvittaessaScrollaaAlas();"
+            tabindex="0"
+            class="border-2 p-4 pl-5 mb-4 rounded"
+            :class="onFocus || !onkoValmisFieldsetProjektinTiedot() ? 'border-gray-500 border-dashed' : 'border-gray-700 border-solid'"
+          >
+            <legend
+              class="ml-5 px-2 cursor-default flex items-center"
+              :class="onFocus || !onkoValmisFieldsetProjektinTiedot() ? 'text-whiteish' : 'text-gray-700'"
+            >
+              <span x-text="t('projectInfo')"></span>
+              <span 
+                x-show="onkoValmisFieldsetProjektinTiedot()" 
+                class="ml-2 text-green-400 text-sm"
+                title="Valmis"
+              >
+                ✓
+              </span>
+            </legend>
+
+            <!-- Collapsed state Projektin tiedot -->
+            <div
+              x-show="!onFocus && onkoValmisFieldsetProjektinTiedot()"
+              @click="$refs.fieldsetProjektinTiedot.focus()"
+              class="mb-2 cursor-pointer"
+            >
+              <div class="flex justify-between">
+                <div class="text-gray-300">
+                  <div>
+                    <span x-text="t('prefixProject')"></span>
+                    <span x-text="getConsultantRoleText(true)" class="text-yellowish"></span>
+                    <span x-text="t('inProject')"></span>
+                    <span x-text="projektinNimiValmis"></span>
+                  </div>
+                </div>
+                <div class="flex items-center" title="Muokkaa">
+                  <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Expanded state Projektin tiedot -->
+            <div x-show="onFocus || !onkoValmisFieldsetProjektinTiedot()">
+              <div class="p-4 pl-5 pt-4 border-2 border-gray-700 border-dotted rounded">
+                <!-- Grid layout for better alignment -->
+                <div class="grid grid-cols-1 gap-4">
+                  <!-- Projektin nimi/kuvaus -->
+                  <div class="flex flex-col">
+                    <label for="projektinNimi" class="text-whiteish mb-2" x-text="t('projectName')"></label>
+                      <input
+                        id="projektinNimi"
+                        x-model="projektinNimiRaaka"
+                        x-ref="projektinNimiRaaka"
+                        @keydown.enter.prevent="$el.blur(); setTimeout(() => { $refs.ohjelmistokehittajaRadioWrapper.focus({ preventScroll: true }); }, 10);"
+                        @blur="kirjaaValmisProjektinNimi();"
+                        type="text"
+                        name="projektinNimi"
+                        :placeholder="t('placeholderProjectName')"
+                        autocomplete="off"
+                        tabindex="0"
+                        class="input-text px-3 py-2"
+                      />
+                  </div>
+
+                  <!-- Konsultin rooli -->
+                  <div class="flex flex-col">
+                    <label class="text-whiteish mb-2 block" x-text="t('consultantRole')"></label>
+                  
+                    <!-- Radio Ohjelmistokehittäjä -->
+                    <div
+                      x-ref="ohjelmistokehittajaRadioWrapper"
+                      @keydown.enter="const el = $el.querySelector('input[type=radio]'); el.focus(); el.click();"
+                      tabindex="0"
+                      class="mb-2 w-fit"
+                    >
+                      <input
+                        x-model="radioKonsultinRooli"
+                        type="radio"
+                        id="radioConsultantRoleSoftwareDeveloper"
+                        @change="$refs.afterRadioKonsultinRooli.focus();"
+                        name="radioKonsultinRooli"
+                        value="radioConsultantRoleSoftwareDeveloper"
+                        tabindex="-1"
+                        class="radio-input cursor-pointer"
+                      />
+                    <label for="radioConsultantRoleSoftwareDeveloper" class="text-whiteish" x-text="t('radioConsultantRoleSoftwareDeveloper')"></label>
+                    </div>
+
+                    <!-- Radio designer -->
+                    <div
+                      @keydown.enter.prevent="const el = $el.querySelector('input[type=radio]'); el.focus(); el.click();"
+                      tabindex="0"
+                      class="mb-2 w-fit"
+                    >
+                      <input
+                        x-model="radioKonsultinRooli"
+                        type="radio"
+                        id="radioConsultantRoleDesigner"
+                        @change="$refs.afterRadioKonsultinRooli.focus();"
+                        name="radioKonsultinRooli"
+                        value="radioConsultantRoleDesigner"
+                        tabindex="-1"
+                        class="radio-input cursor-pointer"
+                      />
+                      <label for="radioConsultantRoleDesigner" class="text-whiteish" x-text="t('radioConsultantRoleDesigner')"></label>
+                    </div>
+
+                    <!-- Radio DevOps -->
+                    <div
+                      @keydown.enter.prevent="const el = $el.querySelector('input[type=radio]'); el.focus(); el.click();"
+                      tabindex="0"
+                      class="mb-2 w-fit"
+                    >
+                      <input
+                        x-model="radioKonsultinRooli"
+                        type="radio"
+                        id="radioConsultantRoleDevops"
+                        @change="$refs.afterRadioKonsultinRooli.focus();"
+                        name="radioKonsultinRooli"
+                        value="radioConsultantRoleDevops"
+                        tabindex="-1"
+                        class="radio-input cursor-pointer"
+                      />
+                      <label for="radioConsultantRoleDevops" class="text-whiteish" x-text="t('radioConsultantRoleDevops')"></label>
+                    </div>
+
+                    <!-- Radio Scrum Master -->
+                    <div
+                      @keydown.enter.prevent="const el = $el.querySelector('input[type=radio]'); el.focus(); el.click();"
+                      tabindex="0"
+                      class="mb-2 w-fit"
+                    >
+                      <input
+                        x-model="radioKonsultinRooli"
+                        type="radio"
+                        id="radioConsultantRoleScrumMaster"
+                        @change="$refs.afterRadioKonsultinRooli.focus();"
+                        name="radioKonsultinRooli"
+                        value="radioConsultantRoleScrumMaster"
+                        tabindex="-1"
+                        class="radio-input cursor-pointer"
+                      />
+                      <label for="radioConsultantRoleScrumMaster" class="text-whiteish" x-text="t('radioConsultantRoleScrumMaster')"></label>
+                    </div>
+
+                    <!-- Radio Projektinjohto -->
+                    <div
+                      @keydown.enter.prevent="const el = $el.querySelector('input[type=radio]'); el.focus(); el.click();"
+                      tabindex="0"
+                      class="mb-2 w-fit"
+                    >
+                      <input
+                        x-model="radioKonsultinRooli"
+                        type="radio"
+                        id="radioConsultantRoleProjectManagement"
+                        @change="$refs.afterRadioKonsultinRooli.focus();"
+                        name="radioKonsultinRooli"
+                        value="radioConsultantRoleProjectManagement"
+                        tabindex="-1"
+                        class="radio-input cursor-pointer"
+                      />
+                      <label for="radioConsultantRoleProjectManagement" class="text-whiteish" x-text="t('radioConsultantRoleProjectManagement')"></label>
+                    </div>
+
+                    <!-- Radio Muu -->
+                    <div
+                      @keydown.enter.prevent="const el = $el.querySelector('input[type=radio]'); el.focus(); el.click();"
+                      tabindex="0"
+                      class="mb-2 w-fit"
+                    >
+                      <input
+                        x-model="radioKonsultinRooli"
+                        type="radio"
+                        id="radioConsultantRoleOther"
+                        name="radioKonsultinRooli"
+                        value="radioConsultantRoleOther"
+                        tabindex="-1"
+                        class="radio-input cursor-pointer"
+                      />
+                      <label for="radioConsultantRoleOther" class="text-whiteish" x-text="t('radioConsultantRoleOther')"></label>
+                    </div>
+
+                    <!-- Input Muu rooli -->
+                    <div
+                      x-show="radioKonsultinRooli === 'radioConsultantRoleOther'"
+                      x-transition:enter.duration.400ms
+                      @transitionstart.once="$refs.muuRooliRaaka.focus({ preventScroll: true });"
+                      class="ml-6 mt-2"
+                    >
+                      <input
+                        id="muuRooli"
+                        x-model="muuRooliRaaka"
+                        x-ref="muuRooliRaaka"
+                        @keydown.enter.prevent="$el.blur();"
+                        @blur="konsultinRooliValmis = true; kirjaaValmisMuuRooli();"
+                        type="text"
+                        name="muuRooli"
+                        autocomplete="off"
+                        tabindex="0"
+                        class="input-text px-3 py-2"
+                      />
+                    </div>
+                    <div
+                      x-ref="afterRadioKonsultinRooli"
+                      @keydown.enter.prevent="$el.blur();"
+                      @blur="konsultinRooliValmis = true;"
+                      tabindex="0"
+                    >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Fieldset IPR -->
+          <fieldset
+            x-show="showIPR()"
+            x-ref="fieldsetIPR"
+            x-data="{ onFocus: false }"
+            @focusin="onFocus = true"
+            @focusout="onFocus = false"
+            x-transition:enter.duration.400ms
+            @transitionstart.once="$refs.fieldsetIPR.focus({ preventScroll: true }); tarvittaessaScrollaaAlas();"
+            tabindex="0"
+            class="border-2 p-4 pl-5 mt-4 rounded"
+            :class="onFocus || !onkoValmisFieldsetIPR() ? 'border-gray-500 border-dashed' : 'border-gray-700 border-solid'"
+          >
+            <legend
+              class="ml-5 px-2 cursor-default flex items-center"
+              :class="onFocus || !onkoValmisFieldsetIPR() ? 'text-whiteish' : 'text-gray-700'"
+            >
+              <span x-text="t('ipr')"></span>
+              <span 
+                x-show="onkoValmisFieldsetIPR()" 
+                class="ml-2 text-green-400 text-sm"
+                title="Valmis"
+              >
+                ✓
+              </span>
+            </legend>
+
+            <!-- Collapsed state IPR -->
+            <div
+              x-show="!onFocus && onkoValmisFieldsetIPR()"
+              @click="$refs.fieldsetIPR.focus()"
+              class="mb-2 cursor-pointer"
+            >
+              <div class="flex justify-between">
+                <div class="text-gray-300">
+                  <span x-text="t('iprGoesTo')"></span>
+                  <span x-show="radioIPR === 'toimittajalle'" x-text="t('supplierKeepsIPR')" class="text-yellowish"></span>
+                  <span x-show="radioIPR === 'tilaajalle'" x-text="t('clientKeepsIPR')" class="text-yellowish"></span>
+                </div>
+                <div class="flex items-center" title="Muokkaa">
+                  <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Expanded state IPR -->
+            <div x-show="onFocus || !onkoValmisFieldsetIPR()" class="relative">
+
+              <!-- Radio toimittajalle -->
+              <div
+                @keydown.enter.prevent="const el = $el.querySelector('input[type=radio]'); el.focus(); el.click();"
+                tabindex="0"
+                class="mb-2 w-fit"
+              >
+                <input
+                  id="toimittajalle"
+                  x-model="radioIPR"
+                  @change="$refs.afterRadioIPR.focus();"
+                  type="radio"
+                  name="radioIPR"
+                  value="toimittajalle"
+                  tabindex="-1"
+                  class="radio-input cursor-pointer"
+                />
+                <label for="toimittajalle" class="text-whiteish" x-text="t('radioSupplierKeepsIPR')"></label>
+              </div>
+
+              <!-- Radio tilaajalle -->
+              <div
+                @keydown.enter.prevent="const el = $el.querySelector('input[type=radio]'); el.focus(); el.click();"
+                tabindex="0"
+                class="mb-2 w-fit"
+              >
+                <input
+                  id="tilaajalle"
+                  x-model="radioIPR"
+                  @change="$refs.afterRadioIPR.focus();"
+                  type="radio"
+                  name="radioIPR"
+                  value="tilaajalle"
+                  tabindex="-1"
+                  class="radio-input cursor-pointer"
+                />
+                <label for="tilaajalle" class="text-whiteish">
+                  <span x-text="t('radioClientKeepsIPR')"></span>
+                  <span
+                    x-text="t('recommended')"
+                    title="Useimmissa sopimuksissa nykypäivänä IPR menee tilaajalle"
+                    class="badge"
+                    :style="!radioIPR ? 'visibility: visible;' : 'visibility: hidden;'"
+                  >
+                  </span>
+                </label>
+              </div>
+
+              <div
+                  x-ref="afterRadioIPR"
+                  @blur="iprValmis = true"
+                  @keydown.enter.prevent="$el.blur();"
+                  tabindex="0"
+                >
+                </div>
+            </div>
+
+          </fieldset>
+
+          <!-- Fieldset Sijainti -->
+          <fieldset
+            x-show="showSijainti()"
+            x-ref="fieldsetSijainti"
+            x-data="{ onFocus: false }"
+            @focusin="onFocus = true"
+            @focusout="onFocus = false"
+            x-transition:enter.duration.400ms
+            @transitionstart.once="$refs.fieldsetSijainti.focus({ preventScroll: true }); tarvittaessaScrollaaAlas();"
+            tabindex="0"
+            class="border-2 p-4 pl-5 mt-4 rounded"
+            :class="onFocus || !onkoValmisFieldsetSijainti() ? 'border-gray-500 border-dashed' : 'border-gray-700 border-solid'"
+          >
+            <legend
+              class="ml-5 px-2 cursor-default flex items-center"
+              :class="onFocus || !onkoValmisFieldsetSijainti() ? 'text-whiteish' : 'text-gray-700'"
+            >
+              <span x-text="t('location')"></span>
+              <span 
+                x-show="onkoValmisFieldsetSijainti()" 
+                class="ml-2 text-green-400 text-sm"
+                title="Valmis"
+              >
+                ✓
+              </span>
+            </legend>
+
+            <!-- Collapsed state Sijainti -->
+            <div
+              x-show="!onFocus && onkoValmisFieldsetSijainti()"
+              @click="$refs.fieldsetSijainti.focus()"
+              class="mb-2 cursor-pointer"
+            >
+              <div class="flex justify-between">
+                <div class="text-gray-300">
+                  <div x-show="radioSijainti === 'etana'" class="text-gray-300">
+                    <span x-text="t('workRemotelyPart1')"></span>
+                    <span x-text="t('workRemotelyPart2')" class="text-yellowish"></span>
+                  </div>
+                  <div x-show="radioSijainti === 'lasna'" class="text-gray-300">
+                    <span x-text="t('workOnsitePart1')"></span>
+                    <span x-text="t('workOnsitePart2')" class="text-yellowish"></span>
+                  </div>
+                </div>
+                <div class="flex items-center" title="Muokkaa">
+                  <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Expanded state Sijainti -->
+            <div x-show="onFocus || !onkoValmisFieldsetSijainti()" class="relative">
+
+              <!-- Radio etänä -->
+              <div
+                @keydown.enter.prevent="const el = $el.querySelector('input[type=radio]'); el.focus(); el.click();"
+                tabindex="0"
+                class="mb-2 w-fit"
+              >
+                <input
+                  id="etana"
+                  x-model="radioSijainti"
+                  type="radio"
+                  @change="$refs.afterRadioSijainti.focus();"
+                  name="radioSijainti"
+                  value="etana"
+                  tabindex="-1"
+                  class="radio-input cursor-pointer"
+                />
+                <label for="etana" class="text-whiteish" x-text="t('remote')"></label>
+              </div>
+
+              <!-- Radio läsnä -->
+              <div
+                @keydown.enter.prevent="const el = $el.querySelector('input[type=radio]'); el.focus(); el.click();"
+                tabindex="0"
+                class="mb-2 w-fit"
+              >
+                <input
+                  id="lasna"
+                  x-model="radioSijainti"
+                  type="radio"
+                  @change="$refs.afterRadioSijainti.focus();"
+                  name="radioSijainti"
+                  value="lasna"
+                  tabindex="-1"
+                  class="radio-input cursor-pointer"
+                />
+                <label for="lasna" class="text-whiteish" x-text="t('onsite')"></label>
+              </div>
+
+              <div
+                x-ref="afterRadioSijainti"
+                @blur="sijaintiValmis = true;"
+                @keydown.enter.prevent="$el.blur();"
+                tabindex="0"
+              >
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Fieldset Työvälineet -->
+          <fieldset
+            x-show="showTyovalineet()"
+            x-ref="fieldsetTyovalineet"
+            x-data="{ onFocus: false }"
+            @focusin="onFocus = true"
+            @focusout="onFocus = false"
+            x-transition:enter.duration.400ms
+            @transitionstart.once="$refs.fieldsetTyovalineet.focus({ preventScroll: true }); tarvittaessaScrollaaAlas();"
+            tabindex="0"
+            class="border-2 p-4 pl-5 mt-4 rounded"
+            :class="onFocus || !onkoValmisFieldsetTyovalineet() ? 'border-gray-500 border-dashed' : 'border-gray-700 border-solid'"
+          >
+            <legend
+              class="ml-5 px-2 cursor-default flex items-center"
+              :class="onFocus || !onkoValmisFieldsetTyovalineet() ? 'text-whiteish' : 'text-gray-700'"
+            >
+              <span x-text="t('tyovalineetLegend')"></span>
+              <span 
+                x-show="onkoValmisFieldsetTyovalineet()" 
+                class="ml-2 text-green-400 text-sm"
+                title="Valmis"
+              >
+                ✓
+              </span>
+            </legend>
+
+            <!-- Collapsed state Työvälineet -->
+            <div
+              x-show="!onFocus && onkoValmisFieldsetTyovalineet()"
+              @click="$refs.fieldsetTyovalineet.focus()"
+              class="mb-2 cursor-pointer"
+            >
+              <div class="flex justify-between">
+                <div x-show="radioTyovalineet === 'toimittajanTyovalineet'" class="text-gray-300">
+                  <span x-text="t('workEquipmentBy')"></span>
+                  <span x-text="t('tyovalineetToimittaja')" class="text-yellowish"></span>
+                </div>
+                <div x-show="radioTyovalineet === 'tilaajanTyovalineet'" class="text-gray-300">
+                  <span x-text="t('workEquipmentBy')"></span>
+                  <span x-text="t('tyovalineetTilaaja')" class="text-yellowish"></span>
+                </div>
+                <div class="flex items-center" title="Muokkaa">
+                  <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Expanded state Tyovalineet -->
+            <div x-show="onFocus || !onkoValmisFieldsetTyovalineet()" class="relative">
+
+              <!-- Radio toimittajanTyovalineet -->
+              <div
+                @keydown.enter.prevent="const el = $el.querySelector('input[type=radio]'); el.focus(); el.click();"
+                tabindex="0"
+                class="mb-2 w-fit"
+              >
+                <input
+                  id="toimittajanTyovalineet"
+                  x-model="radioTyovalineet"
+                  @change="$refs.afterRadioTyovalineet.focus();"
+                  type="radio"
+                  name="radioTyovalineet"
+                  value="toimittajanTyovalineet"
+                  tabindex="-1"
+                  class="radio-input cursor-pointer"
+                />
+                <label for="toimittajanTyovalineet" class="text-whiteish" x-text="t('tyovalineetToimittaja')"></label>
+              </div>
+
+              <!-- Radio tilaajanTyovalineet -->
+              <div
+                @keydown.enter.prevent="const el = $el.querySelector('input[type=radio]'); el.focus(); el.click();"
+                tabindex="0"
+                class="mb-2 w-fit"
+              >
+                <input
+                  id="tilaajanTyovalineet"
+                  x-model="radioTyovalineet"
+                  @change="$refs.afterRadioTyovalineet.focus();"
+                  type="radio"
+                  name="radioTyovalineet"
+                  value="tilaajanTyovalineet"
+                  tabindex="-1"
+                  class="radio-input cursor-pointer"
+                />
+                <label for="tilaajanTyovalineet" class="text-whiteish" x-text="t('tyovalineetTilaaja')"></label>
+              </div>
+
+              <div
+                x-ref="afterRadioTyovalineet"
+                @blur="tyovalineetValmis = true;"
+                @keydown.enter.prevent="$el.blur();"
+                tabindex="0"
+              >
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Fieldset Työajat -->
+          <fieldset
+            x-show="showTyoajat()"
+            x-ref="fieldsetTyoajat"
+            x-data="{ onFocus: false }"
+            @focusin="onFocus = true"
+            @focusout="onFocus = false"
+            x-transition:enter.duration.400ms
+            @transitionstart.once="$refs.fieldsetTyoajat.focus({ preventScroll: true }); tarvittaessaScrollaaAlas();"
+            tabindex="0"
+            class="border-2 p-4 pl-5 mt-4 rounded"
+            :class="onFocus || !onkoValmisFieldsetTyoajat() ? 'border-gray-500 border-dashed' : 'border-gray-700 border-solid'"
+          >
+            <legend
+              class="ml-5 px-2 cursor-default flex items-center"
+              :class="onFocus || !onkoValmisFieldsetTyoajat() ? 'text-whiteish' : 'text-gray-700'"
+            >
+              <span x-text="t('workingHours')"></span>
+              <span 
+                x-show="onkoValmisFieldsetTyoajat()" 
+                class="ml-2 text-green-400 text-sm"
+                title="Valmis"
+              >
+                ✓
+              </span>
+            </legend>
+
+            <!-- Collapsed state Työajat -->
+            <div
+              x-show="!onFocus && onkoValmisFieldsetTyoajat()"
+              @click="$refs.fieldsetTyoajat.focus()"
+              class="mb-2 cursor-pointer"
+            >
+              <div class="flex justify-between">
+                <div x-show="radioTyoajat === 'milloinTahansa'" class="text-gray-300">
+                  <span x-text="t('flexibleWorkingHoursPart1')"></span>
+                  <span class="text-yellowish" x-text="t('flexibleWorkingHoursPart2')"></span>
+                </div>
+                <div x-show="radioTyoajat === 'tilaajanNormi'" class="text-gray-300">
+                  <span x-text="t('clientWorkingHoursPart1')"></span>
+                  <span class="text-yellowish" x-text="t('clientWorkingHoursPart2')"></span>
+                  <span x-text="t('clientWorkingHoursPart3')"></span>
+                </div>
+                <div class="flex items-center" title="Muokkaa">
+                  <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Expanded state Tyoajat -->
+            <div x-show="onFocus || !onkoValmisFieldsetTyoajat()" class="relative">
+
+              <!-- Radio milloinTahansa -->
+              <div
+                @keydown.enter.prevent="const el = $el.querySelector('input[type=radio]'); el.focus(); el.click();"
+                tabindex="0"
+                class="mb-2 w-fit"
+              >
+                <input
+                  id="milloinTahansa"
+                  x-model="radioTyoajat"
+                  @change="$refs.afterRadioTyoajat.focus();"
+                  type="radio"
+                  name="radioTyoajat"
+                  value="milloinTahansa"
+                  tabindex="-1"
+                  class="radio-input cursor-pointer"
+                />
+                <label for="milloinTahansa" class="text-whiteish" x-text="t('flexibleWorkingHoursLabel')"></label>
+              </div>
+
+              <!-- Radio tilaajanNormi -->
+              <div
+                @keydown.enter.prevent="const el = $el.querySelector('input[type=radio]'); el.focus(); el.click();"
+                tabindex="0"
+                class="mb-2 w-fit"
+              >
+                <input
+                  id="tilaajanNormi"
+                  x-model="radioTyoajat"
+                  @change="$refs.afterRadioTyoajat.focus();"
+                  type="radio"
+                  name="radioTyoajat"
+                  value="tilaajanNormi"
+                  tabindex="-1"
+                  class="radio-input cursor-pointer"
+                />
+                <label for="tilaajanNormi" class="text-whiteish" x-text="t('clientWorkingHoursLabel')"></label>
+              </div>
+
+              <div
+                x-ref="afterRadioTyoajat"
+                @blur="tyoajatValmis = true;"
+                @keydown.enter.prevent="$el.blur();"
+                tabindex="0"
+              >
+              </div>
+            </div>
+
+          </fieldset>
+
+          <!-- Fieldset Reference Rights -->
+          <fieldset
+            x-show="showReferenceRights()"
+            x-ref="fieldsetReferenceRights"
+            x-data="{ onFocus: false }"
+            @focusin="onFocus = true"
+            @focusout="onFocus = false"
+            x-transition:enter.duration.400ms
+            @transitionstart.once="$refs.fieldsetReferenceRights.focus({ preventScroll: true }); tarvittaessaScrollaaAlas();"
+            tabindex="0"
+            class="border-2 p-4 pl-5 mt-4 rounded"
+            :class="onFocus || !onkoValmisFieldsetReferenceRights() ? 'border-gray-500 border-dashed' : 'border-gray-700 border-solid'"
+          >
+            <legend
+              class="ml-5 px-2 cursor-default flex items-center"
+              :class="onFocus || !onkoValmisFieldsetReferenceRights() ? 'text-whiteish' : 'text-gray-700'"
+            >
+              <span x-text="t('legendReferenceRights')"></span>
+              
+              <span 
+                x-show="onkoValmisFieldsetReferenceRights()" 
+                class="ml-2 text-green-400 text-sm"
+                title="Valmis"
+              >
+                ✓
+              </span>
+            </legend>
+
+            <!-- Collapsed state ReferenceRights -->
+            <div
+              x-show="!onFocus && onkoValmisFieldsetReferenceRights()"
+              @click="$refs.fieldsetReferenceRights.focus()"
+              class="mb-2 cursor-pointer"
+            >
+              <div class="flex justify-between">
+                <div x-text="t(radioReferenceRights)" class="text-gray-300"></div>
+                <div class="flex items-center" title="Muokkaa">
+                  <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Expanded state ReferenceRights -->
+            <div x-show="onFocus || !onkoValmisFieldsetReferenceRights()" class="relative">
+
+              <!-- Radio referenceRightsWide -->
+              <div
+                @keydown.enter.prevent="const el = $el.querySelector('input[type=radio]'); el.focus(); el.click();"
+                tabindex="0"
+                class="mb-2 w-fit relative"
+              >
+                <input
+                  id="wideReferenceRights"
+                  x-model="radioReferenceRights"
+                  @change="$refs.afterRadioReferenceRights.focus();"
+                  type="radio"
+                  name="radioReferenceRights"
+                  value="wideReferenceRights"
+                  tabindex="-1"
+                  class="radio-input cursor-pointer"
+                />
+                <label for="wideReferenceRights" class="text-whiteish" x-text="t('radioLabelReferenceRightsWide')"></label>
+                <span
+                  x-show="!radioReferenceRights"
+                  x-text="t('recommended')"
+                  title="Auttaa freelanceriä uusien asiakkaiden hankinnassa"
+                  class="badge"
+                >
+                </span>
+              </div>
+
+              <!-- Radio referenceRightsNarrow -->
+              <div
+                @keydown.enter.prevent="const el = $el.querySelector('input[type=radio]'); el.focus(); el.click();"
+                tabindex="0"
+                class="mb-2 w-fit"
+              >
+                <input
+                  id="narrowReferenceRights"
+                  x-model="radioReferenceRights"
+                  @change="$refs.afterRadioReferenceRights.focus();"
+                  type="radio"
+                  name="radioReferenceRights"
+                  value="narrowReferenceRights"
+                  tabindex="-1"
+                  class="radio-input cursor-pointer"
+                />
+                <label for="narrowReferenceRights" class="text-whiteish" x-text="t('radioLabelReferenceRightsNarrow')"></label>
+              </div>
+
+              <!-- Radio referenceRightsNo -->
+              <div
+                @keydown.enter.prevent="const el = $el.querySelector('input[type=radio]'); el.focus(); el.click();"
+                tabindex="0"
+                class="mb-2 w-fit"
+              >
+                <input
+                  id="noReferenceRights"
+                  x-model="radioReferenceRights"
+                  @change="$refs.afterRadioReferenceRights.focus();"
+                  type="radio"
+                  name="radioReferenceRights"
+                  value="noReferenceRights"
+                  tabindex="-1"
+                  class="radio-input cursor-pointer"
+                />
+                <label for="noReferenceRights" class="text-whiteish" x-text="t('radioLabelReferenceRightsNo')"></label>
+              </div>
+
+              <div
+                x-ref="afterRadioReferenceRights"
+                @blur="referenceRightsValmis = true;"
+                @keydown.enter.prevent="$el.blur();"
+                tabindex="0"
+              >
+              </div>
+            </div>
+
+          </fieldset>
+
+          <!-- Fieldset Karajaoikeus -->
+          <fieldset
+            x-show="showKarajaoikeus()"
+            x-ref="fieldsetKarajaoikeus"
+            x-data="{ onFocus: false }"
+            @focusin="onFocus = true"
+            @focusout="onFocus = false"
+            x-transition:enter.duration.400ms
+            @transitionstart.once="$refs.karajaoikeusRaaka.focus({ preventScroll: true }); tarvittaessaScrollaaAlas();"
+            tabindex="0"
+            class="border-2 p-4 pl-5 mt-4 rounded"
+            :class="onFocus || !onkoValmisFieldsetKarajaoikeus() ? 'border-gray-500 border-dashed' : 'border-gray-700 border-solid'"
+          >
+            <legend
+              class="ml-5 px-2 cursor-default flex items-center"
+              :class="onFocus || !onkoValmisFieldsetKarajaoikeus() ? 'text-whiteish' : 'text-gray-700'"
+            >
+              <span x-text="t('legendKarajaoikeus')"></span>
+              <span 
+                x-show="onkoValmisFieldsetKarajaoikeus()" 
+                class="ml-2 text-green-400 text-sm"
+                title="Valmis"
+              >
+                ✓
+              </span>
+            </legend>
+
+            <!-- Collapsed state Karajaoikeus -->
+            <div
+              x-show="!onFocus && onkoValmisFieldsetKarajaoikeus()"
+              @click="$refs.fieldsetKarajaoikeus.focus()"
+              class="mb-2 cursor-pointer"
+            >
+              <div class="flex justify-between">
+                <div class="text-gray-300">
+                  <span x-text="t('prefixKarajaoikeus')"></span>
+                  <span x-text="getCourtInflectedForm(karajaoikeusValmis)" class="text-yellowish"></span>
+                </div>
+                <div class="flex items-center" title="Muokkaa">
+                  <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Expanded state Karajaoikeus -->
+            <div
+              x-show="onFocus || !onkoValmisFieldsetKarajaoikeus()"
+              class="relative"
+            >
+              <select
+                id="karajaoikeus"
+                x-model="karajaoikeusRaaka"
+                x-ref="karajaoikeusRaaka"
+                @change="$refs.afterKarajaoikeus.focus();"
+                name="karajaoikeus"
+                tabindex="0"
+                class="input-text text-center px-3 py-2 flex-shrink-0"
+              >
+                <option value="" x-text="t('choose')" disabled selected></option>
+                <template x-for="court in getCourts()">
+                  <option :value="court" x-text="court"></option>
+                </template>
+              </select>
+              <div
+                  x-ref="afterKarajaoikeus"
+                  @blur="kirjaaValmisKarajaoikeus();"
+                  @keydown.enter.prevent="$el.blur();"
+                  tabindex="0"
+                >
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Fieldset Muut lisäykset -->
+          <fieldset
+            x-show="showMuut()"
+            x-ref="fieldsetMuut"
+            x-data="{ onFocus: false }"
+            @focusin="onFocus = true; userIndicatedMuutIsValmis = false;"
+            @focusout="onFocus = false; userIndicatedMuutIsValmis = true; setTimeout(() => { if (!onFocus) $refs.continueButton.focus({ preventScroll: true }); }, 50);"
+            x-transition:enter.duration.400ms
+            @transitionstart.once="$refs.maksuaikaRaaka.focus({ preventScroll: true }); tarvittaessaScrollaaAlas();"
+            tabindex="0"
+            class="border-2 p-4 pl-5 mt-4 rounded"
+            :class="onFocus ? 'border-gray-500 border-dashed' : 'border-gray-700 border-solid'"
+          >
+            <legend
+              class="ml-5 px-2 cursor-default flex items-center"
+              :class="onFocus ? 'text-whiteish' : 'text-gray-700'"
+            >
+              <span x-text="t('otherTerms')"></span>
+              <!-- Warning indicator for incomplete optional items -->
+              <span 
+                x-show="!matkakorvausRaaka || !matkustusalueRaaka || !maksuaikaRaaka || (checkboxYlityokorvaus && !ylityokorvausValmis)" 
+                class="ml-2 text-yellow-400 text-sm"
+                :title="t('fillSelectedSections')"
+              >
+                ⚠️
+              </span>
+            </legend>
+
+            <!-- Collapsed state Muut -->
+            <div
+              x-show="!onFocus && onkoValmisFieldsetMuut()"
+              @click="$refs.fieldsetMuut.focus()"
+              class="mb-2 cursor-pointer"
+            >
+              <div class="flex justify-between">
+                <div class="text-gray-300">
+                  <div x-show="maksuaikaValmis">
+                    <span x-text="t('dueDateDays')"></span>
+                    <span x-text="maksuaikaValmis"></span>
+                    <span x-text="t('days')"></span>
+                  </div>
+                  <div x-show="radioLaskutusmuoto === 'tuntilaskutus' && radioAllokaatio === 'sovittu-allokaatio'" class="text-gray-300">
+                    <span x-text="t('terminationPeriod')"></span>
+                    <span x-text="irtisanomisaikaViikoissaValmis" class="text-yellowish"></span>
+                    <span x-text="t('weeks')" class="text-yellowish"></span>
+                  </div>
+                  <div class="text-gray-300">
+                    <span x-text="t('travelWithin')"></span>
+                    <span x-text="matkakorvausValmis"></span>
+                    €/h
+                    <span x-text="t('notCharged')"></span>
+                    <span x-text="matkustusalueValmis" class="text-yellowish"></span>
+                  </div>
+                  <div x-show="checkboxYlityokorvaus">
+                    <span x-text="t('overtimeCompensation')"></span>
+                    <span x-text="ylityokorvausValmis"></span>
+                    €/h
+                  </div>
+                  <div x-show="checkboxHoukuttelukielto">
+                    <span x-text="t('nonSolicitationShort')"></span>
+                  </div>
+                  <div x-show="checkboxVapaateksti && vapaatekstiValmis">
+                    <span x-text="t('somethingInTextAreaShort')"></span>
+                  </div>
+                </div>
+                <div class="flex items-center" title="Muokkaa">
+                  <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Expanded state Muut -->
+            <div x-show="onFocus || !onkoValmisFieldsetMuut()" class="relative">
+              <p class="mb-4 italic text-gray-300" x-text="t('optionalSectionsInfo')"></p>
+
+              <!-- Input Maksuaika -->
+              <div class="mb-4 flex items-center">
+                <input
+                  id="maksuaika"
+                  x-model="maksuaikaRaaka"
+                  x-ref="maksuaikaRaaka"
+                  @keydown.enter.prevent="$el.blur()"
+                  @blur="kirjaaValmisMaksuaika();"
+                  type="text"
+                  name="maksuaika"
+                  title="Numero, esimerkiksi 14 tai 30"
+                  placeholder="14"
+                  autocomplete="off"
+                  tabindex="0"
+                  class="w-16 input-text text-center"
+                />
+                <label for="maksuaika" x-text="t('ofDaysToPay')" class="ml-2"></label>
+              </div>
+
+              <!-- Input Irtisanomisaika -->
+              <div x-show="radioLaskutusmuoto === 'tuntilaskutus' && radioAllokaatio === 'sovittu-allokaatio'" class="mb-4">
+                <input
+                  id="irtisanomisaika"
+                  x-model="irtisanomisaikaViikoissaRaaka"
+                  x-ref="irtisanomisaikaViikoissaRaaka"
+                  @keydown.enter.prevent="$el.blur()"
+                  @blur="kirjaaValmisIrtisanomisaikaViikoissa();"
+                  type="text"
+                  name="irtisanomisaika"
+                  title="Numero, esimerkiksi 4"
+                  autocomplete="off"
+                  tabindex="0"
+                  class="w-16 input-text text-center"
+                />
+                <label for="irtisanomisaika" class="ml-1" x-text="t('terminationWeeks')"></label>
+              </div>
+
+              <!-- Matkakorvaus ja matkustusalue -->
+              <div class="mb-4 flex items-center">
+
+                <!-- Input Text Matkakorvaus -->
+                <div>
+                  <input
+                    id="matkakorvaus"
+                    x-model="matkakorvausRaaka"
+                    x-ref="matkakorvausRaaka"
+                    @keydown.enter.prevent="$el.blur()"
+                    @blur="kirjaaValmisMatkakorvaus();"
+                    type="text"
+                    name="matkakorvaus"
+                    title="Numero, esimerkiksi 25"
+                    placeholder="25"
+                    autocomplete="off"
+                    tabindex="0"
+                    class="w-16 input-text text-center"
+                  />
+                  <label for="matkakorvaus" class="ml-2">€/h
+                    <span x-text="t('travelHourCompensation')"></span>
+                  </label>
+              
+                  <!-- Input Text matkustusalue -->
+                  <span>
+                    <label for="matkustusalue" x-text="t('excludingTravel')" class="mx-1"></label>
+                    <input
+                      id="matkustusalue"
+                      x-model="matkustusalueRaaka"
+                      x-ref="matkustusalueRaaka"
+                      @keydown.enter.prevent="$el.blur();"
+                      @blur="kirjaaValmisMatkustusalue();"
+                      type="text"
+                      name="matkustusalue"
+                      autocomplete="off"
+                      tabindex="0"
+                      class="input-text text-center flex-shrink-0 w-80 min-w-80"
+                    />
+                  </span>
+                </div>
+              </div>
+
+              <!-- Checkbox Ylityökorvaus -->
+              <div class="mb-4">
+                <div
+                  @keydown.enter.prevent="$el.querySelector('input[type=checkbox]').click()"
+                  tabindex="0"
+                  class="mb-2 w-fit flex"
+                >
+                  <input
+                    x-model="checkboxYlityokorvaus"
+                    type="checkbox"
+                    id="checkboxYlityokorvaus"
+                    name="checkboxYlityokorvaus"
+                    tabindex="-1"
+                    class="radio-input cursor-pointer"
+                    style="border-radius: 4px;"
+                  />
+                  <div>
+                    <label for="checkboxYlityokorvaus" class="text-whiteish ml-3">
+                      <span x-text="t('overtimeCompensation')"></span>
+                    </label>
+
+                    <!-- Input Text Ylityökorvaus -->
+                    <span
+                      x-show="checkboxYlityokorvaus"
+                      x-transition:enter.duration.400ms
+                      @transitionstart.once="tarvittaessaScrollaaAlas();"
+                      class="ml-2 mt-2 flex flex-col items-start sm:inline"
+                    >
+                      <input
+                        id="ylityokorvaus"
+                        x-model="ylityokorvausRaaka"
+                        x-ref="ylityokorvausRaaka"
+                        @keydown.enter.prevent="$el.blur();"
+                        @blur="kirjaaValmisYlityokorvaus();"
+                        type="text"
+                        name="ylityokorvaus"
+                        placeholder="50"
+                        autocomplete="off"
+                        tabindex="0"
+                        class="w-24 sm:w-16 input-text text-center mb-1 sm:mb-0"
+                        :class="!ylityokorvausValmis ? 'border-2 border-yellow-400' : ''"
+                      />
+                      <label x-show="radioLaskutusmuoto === 'tuntilaskutus'" for="ylityokorvaus" x-text="t('inAdditionToHourlyRate')" class="ml-1"></label>
+                      <label x-show="radioLaskutusmuoto === 'urakkalaskutus'" for="ylityokorvaus" x-text="t('inAdditionToFixedPrice')" class="ml-1"></label>
+                    </span>
+
+                    <!-- Problem indicator -->
+                    <span 
+                      x-show="checkboxYlityokorvaus && !ylityokorvausRaaka" 
+                      class="block mt-1 sm:inline sm:ml-2 sm:mt-0 text-yellow-400 text-sm"
+                      title="Täytä ylityökorvaus tai poista valinta"
+                    >
+                      ⚠️
+                    </span>
+                  </div>
+                  
+                </div>
+              </div>
+
+              <!-- Checkbox Houkuttelukielto -->
+              <div class="mb-4">
+                <div
+                  @keydown.enter.prevent="$el.querySelector('input[type=checkbox]').click()"
+                  tabindex="0"
+                  class="mb-2 w-fit"
+                >
+                  <input
+                    x-model="checkboxHoukuttelukielto"
+                    type="checkbox"
+                    id="houkuttelukielto"
+                    name="checkboxHoukuttelukielto"
+                    tabindex="-1"
+                    class="radio-input cursor-pointer"
+                    style="border-radius: 4px;"
+                  />
+                  <label for="houkuttelukielto" x-text="t('nonSolicitation')" class="text-whiteish ml-2"></label>
+                </div>
+              </div>
+
+              <!-- Checkbox Vapaateksti -->
+              <div class="mb-4">
+                <div
+                  @keydown.enter.prevent="$el.querySelector('input[type=checkbox]').click()"
+                  tabindex="0"
+                  class="mb-2 w-fit flex"
+                >
+                  <input
+                    x-model="checkboxVapaateksti"
+                    type="checkbox"
+                    id="checkboxVapaateksti"
+                    name="checkboxVapaateksti"
+                    tabindex="-1"
+                    class="radio-input cursor-pointer"
+                    style="border-radius: 4px;"
+                  />
+                  <label for="checkboxVapaateksti" class="text-whiteish ml-3">
+                    <span x-text="t('freeText')"></span>
+                  </label>
+                </div>
+
+                <!-- Textarea Vapaateksti -->
+                <div
+                  x-show="checkboxVapaateksti"
+                  x-transition:enter.duration.400ms
+                  @transitionstart="$refs.vapaatekstiRaaka.focus({ preventScroll: true }); tarvittaessaScrollaaAlas();"
+                  class="mt-2 sm:ml-6"
+                >
+                  <p class="mb-4 italic text-gray-300 sm:ml-3">
+                    <span x-text="t('prefixToFreeText')"></span>
+                  </p>
+                  <textarea
+                    id="textareaVapaateksti"
+                    x-model="vapaatekstiRaaka"
+                    x-ref="vapaatekstiRaaka"
+                    @blur="kirjaaValmisVapaateksti();"
+                    name="textareaVapaateksti"
+                    placeholder=""
+                    autocomplete="off"
+                    tabindex="0"
+                    rows="4"
+                    class="w-full input-text px-3 py-2"
+                    :class="checkboxVapaateksti && !vapaatekstiValmis ? 'border-2 border-yellow-400' : ''"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Single Continue Button -->
+          <div class="mt-8">
+            <button
+              id="continueButton"
+              x-ref="continueButton"
+              :disabled="!canContinue()"
+              :class="canContinue() ? 'bg-yellowish text-blueish hover:opacity-90' : 'bg-gray-600 text-gray-400 cursor-not-allowed opacity-50'"
+              class="px-6 py-3 font-bold rounded-lg w-full transition-opacity"
+              x-text="getContinueButtonText()"
+              tabindex="0"
+              @click="continueClicked()"
+            >
+            </button>
+
+            <!-- Progress indicator -->
+            <div x-show="getFormProgress() < 100 && onkoValmisFieldsetLaskutusperuste()" class="mt-4 text-center text-gray-300">
+              <div class="text-sm mb-2" x-text="t('progress') + ':'"></div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div 
+                  class="bg-yellowish h-2 rounded-full transition-all duration-300"
+                  :style="`width: ${getFormProgress()}%`"
+                ></div>
+              </div>
+              <div class="text-xs mt-2" x-text="`${getFormProgress()}% ${t('complete')}`"></div>
+            </div>
+          </div>
+
+          <!-- Helpperi scrolliposition seurantaan -->
+          <div id="pohja" class="absolute" style="bottom: -50px;">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PDF Preview Section -->
+    <section x-show="previewRendered" id="pdf-preview-section" class="p-0 max-w-5xl mx-auto relative" style="min-height: 90vh; height: 90vh;">
+      <iframe id="pdf-viewer" width="100%" class="rounded" style="height: 90vh; min-height: 90vh;"></iframe>
+      <button 
+        id="save-pdf-button"
+        @click="downloadClicked()"
+        class="absolute bottom-4 right-4 bg-yellowish text-blueish px-4 py-2 rounded-lg px-6 py-3 font-bold rounded-lg bg-gray-600"
+        x-text="t('buttonTextDownloadPDF')"
+        style="border: 3px solid var(--blueish);"
+      ></button>
+    </section>
+  </body>
+</html>
