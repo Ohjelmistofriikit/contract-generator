@@ -175,17 +175,25 @@ function getAlpineState() {
     tilaajanYtunnusRaaka: '',
     tilaajanYtunnusValmis: '',
     tilaajanYtunnusError: '',
+    tilaajanYtunnusWarning: '',
     kirjaaValmisTilaajanYtunnus() {
       const trimmedYtunnus = this.tilaajanYtunnusRaaka.trim();
       if (this.validateYtunnus(trimmedYtunnus)) {
         this.tilaajanYtunnusValmis = trimmedYtunnus;
         this.tilaajanYtunnusError = '';
+        this.tilaajanYtunnusWarning = '';
+      } else if (!trimmedYtunnus) {
+        // Y-tunnus is empty, don't allow user to proceed.
+        this.tilaajanYtunnusValmis = '';
+        this.tilaajanYtunnusError = this.t('ytunnusRequired');
+        this.tilaajanYtunnusWarning = '';
       } else {
-        // Special thing here: allow user to proceed even if Y-tunnus validation fails.
+        // Y-tunnus validation fails, but something is filled here. Allow user to proceed.
         // This is primarily intended to make it as frictionless as possible to test the contract generator with fake data.
         // Secondarily, this is intended to allow making contracts with foreign business entities.
         this.tilaajanYtunnusValmis = trimmedYtunnus;
-        this.tilaajanYtunnusError = trimmedYtunnus ? this.t('ytunnusInvalid') : this.t('ytunnusRequired');
+        this.tilaajanYtunnusError = '';
+        this.tilaajanYtunnusWarning = this.t('ytunnusInvalid');
       }
     },
     tilaajanYhteyshenkiloRaaka: '',
@@ -232,16 +240,23 @@ function getAlpineState() {
     toimittajanYtunnusRaaka: '',
     toimittajanYtunnusValmis: '',
     toimittajanYtunnusError: '',
+    toimittajanYtunnusWarning: '',
     kirjaaValmisToimittajanYtunnus() {
       const trimmedYtunnus = this.toimittajanYtunnusRaaka.trim();
       if (this.validateYtunnus(trimmedYtunnus)) {
         this.toimittajanYtunnusValmis = trimmedYtunnus;
         this.toimittajanYtunnusError = '';
+        this.toimittajanYtunnusWarning = '';
+      } else if (!trimmedYtunnus) {
+        // Y-tunnus is empty, don't allow user to proceed.
+        this.toimittajanYtunnusError = this.t('ytunnusRequired');
+        this.toimittajanYtunnusWarning = '';
       } else {
-        // Special thing here: allow user to proceed even if Y-tunnus validation fails.
+        // Y-tunnus validation fails, but something is filled here and we want to allow the user to proceed.
         // This is primarily intended to make it as frictionless as possible to test the contract generator with fake data.
         this.toimittajanYtunnusValmis = trimmedYtunnus;
-        this.toimittajanYtunnusError = trimmedYtunnus ? this.t('ytunnusInvalid') : this.t('ytunnusRequired');
+        this.toimittajanYtunnusError = '';
+        this.toimittajanYtunnusWarning = this.t('ytunnusInvalid');
       }
     },
     toimittajanYhteyshenkiloRaaka: '',
