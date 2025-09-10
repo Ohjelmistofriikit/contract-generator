@@ -24,8 +24,12 @@ function getAlpineState() {
       if (!phone || !phone.trim()) {
         return false;
       }
-      // Finnish phone number validation: accepts formats like +358401234567, 0401234567, 050-1234567, etc.
-      const phoneRegex = /^(\+358|0)[-\s]?[4-5]\d{1}[-\s]?\d{3}[-\s]?\d{4}$/;
+      // Phone number validation
+      // Accepts a variety of formats like +358401234567, 00358401234567, 040 123 4567, 040-1234567
+      // Accepts business numbers like 010 584 1124
+      // Accepts international numbers like +885038546712 or (555) 317-492 
+      // Accepts short numbers like old Saunalahti numbers
+      const phoneRegex = /^\+?[()-\s0-9]{6,25}$/;
       return phoneRegex.test(phone.trim().replace(/\s/g, ''));
     },
 
