@@ -181,7 +181,10 @@ function getAlpineState() {
         this.tilaajanYtunnusValmis = trimmedYtunnus;
         this.tilaajanYtunnusError = '';
       } else {
-        this.tilaajanYtunnusValmis = '';
+        // Special thing here: allow user to proceed even if Y-tunnus validation fails.
+        // This is primarily intended to make it as frictionless as possible to test the contract generator with fake data.
+        // Secondarily, this is intended to allow making contracts with foreign business entities.
+        this.tilaajanYtunnusValmis = trimmedYtunnus;
         this.tilaajanYtunnusError = trimmedYtunnus ? this.t('ytunnusInvalid') : this.t('ytunnusRequired');
       }
     },
@@ -235,7 +238,9 @@ function getAlpineState() {
         this.toimittajanYtunnusValmis = trimmedYtunnus;
         this.toimittajanYtunnusError = '';
       } else {
-        this.toimittajanYtunnusValmis = '';
+        // Special thing here: allow user to proceed even if Y-tunnus validation fails.
+        // This is primarily intended to make it as frictionless as possible to test the contract generator with fake data.
+        this.toimittajanYtunnusValmis = trimmedYtunnus;
         this.toimittajanYtunnusError = trimmedYtunnus ? this.t('ytunnusInvalid') : this.t('ytunnusRequired');
       }
     },

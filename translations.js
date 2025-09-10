@@ -145,7 +145,7 @@ const translations = {
     phoneRequired: "Puhelinnumero on pakollinen",
     phoneInvalid: "Virheellinen puhelinnumero",
     ytunnusRequired: "Y-tunnus on pakollinen",
-    ytunnusInvalid: "Virheellinen Y-tunnus",
+    ytunnusInvalid: "Ei ole suomalainen Y-tunnus",
 
     // Hours section
     agreedAllocation: "Sovittu allokaatio",
@@ -394,7 +394,7 @@ const translations = {
     phoneRequired: "Phone number is required",
     phoneInvalid: "Invalid phone number",
     ytunnusRequired: "Business ID is required",
-    ytunnusInvalid: "Invalid business ID",
+    ytunnusInvalid: "This does not appear to be a Finnish business ID",
 
     // Hours section
     agreedAllocation: "Agreed allocation",
