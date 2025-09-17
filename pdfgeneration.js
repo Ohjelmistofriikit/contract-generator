@@ -448,7 +448,7 @@ function getPDF(state) {
       "Toimittajalla on oikeus mainita Tilaaja markkinoinnissa Toimittajan asiakkaana. Referenssioikeus pysyy voimassa sopimuksen päätyttyä.",
       "The Supplier has the right to reference the Client in marketing as the Supplier’s customer. These rights survive the end of the Agreement."
     )
-  } else if (state.radioReferenceRights !== 'noReferenceRights') {
+  } else if (state.radioReferenceRights === 'noReferenceRights') {
     // No section is added in this case.
   } else {
     unexpectedError();
