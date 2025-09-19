@@ -168,7 +168,7 @@ const translations = {
     placeholderProjectName: "esim. Verkkokaupan kehitys tai Mobiilisovelluksen suunnittelu",
     inAdditionToHourlyRate: "€/h tuntihinnan päälle",
     inAdditionToFixedPrice: "€/h urakkahinnan päälle",
-    placeholderInputWeeklyHours: "esim. 37.5",
+    placeholderInputWeeklyHours: "esim. 37,5",
     placeholderInputTravelArea: "pääkaupunkiseudulla",
     placeholderInputDistrictCourt: "Helsingin käräjäoikeudessa",
 
