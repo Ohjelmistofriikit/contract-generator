@@ -1,12 +1,10 @@
-For purposes of licensing, we state that the contract-generator is comprised of 2 parts: code and legal text.
+For purposes of licensing, we state that the contract-generator is comprised of 2 parts: 1) legal text, and 2) code.
 
 We apply different licenses to these parts:
 
 1. Legal text (pdfgeneration.js) licensed via [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), which requires attribution.
 
 2. Other files licensed via MIT license.
-
-Note that this licensing is not intended to constrain the rights of freelancers who are drafting a contract for themselves. Freelancers are free to remove attribution from their own contracts, if they choose to do so. This licensing is intended for other situations, such as those where this repo is forked in order to develop a similar product. If you develop a similar product using the legal texts from this repo, you must provide attribution.
 
 MIT License
 
