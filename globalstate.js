@@ -1,13 +1,29 @@
 function getAlpineState() {
   return {
-    // Language helpers
-    currentLanguage: localStorage.getItem('contractGenerator_language') || 'fi',
+    // Language preference:
+    // - if lang in query param, use that;
+    // - else if lang in localStorage, use that;
+    // - else default to 'fi'
+    currentLanguage: new URLSearchParams(window.location.search).get('lang') || localStorage.getItem('contractGenerator_language') || 'fi',
+
     changeLanguage(newLanguage) {
       localStorage.setItem('contractGenerator_language', newLanguage);
       this.currentLanguage = newLanguage;
+      if (newLanguage === 'en') {
+        // Add query param to URL
+        const url = new URL(window.location);
+        url.searchParams.set('lang', 'en');
+        window.history.replaceState({}, '', url);
+      } else {
+        // Remove query param from URL (if it exists)
+        const url = new URL(window.location);
+        url.searchParams.delete('lang');
+        window.history.replaceState({}, '', url);
+      }
     },
+
+    // Translation helper method with fallback to key
     t(key) {
-      // Translation helper method with fallback to key
       return translations[this.currentLanguage]?.[key] || key;
     },
 
