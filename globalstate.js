@@ -1,10 +1,11 @@
 function getAlpineState() {
   return {
     // Language preference:
-    // - if lang in query param, use that;
-    // - else if lang in localStorage, use that;
+    // - if a supported lang is in query param, use that;
+    // - else if a supported lang is in localStorage, use that;
     // - else default to 'fi'
-    currentLanguage: new URLSearchParams(window.location.search).get('lang') || localStorage.getItem('contractGenerator_language') || 'fi',
+    currentLanguage: [new URLSearchParams(window.location.search).get('lang'), localStorage.getItem('contractGenerator_language')]
+      .find((lang) => lang === 'fi' || lang === 'en') || 'fi',
 
     changeLanguage(newLanguage) {
       localStorage.setItem('contractGenerator_language', newLanguage);
@@ -432,7 +433,8 @@ function getAlpineState() {
     matkustusaluettaMuokattuManuaalisesti: false,
     kirjaaValmisMatkustusalue() {
       this.matkustusalueValmis = this.matkustusalueRaaka;
-      this.matkustusaluettaMuokattuManuaalisesti = true;
+      // Only count it as edited if it differs from the court's default (blur alone doesn't count).
+      this.matkustusaluettaMuokattuManuaalisesti = this.matkustusalueRaaka !== (locations[this.currentLanguage][this.karajaoikeusValmis] || '');
     },
     checkboxYlityokorvaus: true,
     ylityokorvausRaaka: '50',
