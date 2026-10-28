@@ -204,6 +204,41 @@ function getAlpineState() {
       return (this.loppupaivamaaraValmis || this.radioVoimassaolo === 'toistaiseksi') && this.alkupaivamaaraValmis && this.tuntejaViikossaValmis;
     },
 
+    // Tilaajan (client) and toimittajan (supplier) details. Both parties have the same fields, so
+    // the commit/validation logic is shared: `osapuoli` is the field-name prefix, 'tilaajan' or
+    // 'toimittajan', e.g. kirjaaValmisYtunnus('tilaajan') commits tilaajanYtunnusRaaka.
+    kirjaaValmisYtunnus(osapuoli) {
+      const ytunnus = this[`${osapuoli}YtunnusRaaka`].trim();
+      if (!ytunnus) {
+        // Y-tunnus is empty, don't allow user to proceed.
+        this[`${osapuoli}YtunnusValmis`] = '';
+        this[`${osapuoli}YtunnusError`] = this.t('ytunnusRequired');
+        this[`${osapuoli}YtunnusWarning`] = '';
+        return;
+      }
+      // An invalid Y-tunnus only warns and still lets the user proceed. This is primarily intended to make
+      // it as frictionless as possible to test the contract generator with fake data. Secondarily, this is
+      // intended to allow making contracts with foreign business entities.
+      this[`${osapuoli}YtunnusValmis`] = ytunnus;
+      this[`${osapuoli}YtunnusError`] = '';
+      this[`${osapuoli}YtunnusWarning`] = this.validateYtunnus(ytunnus) ? '' : this.t('ytunnusInvalid');
+    },
+    kirjaaValmisEmail(osapuoli) {
+      const email = this[`${osapuoli}EmailRaaka`].trim();
+      const valid = this.validateEmail(email);
+      this[`${osapuoli}EmailValmis`] = valid ? email : '';
+      this[`${osapuoli}EmailError`] = valid ? '' : this.t(email ? 'emailInvalid' : 'emailRequired');
+    },
+    kirjaaValmisPuhelin(osapuoli) {
+      const phone = this[`${osapuoli}PuhelinRaaka`].trim();
+      const valid = this.validatePhone(phone);
+      this[`${osapuoli}PuhelinValmis`] = valid ? phone : '';
+      this[`${osapuoli}PuhelinError`] = valid ? '' : this.t(phone ? 'phoneInvalid' : 'phoneRequired');
+    },
+    onkoValmisOsapuoli(osapuoli) {
+      return ['Yritys', 'Ytunnus', 'Yhteyshenkilo', 'Email', 'Puhelin'].every((field) => this[`${osapuoli}${field}Valmis`]);
+    },
+
     // Tilaaja
     tilaajanYritysRaaka: '',
     tilaajanYritysValmis: '',
@@ -214,26 +249,6 @@ function getAlpineState() {
     tilaajanYtunnusValmis: '',
     tilaajanYtunnusError: '',
     tilaajanYtunnusWarning: '',
-    kirjaaValmisTilaajanYtunnus() {
-      const trimmedYtunnus = this.tilaajanYtunnusRaaka.trim();
-      if (this.validateYtunnus(trimmedYtunnus)) {
-        this.tilaajanYtunnusValmis = trimmedYtunnus;
-        this.tilaajanYtunnusError = '';
-        this.tilaajanYtunnusWarning = '';
-      } else if (!trimmedYtunnus) {
-        // Y-tunnus is empty, don't allow user to proceed.
-        this.tilaajanYtunnusValmis = '';
-        this.tilaajanYtunnusError = this.t('ytunnusRequired');
-        this.tilaajanYtunnusWarning = '';
-      } else {
-        // Y-tunnus validation fails, but something is filled here. Allow user to proceed.
-        // This is primarily intended to make it as frictionless as possible to test the contract generator with fake data.
-        // Secondarily, this is intended to allow making contracts with foreign business entities.
-        this.tilaajanYtunnusValmis = trimmedYtunnus;
-        this.tilaajanYtunnusError = '';
-        this.tilaajanYtunnusWarning = this.t('ytunnusInvalid');
-      }
-    },
     tilaajanYhteyshenkiloRaaka: '',
     tilaajanYhteyshenkiloValmis: '',
     kirjaaValmisTilaajanYhteyshenkilo() {
@@ -242,31 +257,11 @@ function getAlpineState() {
     tilaajanEmailRaaka: '',
     tilaajanEmailValmis: '',
     tilaajanEmailError: '',
-    kirjaaValmisTilaajanEmail() {
-      const trimmedEmail = this.tilaajanEmailRaaka.trim();
-      if (this.validateEmail(trimmedEmail)) {
-        this.tilaajanEmailValmis = trimmedEmail;
-        this.tilaajanEmailError = '';
-      } else {
-        this.tilaajanEmailValmis = '';
-        this.tilaajanEmailError = trimmedEmail ? this.t('emailInvalid') : this.t('emailRequired');
-      }
-    },
     tilaajanPuhelinRaaka: '',
     tilaajanPuhelinValmis: '',
     tilaajanPuhelinError: '',
-    kirjaaValmisTilaajanPuhelin() {
-      const trimmedPhone = this.tilaajanPuhelinRaaka.trim();
-      if (this.validatePhone(trimmedPhone)) {
-        this.tilaajanPuhelinValmis = trimmedPhone;
-        this.tilaajanPuhelinError = '';
-      } else {
-        this.tilaajanPuhelinValmis = '';
-        this.tilaajanPuhelinError = trimmedPhone ? this.t('phoneInvalid') : this.t('phoneRequired');
-      }
-    },
     onkoValmisFieldsetTilaajanTiedot() {
-      return this.tilaajanYritysValmis && this.tilaajanYtunnusValmis && this.tilaajanYhteyshenkiloValmis && this.tilaajanEmailValmis && this.tilaajanPuhelinValmis;
+      return this.onkoValmisOsapuoli('tilaajan');
     },
 
     // Toimittaja
@@ -279,25 +274,6 @@ function getAlpineState() {
     toimittajanYtunnusValmis: '',
     toimittajanYtunnusError: '',
     toimittajanYtunnusWarning: '',
-    kirjaaValmisToimittajanYtunnus() {
-      const trimmedYtunnus = this.toimittajanYtunnusRaaka.trim();
-      if (this.validateYtunnus(trimmedYtunnus)) {
-        this.toimittajanYtunnusValmis = trimmedYtunnus;
-        this.toimittajanYtunnusError = '';
-        this.toimittajanYtunnusWarning = '';
-      } else if (!trimmedYtunnus) {
-        // Y-tunnus is empty, don't allow user to proceed.
-        this.toimittajanYtunnusValmis = '';
-        this.toimittajanYtunnusError = this.t('ytunnusRequired');
-        this.toimittajanYtunnusWarning = '';
-      } else {
-        // Y-tunnus validation fails, but something is filled here and we want to allow the user to proceed.
-        // This is primarily intended to make it as frictionless as possible to test the contract generator with fake data.
-        this.toimittajanYtunnusValmis = trimmedYtunnus;
-        this.toimittajanYtunnusError = '';
-        this.toimittajanYtunnusWarning = this.t('ytunnusInvalid');
-      }
-    },
     toimittajanYhteyshenkiloRaaka: '',
     toimittajanYhteyshenkiloValmis: '',
     kirjaaValmisToimittajanYhteyshenkilo() {
@@ -306,31 +282,11 @@ function getAlpineState() {
     toimittajanEmailRaaka: '',
     toimittajanEmailValmis: '',
     toimittajanEmailError: '',
-    kirjaaValmisToimittajanEmail() {
-      const trimmedEmail = this.toimittajanEmailRaaka.trim();
-      if (this.validateEmail(trimmedEmail)) {
-        this.toimittajanEmailValmis = trimmedEmail;
-        this.toimittajanEmailError = '';
-      } else {
-        this.toimittajanEmailValmis = '';
-        this.toimittajanEmailError = trimmedEmail ? this.t('emailInvalid') : this.t('emailRequired');
-      }
-    },
     toimittajanPuhelinRaaka: '',
     toimittajanPuhelinValmis: '',
     toimittajanPuhelinError: '',
-    kirjaaValmisToimittajanPuhelin() {
-      const trimmedPhone = this.toimittajanPuhelinRaaka.trim();
-      if (this.validatePhone(trimmedPhone)) {
-        this.toimittajanPuhelinValmis = trimmedPhone;
-        this.toimittajanPuhelinError = '';
-      } else {
-        this.toimittajanPuhelinValmis = '';
-        this.toimittajanPuhelinError = trimmedPhone ? this.t('phoneInvalid') : this.t('phoneRequired');
-      }
-    },
     onkoValmisFieldsetToimittajanTiedot() {
-      return this.toimittajanYritysValmis && this.toimittajanYtunnusValmis && this.toimittajanYhteyshenkiloValmis && this.toimittajanEmailValmis && this.toimittajanPuhelinValmis;
+      return this.onkoValmisOsapuoli('toimittajan');
     },
 
     // Projektin tiedot
