@@ -63,7 +63,7 @@ All in [pdfgeneration.js](../js/pdfgeneration.js). These look like typos and wor
   - Possibly most of `assets/pdfjs/web/locale/` (2.3 MB) if only fi/en are needed. **Caveat:** also remove the deleted languages from `locale/locale.json`. The viewer picks the browser's language from that file, so a listed language whose `.ftl` file is missing makes the fetch fail. Languages missing from the file fall back to `en-us`.
   - The demo PDF is only the viewer's `defaultUrl`; we always pass `?file=`, so it is never loaded. The debugger only loads with the `#pdfbug` hash.
 - [ ] **Move the jsPDF fonts.** `assets/pdfjs/fonts/PlusJakartaSans-*.js` are jsPDF font files and have nothing to do with pdf.js. Move them to `assets/fonts/` so a pdf.js upgrade doesn't delete them.
-- [ ] **Fix the web font.** The `@font-face` rule in `index.html` declares `format('woff2')` for a `.ttf` file. Convert the font to real woff2 (~110 KB saved) or change the hint to `format('truetype')`.
+- [x] **Fix the web font.** The `@font-face` rule in `index.html` declares `format('woff2')` for a `.ttf` file. Convert the font to real woff2 (~110 KB saved) or change the hint to `format('truetype')`.
 - [ ] **Compress `assets/og-image.png`** (509 KB).
 
 ## 4. Simplification and code quality
