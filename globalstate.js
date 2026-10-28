@@ -82,6 +82,16 @@ function getAlpineState() {
       return checkDigit === calculatedCheckDigit;
     },
 
+    // Converts YYYY-MM-DD (date input value) to DD.MM.YYYY. Splits the string instead of
+    // using new Date(), which parses it as UTC and can shift the day in negative timezones.
+    formatIsoDate(isoDate) {
+      if (!isoDate) {
+        return '';
+      }
+      const [year, month, day] = isoDate.split('-');
+      return `${day}.${month}.${year}`;
+    },
+
     // Prevents issues with initial page load
     piilotaFormi: true,
 
@@ -145,13 +155,7 @@ function getAlpineState() {
     alkupaivamaaraRaaka: '',
     alkupaivamaaraValmis: '',
     kirjaaValmisAlkupaivamaara() {
-      if (this.alkupaivamaaraRaaka) {
-        // Convert from YYYY-MM-DD to DD.MM.YYYY for display
-        const date = new Date(this.alkupaivamaaraRaaka);
-        this.alkupaivamaaraValmis = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}`;
-      } else {
-        this.alkupaivamaaraValmis = '';
-      }
+      this.alkupaivamaaraValmis = this.formatIsoDate(this.alkupaivamaaraRaaka);
     },
 
     // Loppupäivämäärä liittyen voimassaoloon tuntilaskutuksessa
@@ -159,13 +163,7 @@ function getAlpineState() {
     loppupaivamaaraRaaka: '',
     loppupaivamaaraValmis: '',
     kirjaaValmisLoppupaivamaara() {
-      if (this.loppupaivamaaraRaaka) {
-        // Convert from YYYY-MM-DD to DD.MM.YYYY for display
-        const date = new Date(this.loppupaivamaaraRaaka);
-        this.loppupaivamaaraValmis = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}`;
-      } else {
-        this.loppupaivamaaraValmis = '';
-      }
+      this.loppupaivamaaraValmis = this.formatIsoDate(this.loppupaivamaaraRaaka);
     },
 
     // Milloin fieldset tuntimäärä on valmis ("tarpeettomat" tsekkaukset tässä eivät ole tarpeettomia vaan auttavat fokuksessa ja transitioissa)

@@ -17,7 +17,7 @@ Fix these first. Items 1.1–1.3 affect the text of generated contracts.
 - [ ] **1.3 Finnish travel area means "to", not "within", for the capital region.** ⚖ legal review
   [translations.js](../translations.js), `locations.fi`: the three Uusimaa courts map to `"pääkaupunkiseudulle"` ("to the capital region"). In the contract this reads "Pääkaupunkiseudulle tapahtuvasta matkustamisesta ei veloiteta…" (no charge for travel *to* the capital region). That is grammatical, but every other region uses the "in" ending (`Etelä-Karjalassa`, `Pirkanmaalla`…), and the English contract says "within Helsinki metropolitan area". Change it to `"pääkaupunkiseudulla"`. The UI sentence "poislukien matkustaminen …" reads correctly with either form.
 
-- [ ] **1.4 Dates can show the previous day.**
+- [x] **1.4 Dates can show the previous day.**
   [globalstate.js:150](../globalstate.js#L150) and [globalstate.js:164](../globalstate.js#L164): `new Date('YYYY-MM-DD')` reads the string as UTC midnight, and `getDate()` returns local time, so users in time zones west of UTC see the day before. Fix: split the `YYYY-MM-DD` string directly. The same formatting code appears twice (and a third time in `downloadClicked`), so turn it into one helper.
 
 - [ ] **1.5 Supplier Y-tunnus check differs from the client one.**
