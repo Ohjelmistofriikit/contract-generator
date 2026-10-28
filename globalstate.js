@@ -19,6 +19,10 @@ function getAlpineState() {
       this.karajaoikeusValmis = translateCourt(this.karajaoikeusValmis);
       this.asetaOletusMatkustusalue(newLanguage);
 
+      // A generated PDF is in the old language; hide it so the user generates it again.
+      this.previewRendered = false;
+      this.pdfDataUri = '';
+
       this.currentLanguage = newLanguage;
       // x-model sets the <select> value before the court options re-render in the new language,
       // so the select would show the wrong court. Re-apply the value once the options exist.

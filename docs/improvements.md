@@ -36,7 +36,7 @@ Fix these first. Items 1.1–1.3 affect the text of generated contracts.
 - [x] **1.9 Wrong continue-button label while the location is unanswered.**
   Found while removing the dead line in 1.8, which apparently tried to handle this case. When the location section is shown but neither option is picked, the (disabled) button reads "Jatka referenssioikeuteen →" instead of a generic "Jatka". Cosmetic: the button is disabled, so the user can't skip ahead. Fix in `getContinueButtonText`: return `t('continue')` when `showSijainti() && !radioSijainti`.
 
-- [ ] **1.10 Stale PDF after switching language.**
+- [x] **1.10 Stale PDF after switching language.**
   If the user generates a contract and then switches language, the preview and download keep the old-language PDF, while `downloadClicked` names the file from the new language (e.g. `ConsultingContract_….pdf` for a Finnish contract). Fix: in `changeLanguage`, hide the preview (`previewRendered = false`, clear `pdfDataUri`) or regenerate it.
 
 ## 2. Text fixes in the English contract ⚖ legal review
