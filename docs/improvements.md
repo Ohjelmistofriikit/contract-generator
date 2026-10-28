@@ -42,7 +42,13 @@ Fix these first. Items 1.1–1.3 affect the text of generated contracts.
 - [ ] **1.11 Invalid email/phone fields never turn red.**
   The email and phone inputs get `border-red-500` on error, but they have no border width, so only the message under the field shows the error. This was already the case with Tailwind 2. Fix: add a width too (e.g. `border-2 border-red-500`, like the amber warnings on the overtime and free-text fields), or use `ring-2 ring-red-500` so the layout doesn't shift. A design choice, so not done yet.
 
-## 2. Text fixes in the English contract ⚖ legal review
+- [ ] **1.12 Radio sections: keyboard focus goes to an invisible element.**
+  From the deep review. Choosing a radio moves focus (`@change`) to an empty `tabindex="0"` div after the radios (`afterRadio*`, also `afterKarajaoikeus` for the court select); that div's blur marks the section done. Keyboard users see no focus indicator, get an extra tab stop per section, and on Windows/Linux the court select loses focus after one arrow-key press. Radios themselves aren't tabbable (`tabindex="-1"`; wrappers handle Enter). Fix: native radio keyboard behaviour (tab into the group, arrows to choose), and mark the section done on the fieldset's `focusout` like 'muut' does. Needs hands-on keyboard testing in several browsers, so not done blind.
+
+- [ ] **1.13 Continue button says "Jatka →" but generates the PDF.**
+  From the deep review. While focus is in 'muut', `userIndicatedMuutIsValmis` is false, so the label is "Jatka →"; mousedown on the button blurs 'muut' (setting it true) before the click, so the one click generates the PDF (and shows the fixed-price confirm). Either intended one-click behaviour with a misleading label, or the click should only collapse 'muut'. Decide which, then fix the label or `continueClicked`.
+
+ in the English contract ⚖ legal review
 
 All in [pdfgeneration.js](../js/pdfgeneration.js). These look like typos and wording slips, but they are still clause text, so they follow the policy above.
 
@@ -84,6 +90,8 @@ All in [pdfgeneration.js](../js/pdfgeneration.js). These look like typos and wor
   - turn the literal `270` page-bottom limit ([pdfgeneration.js:26](../js/pdfgeneration.js#L26)) and the `200` signature-section limit ([pdfgeneration.js:540](../js/pdfgeneration.js#L540)) into named constants next to `MARGIN_TOP`
   - Finnish and English identifiers are mixed; not worth a rename, but stick to the existing convention in new code
 
+- [ ] **Share the fieldset boilerplate with `Alpine.data` / `Alpine.bind`.** From the deep review. The 12 step fieldsets repeat `x-data="{ onFocus: false }" @focusin @focusout tabindex="0" :class="onFocus || !onkoValmisX() ? ... : ..."`, and `onFocus || !onkoValmisX()` appears ~48 times; the ~25 radio wrappers repeat the same Enter handler (two lack `.prevent`). An `Alpine.data('step', ...)` component plus `Alpine.bind('stepFieldset')` / `Alpine.bind('radioRow')` registered on `alpine:init` would cut most of it without a build step. Large markup change; do it together with 1.12.
+
 ## 5. Documentation (README)
 
 - [x] **The Raaka/Valmis convention.** Explain the `*Raaka` (raw input) / `*Valmis` (value committed on blur by `kirjaaValmis*`) pattern, and why the `show*()` functions are computed instead of using flags (see the comment at [globalstate.js:503](../js/globalstate.js#L503)). This is the main thing a new contributor needs to know.
@@ -96,6 +104,11 @@ All in [pdfgeneration.js](../js/pdfgeneration.js). These look like typos and wor
 ## 6. Deferred: contract-logic questions ⚖ legal review
 
 Open questions about what the contract says. Not to be changed until reviewed (see the policy at the top).
+
+Raised by the deep review (content questions, not code):
+
+- The non-solicitation clause doesn't say which personnel it covers or whether it continues after the agreement ends.
+- Fixed-price contracts refer to "liitteessä" / "the Appendix" without an attachment title or date field.
 
 ### 6.1 Payment term is also the acceptance period in fixed-price contracts
 
