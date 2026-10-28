@@ -2,17 +2,19 @@
 
 Findings from a code review (2026-10-28). Each item was checked against the code; items marked **Check** need a human decision. Check items off as they are fixed. Line numbers refer to the code at the time of the review and may drift.
 
+> **Policy: contract clause text is not changed without legal review.** Even small, well-meant wording changes can change the legal meaning of a clause. Items that touch the text in `pdfgeneration.js` (1.1, 1.3, section 2 and section 6) are marked **⚖ legal review** and are deferred until reviewed. Code-only fixes can go ahead.
+
 ## 1. Bugs
 
 Fix these first. Items 1.1–1.3 affect the text of generated contracts.
 
-- [ ] **1.1 Wrong sentence in the English fixed-price contract.**
+- [ ] **1.1 Wrong sentence in the English fixed-price contract.** ⚖ legal review
   [pdfgeneration.js:206](../pdfgeneration.js#L206): the English billing paragraph for `urakkalaskutus` contains "Should the Supplier not meet the allocation due to reasons attributable to the Supplier, the Supplier is entitled to invoice only the actual hours." That sentence was copy-pasted from the allocation contract and makes no sense in a fixed-price one. The Finnish version says something else: if the Client does not give billing details, the Supplier may send the invoice in any reasonable way. Replace the English sentence with a translation of the Finnish one. Every English fixed-price contract generated so far contains this error.
 
 - [ ] **1.2 Changing language after picking a court produces a mixed-language contract.**
   The court list comes from `getCourts()`, which depends on the current language, but `karajaoikeusRaaka`/`karajaoikeusValmis` and the travel area derived from it (`matkustusalue*`) keep the value from the language that was active when they were picked. Example: pick "Helsingin käräjäoikeus", switch to EN, generate → an English contract that says "shall be resolved in Helsingin käräjäoikeudessa". Fix: in `changeLanguage`, clear these fields or map them to the other language (the keys of `locations.fi` and `locations.en` are in matching order).
 
-- [ ] **1.3 Finnish travel area means "to", not "within", for the capital region.**
+- [ ] **1.3 Finnish travel area means "to", not "within", for the capital region.** ⚖ legal review
   [translations.js](../translations.js), `locations.fi`: the three Uusimaa courts map to `"pääkaupunkiseudulle"` ("to the capital region"). In the contract this reads "Pääkaupunkiseudulle tapahtuvasta matkustamisesta ei veloiteta…" (no charge for travel *to* the capital region). That is grammatical, but every other region uses the "in" ending (`Etelä-Karjalassa`, `Pirkanmaalla`…), and the English contract says "within Helsinki metropolitan area". Change it to `"pääkaupunkiseudulla"`. The UI sentence "poislukien matkustaminen …" reads correctly with either form.
 
 - [ ] **1.4 Dates can show the previous day.**
@@ -31,9 +33,9 @@ Fix these first. Items 1.1–1.3 affect the text of generated contracts.
   - [globalstate.js:564](../globalstate.js#L564): `!this.radioSijainti === ''` is always `false`, so the line never runs. Remove it, or fix the condition if it is needed.
   - [globalstate.js:129-131](../globalstate.js#L129-L131): `this.tuntihintaValmis && this.tuntihintaValmis` (and the same for `urakkahintaValmis`) repeats the same check.
 
-## 2. Text fixes in the English contract
+## 2. Text fixes in the English contract ⚖ legal review
 
-All in [pdfgeneration.js](../pdfgeneration.js):
+All in [pdfgeneration.js](../pdfgeneration.js). These look like typos and wording slips, but they are still clause text, so they follow the policy above.
 
 - [ ] "Cient’s" → "Client’s" (line 381)
 - [ ] "its’ Consultants" → "its Consultants" (lines 308, 313)
@@ -42,7 +44,7 @@ All in [pdfgeneration.js](../pdfgeneration.js):
 - [ ] "terminate the Agreement to end without a notice period" / "to end with N weeks' notice" (232, 241): reword, e.g. "terminate the Agreement without notice" / "with N weeks' notice"
 - [ ] "according to the then-current Tax Administration's current guidelines" (366): "current" appears twice
 - [ ] Mixed `'` and `’` apostrophes throughout: pick one
-- [ ] **Check:** [pdfgeneration.js:209](../pdfgeneration.js#L209) uses the **payment term** (`maksuaikaValmis`) as the deadline for accepting fixed-price deliverables. Confirm whether that is intentional or should be a separate field.
+- [ ] Payment term reused as the acceptance period in fixed-price contracts: see 6.1.
 
 ## 3. Performance and repo size
 
@@ -79,4 +81,37 @@ All in [pdfgeneration.js](../pdfgeneration.js):
 - [ ] **File map:** `index.html` (form UI), `globalstate.js` (Alpine state and validation), `pdfgeneration.js` (contract text and layout), `translations.js` (UI strings and court/region data).
 - [ ] **Updating the vendored libraries:** which versions of jsPDF, pdf.js, Alpine and Tailwind are bundled, where to get them, which pdf.js files can be left out, and how the jsPDF font files were generated (jsPDF font converter).
 - [ ] **Deployment:** how and where the site is published.
+- [ ] **Policy on clause text:** state in the README that clause text in `pdfgeneration.js` is changed only after legal review (see the policy at the top of this file).
 - [ ] **Checklist after editing contract text:** generate every combination (hourly with no fixed hours / hourly with allocation / fixed-price × remote / on-site × fi / en) and compare with `sample_output_*.pdf`. Regenerate the sample PDFs when the text changes.
+
+## 6. Deferred: contract-logic questions ⚖ legal review
+
+Open questions about what the contract says. Not to be changed until reviewed (see the policy at the top).
+
+### 6.1 Payment term is also the acceptance period in fixed-price contracts
+
+The form asks one number, the payment term in days (`maksuaika`, default 14, labelled only as payment days). For fixed-price contracts (`urakkalaskutus`), the same number is used twice in the contract:
+
+- **Payment term** ([pdfgeneration.js:296](../pdfgeneration.js#L296)): "Laskujen maksuaika on **N** päivää netto laskun päiväyksestä."
+- **Acceptance period** ([pdfgeneration.js:209](../pdfgeneration.js#L209)): "Urakka katsotaan toimitetuksi, jos Tilaaja ei esitä Toimittajalle perusteltua kirjallista huomautusta **N** päivän kuluessa urakan tulosten vastaanottamisesta."
+
+So a user who picks a 30-day payment term also gives the client 30 days to inspect and object, without the form telling them.
+
+How the deadlines stack:
+
+1. The supplier delivers.
+2. The client has N days to object; after that the delivery counts as accepted.
+3. The supplier invoices (unless agreed otherwise, the invoice is sent only after delivery).
+4. The client has N days to pay.
+
+With a 30-day term the supplier may wait up to about 60 days from delivery to payment.
+
+A related overlap: the warranty section (applies to all contract types) has its own acceptance rule. Work is accepted if the client hasn't objected in writing by the invoice due date. In a fixed-price contract this is a second acceptance step after step 2.
+
+Options:
+
+- **Keep as is**, and only explain in the UI that for fixed-price contracts the number is also the acceptance period. No change to the contract text.
+- **Fixed acceptance period** (e.g. always 14 days) in the clause.
+- **Separate "acceptance period" field**, shown only for fixed-price contracts.
+
+The first option needs no legal review. The other two change the clause.
