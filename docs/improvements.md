@@ -83,12 +83,12 @@ All in [pdfgeneration.js](../js/pdfgeneration.js). These look like typos and wor
 
 ## 5. Documentation (README)
 
-- [ ] **The Raaka/Valmis convention.** Explain the `*Raaka` (raw input) / `*Valmis` (value committed on blur by `kirjaaValmis*`) pattern, and why the `show*()` functions are computed instead of using flags (see the comment at [globalstate.js:503](../js/globalstate.js#L503)). This is the main thing a new contributor needs to know.
-- [ ] **File map:** `index.html` (form UI), `globalstate.js` (Alpine state and validation), `pdfgeneration.js` (contract text and layout), `translations.js` (UI strings and court/region data).
-- [ ] **Updating the vendored libraries:** which versions of jsPDF, pdf.js, Alpine and Tailwind are bundled, where to get them, which pdf.js files can be left out, and how the jsPDF font files were generated (jsPDF font converter).
-- [ ] **Deployment:** how and where the site is published.
-- [ ] **Policy on clause text:** state in the README that clause text in `pdfgeneration.js` is changed only after legal review (see the policy at the top of this file).
-- [ ] **Checklist after editing contract text:** generate every combination (hourly with no fixed hours / hourly with allocation / fixed-price × remote / on-site × fi / en) and compare with `sample_output_*.pdf`. Regenerate the sample PDFs when the text changes.
+- [x] **The Raaka/Valmis convention.** Explain the `*Raaka` (raw input) / `*Valmis` (value committed on blur by `kirjaaValmis*`) pattern, and why the `show*()` functions are computed instead of using flags (see the comment at [globalstate.js:503](../js/globalstate.js#L503)). This is the main thing a new contributor needs to know.
+- [x] **File map:** `index.html` (form UI), `globalstate.js` (Alpine state and validation), `pdfgeneration.js` (contract text and layout), `translations.js` (UI strings and court/region data).
+- [x] **Updating the vendored libraries:** which versions of jsPDF, pdf.js, Alpine and Tailwind are bundled, where to get them, which pdf.js files can be left out, and how the jsPDF font files were generated (jsPDF font converter).
+- [x] **Deployment:** how and where the site is published.
+- [x] **Policy on clause text:** state in the README that clause text in `pdfgeneration.js` is changed only after legal review (see the policy at the top of this file).
+- [x] **Checklist after editing contract text:** generate every combination (hourly with no fixed hours / hourly with allocation / fixed-price × remote / on-site × fi / en) and compare with `sample_output_*.pdf`. Regenerate the sample PDFs when the text changes.
 
 ## 6. Deferred: contract-logic questions ⚖ legal review
 

@@ -49,6 +49,10 @@ npm run build:css          # regenerates vendor/tailwind.min.css
 
 **Keep these URLs stable:** `assets/og-image.png` (absolute URL in the Open Graph/Twitter meta tags; link previews are cached by URL) and the two sample PDFs at the root (public links).
 
+## Deployment
+
+Netlify publishes the repo root as committed (settings live in the Netlify UI; there is no `netlify.toml`). Every PR gets a deploy preview at `https://deploy-preview-<PR number>--sopimusgeneraattori.netlify.app`, which is the quickest way to check a change on a real deployment. How to update the vendored libraries and fonts is in the README.
+
 ## Contract text: do not change without legal review
 
 Clause text in `js/pdfgeneration.js` must not be changed, even for typos or "obvious" fixes, without explicit approval: wording changes can change the legal meaning. This includes the Finnish and English strings passed to `addSectionTitle` / `addParagraph`. Code changes that leave the generated text identical are fine; verify that they do (see Verifying changes).
