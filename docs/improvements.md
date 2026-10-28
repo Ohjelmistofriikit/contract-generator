@@ -11,7 +11,7 @@ Fix these first. Items 1.1–1.3 affect the text of generated contracts.
 - [ ] **1.1 Wrong sentence in the English fixed-price contract.** ⚖ legal review
   [pdfgeneration.js:206](../pdfgeneration.js#L206): the English billing paragraph for `urakkalaskutus` contains "Should the Supplier not meet the allocation due to reasons attributable to the Supplier, the Supplier is entitled to invoice only the actual hours." That sentence was copy-pasted from the allocation contract and makes no sense in a fixed-price one. The Finnish version says something else: if the Client does not give billing details, the Supplier may send the invoice in any reasonable way. Replace the English sentence with a translation of the Finnish one. Every English fixed-price contract generated so far contains this error.
 
-- [ ] **1.2 Changing language after picking a court produces a mixed-language contract.**
+- [x] **1.2 Changing language after picking a court produces a mixed-language contract.**
   The court list comes from `getCourts()`, which depends on the current language, but `karajaoikeusRaaka`/`karajaoikeusValmis` and the travel area derived from it (`matkustusalue*`) keep the value from the language that was active when they were picked. Example: pick "Helsingin käräjäoikeus", switch to EN, generate → an English contract that says "shall be resolved in Helsingin käräjäoikeudessa". Fix: in `changeLanguage`, clear these fields or map them to the other language (the keys of `locations.fi` and `locations.en` are in matching order).
 
 - [ ] **1.3 Finnish travel area means "to", not "within", for the capital region.** ⚖ legal review

@@ -8,7 +8,30 @@ function getAlpineState() {
 
     changeLanguage(newLanguage) {
       localStorage.setItem('contractGenerator_language', newLanguage);
+
+      // Court names are language-specific, so map the selected court to the new language.
+      // locations.fi and locations.en list the same courts in the same order.
+      const oldCourts = Object.keys(locations[this.currentLanguage]);
+      const newCourts = Object.keys(locations[newLanguage]);
+      const translateCourt = (court) => newCourts[oldCourts.indexOf(court)] || court;
+      this.karajaoikeusRaaka = translateCourt(this.karajaoikeusRaaka);
+      this.karajaoikeusValmis = translateCourt(this.karajaoikeusValmis);
+      // Travel area defaults from the court; keep it if the user has edited it.
+      if (!this.matkustusaluettaMuokattuManuaalisesti && this.karajaoikeusValmis) {
+        this.matkustusalueRaaka = locations[newLanguage][this.karajaoikeusValmis] || '';
+        this.matkustusalueValmis = this.matkustusalueRaaka;
+      }
+
       this.currentLanguage = newLanguage;
+      // x-model sets the <select> value before the court options re-render in the new language,
+      // so the select would show the wrong court. Re-apply the value once the options exist.
+      setTimeout(() => {
+        const courtSelect = document.getElementById('karajaoikeus');
+        if (courtSelect) {
+          courtSelect.value = this.karajaoikeusRaaka;
+        }
+      });
+
       if (newLanguage === 'en') {
         // Add query param to URL
         const url = new URL(window.location);
