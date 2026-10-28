@@ -207,12 +207,13 @@ function getAlpineState() {
     // Tilaajan (client) and toimittajan (supplier) details. Both parties have the same fields, so
     // the commit/validation logic is shared: `osapuoli` is the field-name prefix, 'tilaajan' or
     // 'toimittajan', e.g. kirjaaValmisYtunnus('tilaajan') commits tilaajanYtunnusRaaka.
+    // *Error / *Warning hold translation keys, translated in the template so they follow language switches.
     kirjaaValmisYtunnus(osapuoli) {
       const ytunnus = this[`${osapuoli}YtunnusRaaka`].trim();
       if (!ytunnus) {
         // Y-tunnus is empty, don't allow user to proceed.
         this[`${osapuoli}YtunnusValmis`] = '';
-        this[`${osapuoli}YtunnusError`] = this.t('ytunnusRequired');
+        this[`${osapuoli}YtunnusError`] = 'ytunnusRequired';
         this[`${osapuoli}YtunnusWarning`] = '';
         return;
       }
@@ -221,19 +222,19 @@ function getAlpineState() {
       // intended to allow making contracts with foreign business entities.
       this[`${osapuoli}YtunnusValmis`] = ytunnus;
       this[`${osapuoli}YtunnusError`] = '';
-      this[`${osapuoli}YtunnusWarning`] = this.validateYtunnus(ytunnus) ? '' : this.t('ytunnusInvalid');
+      this[`${osapuoli}YtunnusWarning`] = this.validateYtunnus(ytunnus) ? '' : 'ytunnusInvalid';
     },
     kirjaaValmisEmail(osapuoli) {
       const email = this[`${osapuoli}EmailRaaka`].trim();
       const valid = this.validateEmail(email);
       this[`${osapuoli}EmailValmis`] = valid ? email : '';
-      this[`${osapuoli}EmailError`] = valid ? '' : this.t(email ? 'emailInvalid' : 'emailRequired');
+      this[`${osapuoli}EmailError`] = valid ? '' : email ? 'emailInvalid' : 'emailRequired';
     },
     kirjaaValmisPuhelin(osapuoli) {
       const phone = this[`${osapuoli}PuhelinRaaka`].trim();
       const valid = this.validatePhone(phone);
       this[`${osapuoli}PuhelinValmis`] = valid ? phone : '';
-      this[`${osapuoli}PuhelinError`] = valid ? '' : this.t(phone ? 'phoneInvalid' : 'phoneRequired');
+      this[`${osapuoli}PuhelinError`] = valid ? '' : phone ? 'phoneInvalid' : 'phoneRequired';
     },
     onkoValmisOsapuoli(osapuoli) {
       return ['Yritys', 'Ytunnus', 'Yhteyshenkilo', 'Email', 'Puhelin'].every((field) => this[`${osapuoli}${field}Valmis`]);

@@ -293,7 +293,7 @@ const translations = {
     selected: "Valittu",
     edit: "Muokkaa",
     complete: "Valmis",
-    numberExampleHourlyRate: "Numero, esimerkiksi 100 tai 100,00",
+    numberExamplePrice: "Numero, esimerkiksi 100 tai 100,00",
     numberExamplePaymentTerm: "Numero, esimerkiksi 14 tai 30",
     numberExampleNoticePeriod: "Numero, esimerkiksi 4",
     numberExampleTravelRate: "Numero, esimerkiksi 25",
@@ -302,7 +302,7 @@ const translations = {
     referenceRightsHelp: "Auttaa freelanceriä uusien asiakkaiden hankinnassa",
     fillOvertimeOrUncheck: "Täytä ylityökorvaus tai poista valinta",
     scrollToForm: "Siirry lomakkeeseen",
-    attachmentReminder: 'Olet valinnut urakkamuotoisen sopimuksen. Tällöin edellytetään urakan tarkempaa määrittelyä liitteessä, joka sinun tulee muodostaa tämän sopimusgeneraattorin ulkopuolella. Sopimuksessa viitataan liitteeseen, eikä sopimus ole pätevä ilman liitettä. Lisäksi voit halutessasi kirjata liitteeseen maksuaikataulun urakan edistymisen eri vaiheista, mutta se ei ole pakollista. Painamalla "yes" vahvistat että ymmärrät liitteen merkityksen.',
+    attachmentReminder: 'Olet valinnut urakkamuotoisen sopimuksen. Tällöin edellytetään urakan tarkempaa määrittelyä liitteessä, joka sinun tulee muodostaa tämän sopimusgeneraattorin ulkopuolella. Sopimuksessa viitataan liitteeseen, eikä sopimus ole pätevä ilman liitettä. Lisäksi voit halutessasi kirjata liitteeseen maksuaikataulun urakan edistymisen eri vaiheista, mutta se ei ole pakollista. Painamalla "OK" vahvistat että ymmärrät liitteen merkityksen.',
   },
   en: {
     choose: 'Choose',
@@ -552,7 +552,7 @@ const translations = {
     selected: "Selected",
     edit: "Edit",
     complete: "Complete",
-    numberExampleHourlyRate: "Number, e.g. 100 or 100.00",
+    numberExamplePrice: "Number, e.g. 100 or 100.00",
     numberExamplePaymentTerm: "Number, e.g. 14 or 30",
     numberExampleNoticePeriod: "Number, e.g. 4",
     numberExampleTravelRate: "Number, e.g. 25",
@@ -561,6 +561,6 @@ const translations = {
     referenceRightsHelp: "Helps the freelancer find new clients",
     fillOvertimeOrUncheck: "Fill in the overtime compensation or uncheck it",
     scrollToForm: "Scroll to form",
-    attachmentReminder: 'You have selected fixed-price contract. In this situation you need to specify the scope of the project in an attachment which you need to prepare outside this contract generator. The contract refers to the attachment, and the contract is not valid without an attachment. Additionally, you can specify a payment schedule based on the progress of the project in the attachment, though that part is not mandatory. Select "yes" to confirm that you understand the significance of the attachment.',
+    attachmentReminder: 'You have selected fixed-price contract. In this situation you need to specify the scope of the project in an attachment which you need to prepare outside this contract generator. The contract refers to the attachment, and the contract is not valid without an attachment. Additionally, you can specify a payment schedule based on the progress of the project in the attachment, though that part is not mandatory. Select "OK" to confirm that you understand the significance of the attachment.',
   }
 };

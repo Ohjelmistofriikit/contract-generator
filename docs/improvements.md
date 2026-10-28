@@ -37,7 +37,10 @@ Fix these first. Items 1.1–1.3 affect the text of generated contracts.
   Found while removing the dead line in 1.8, which apparently tried to handle this case. When the location section is shown but neither option is picked, the (disabled) button reads "Jatka referenssioikeuteen →" instead of a generic "Jatka". Cosmetic: the button is disabled, so the user can't skip ahead. Fix in `getContinueButtonText`: return `t('continue')` when `showSijainti() && !radioSijainti`.
 
 - [x] **1.10 Stale PDF after switching language.**
-  If the user generates a contract and then switches language, the preview and download keep the old-language PDF, while `downloadClicked` names the file from the new language (e.g. `ConsultingContract_….pdf` for a Finnish contract). Fix: in `changeLanguage`, hide the preview (`previewRendered = false`, clear `pdfDataUri`) or regenerate it.
+  If the user generates a contract and then switches language, the preview and download keep the old-language PDF, while `downloadClicked` names the file from the new language (e.g. `ConsultingContract_….pdf` for a Finnish contract). Fix: in `changeLanguage`, hide the preview (`previewRendered = false`, clear the PDF URL, now `setPdfUrl('')`) or regenerate it.
+
+- [ ] **1.11 Invalid email/phone fields never turn red.**
+  The email and phone inputs get `border-red-500` on error, but they have no border width, so only the message under the field shows the error. This was already the case with Tailwind 2. Fix: add a width too (e.g. `border-2 border-red-500`, like the amber warnings on the overtime and free-text fields), or use `ring-2 ring-red-500` so the layout doesn't shift. A design choice, so not done yet.
 
 ## 2. Text fixes in the English contract ⚖ legal review
 
@@ -68,10 +71,10 @@ All in [pdfgeneration.js](../js/pdfgeneration.js). These look like typos and wor
 
 ## 4. Simplification and code quality
 
-- [x] **Remove the client/supplier duplication** in [globalstate.js](../js/globalstate.js). The `kirjaaValmis*` handlers for company, Y-tunnus, contact person, email and phone are near-copies for `tilaajan*` and `toimittajan*`. Generic helpers (e.g. `commitYtunnus('tilaajan')`, `commitEmail(prefix)`, `commitPhone(prefix)`) would remove about 120 lines and fix 1.5 as a side effect.
-- [x] **Simplify PDF output.** Remove `dataURItoBlob` ([globalstate.js:758](../js/globalstate.js#L758)): get a blob directly with `doc.output('blob')` and use one blob URL for both the preview and the download. Revoke the previous URL with `URL.revokeObjectURL` when the user generates again; the current code leaks one per generation.
+- [x] **Remove the client/supplier duplication** in [globalstate.js](../js/globalstate.js). The `kirjaaValmis*` handlers for company, Y-tunnus, contact person, email and phone are near-copies for `tilaajan*` and `toimittajan*`. Generic helpers (e.g. `commitYtunnus('tilaajan')`, `commitEmail(prefix)`, `commitPhone(prefix)`) would remove about 120 lines and fix 1.5 as a side effect. Done for Y-tunnus, email, phone and the completeness check (shared helpers taking the `tilaajan`/`toimittajan` prefix); the one-line company and contact-person handlers stay per party.
+- [x] **Simplify PDF output.** Remove `dataURItoBlob` (done: `getPDF` returns a Blob, state is `pdfUrl` / `setPdfUrl`): get a blob directly with `doc.output('blob')` and use one blob URL for both the preview and the download. Revoke the previous URL with `URL.revokeObjectURL` when the user generates again; the current code leaks one per generation.
 - [x] **Move hard-coded texts to `translations.js`:**
-  - the fixed-price `confirm()` message in `continueClicked` ([globalstate.js:747](../js/globalstate.js#L747))
+  - the fixed-price `confirm()` message in `continueClicked` (now `attachmentReminder`)
   - the hard-coded Finnish `title` attributes in `index.html`: `"Valmis"`, `"Muokkaa"`, `"Numero, esimerkiksi 100 tai 100,00"`, `"Valitse päivämäärä jolloin työ alkaa"`, `"Useimmissa sopimuksissa nykypäivänä IPR menee tilaajalle"`
 - [x] **Bind `<html lang>` to the language.** It is fixed to `"en"`, but the default language is Finnish. Set it from `currentLanguage` (e.g. in `changeLanguage` and at init) for screen readers and hyphenation.
 - [x] **Fix the section-number comments** in [pdfgeneration.js](../js/pdfgeneration.js). The comments number sections 1–23, but optional sections shift the real numbering. Drop the numbers, or keep them as names only.

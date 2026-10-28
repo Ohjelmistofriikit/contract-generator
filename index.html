@@ -562,7 +562,7 @@
                   @blur="kirjaaValmisTuntihinta();"
                   type="text"
                   name="tuntihinta"
-                  :title="t('numberExampleHourlyRate')"
+                  :title="t('numberExamplePrice')"
                   autocomplete="off"
                   tabindex="0"
                   class="w-16 input-text text-center"
@@ -590,7 +590,7 @@
                   @blur="kirjaaValmisUrakkahinta();"
                   type="text"
                   name="urakkahinta"
-                  :title="t('numberExampleHourlyRate')"
+                  :title="t('numberExamplePrice')"
                   autocomplete="off"
                   tabindex="0"
                   class="w-28 input-text text-center"
@@ -923,8 +923,8 @@
                         tabindex="0"
                         class="input-text px-3 py-2 placeholder:text-gray-400"
                       />
-                      <div x-show="tilaajanYtunnusError" x-text="tilaajanYtunnusError" class="text-red-500 text-sm mt-1"></div>
-                      <div x-show="tilaajanYtunnusWarning" x-text="tilaajanYtunnusWarning" class="text-amber-500 text-sm mt-1"></div>
+                      <div x-show="tilaajanYtunnusError" x-text="t(tilaajanYtunnusError)" class="text-red-500 text-sm mt-1"></div>
+                      <div x-show="tilaajanYtunnusWarning" x-text="t(tilaajanYtunnusWarning)" class="text-amber-500 text-sm mt-1"></div>
                     </div>
                   </div>
  
@@ -962,7 +962,7 @@
                         class="input-text px-3 py-2 placeholder:text-gray-400"
                         :class="tilaajanEmailError ? 'border-red-500' : ''"
                       />
-                      <div x-show="tilaajanEmailError" x-text="tilaajanEmailError" class="text-red-500 text-sm mt-1"></div>
+                      <div x-show="tilaajanEmailError" x-text="t(tilaajanEmailError)" class="text-red-500 text-sm mt-1"></div>
                     </div>
                     <div class="flex flex-col">
                       <label for="tilaajanPuhelin" class="text-whiteish mb-2" x-text="t('clientPhone')"></label>
@@ -980,7 +980,7 @@
                         class="input-text px-3 py-2 placeholder:text-gray-400"
                         :class="tilaajanPuhelinError ? 'border-red-500' : ''"
                       />
-                      <div x-show="tilaajanPuhelinError" x-text="tilaajanPuhelinError" class="text-red-500 text-sm mt-1"></div>
+                      <div x-show="tilaajanPuhelinError" x-text="t(tilaajanPuhelinError)" class="text-red-500 text-sm mt-1"></div>
                     </div>
                   </div>
                 </div>
@@ -1080,8 +1080,8 @@
                         tabindex="0"
                         class="input-text px-3 py-2 placeholder:text-gray-400"
                       />
-                      <div x-show="toimittajanYtunnusError" x-text="toimittajanYtunnusError" class="text-red-500 text-sm mt-1"></div>
-                      <div x-show="toimittajanYtunnusWarning" x-text="toimittajanYtunnusWarning" class="text-amber-500 text-sm mt-1"></div>
+                      <div x-show="toimittajanYtunnusError" x-text="t(toimittajanYtunnusError)" class="text-red-500 text-sm mt-1"></div>
+                      <div x-show="toimittajanYtunnusWarning" x-text="t(toimittajanYtunnusWarning)" class="text-amber-500 text-sm mt-1"></div>
                     </div>
                   </div>
 
@@ -1120,7 +1120,7 @@
                         class="input-text px-3 py-2 placeholder:text-gray-400"
                         :class="toimittajanEmailError ? 'border-red-500' : ''"
                       />
-                      <div x-show="toimittajanEmailError" x-text="toimittajanEmailError" class="text-red-500 text-sm mt-1"></div>
+                      <div x-show="toimittajanEmailError" x-text="t(toimittajanEmailError)" class="text-red-500 text-sm mt-1"></div>
                     </div>
                     <div class="flex flex-col">
                       <label for="toimittajanPuhelin" class="text-whiteish mb-2" x-text="t('supplierPhone')"></label>
@@ -1138,7 +1138,7 @@
                         class="input-text px-3 py-2 placeholder:text-gray-400"
                         :class="toimittajanPuhelinError ? 'border-red-500' : ''"
                       />
-                      <div x-show="toimittajanPuhelinError" x-text="toimittajanPuhelinError" class="text-red-500 text-sm mt-1"></div>
+                      <div x-show="toimittajanPuhelinError" x-text="t(toimittajanPuhelinError)" class="text-red-500 text-sm mt-1"></div>
                     </div>
                   </div>
                 </div>
