@@ -776,7 +776,7 @@ function getAlpineState() {
 
       const blob = dataURItoBlob(this.pdfDataUri);
       const blobUrl = URL.createObjectURL(blob);
-      document.getElementById('pdf-viewer').src = `assets/pdfjs/web/viewer.html?file=${encodeURIComponent(blobUrl)}`;
+      document.getElementById('pdf-viewer').src = `vendor/pdfjs/web/viewer.html?file=${encodeURIComponent(blobUrl)}`;
       this.previewRendered = true;
       setTimeout(() => {
         window.scrollTo({

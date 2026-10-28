@@ -28,22 +28,22 @@
     <!-- Additional meta tags -->
     <meta name="description" content="Generate professional freelancer contracts in minutes. Fill out the form and get a customized PDF contract template for your freelance work." />
     <!-- These need to be loaded before HTML is parsed. -->
-    <script src="./translations.js"></script>
-    <script src="./globalstate.js"></script>
+    <script src="./js/translations.js"></script>
+    <script src="./js/globalstate.js"></script>
 
     <!-- AlpineJS dependency -->
-    <script defer src="./assets/alpinejs.min.js"></script>
+    <script defer src="./vendor/alpinejs.min.js"></script>
 
     <!-- PDF related stuff -->
-    <script src="./assets/jspdf.umd.min.js"></script>
-    <script src="./assets/pdfjs/fonts/PlusJakartaSans-bold.js"></script>
-    <script src="./assets/pdfjs/fonts/PlusJakartaSans-normal.js"></script>
-    <script src="./assets/pdfjs/fonts/PlusJakartaSans-italic.js"></script>
-    <script src="./pdfgeneration.js"></script>
+    <script src="./vendor/jspdf.umd.min.js"></script>
+    <script src="./assets/fonts/PlusJakartaSans-bold.js"></script>
+    <script src="./assets/fonts/PlusJakartaSans-normal.js"></script>
+    <script src="./assets/fonts/PlusJakartaSans-italic.js"></script>
+    <script src="./js/pdfgeneration.js"></script>
 
     <!-- Tailwind, old version 2.2.19 -->
     <link
-      href="./assets/tailwind.min.css" 
+      href="./vendor/tailwind.min.css" 
       rel="stylesheet"
     />
 
@@ -53,7 +53,7 @@
         font-style: normal;
         font-weight: 200 800;
         font-display: swap;
-        src: url('./assets/PlusJakartaSans-VariableFont_wght.ttf') format('woff2');
+        src: url('./assets/fonts/PlusJakartaSans-VariableFont_wght.ttf') format('woff2');
       }
 
       * {
