@@ -511,198 +511,66 @@ function getAlpineState() {
       return this.showKarajaoikeus() && this.onkoValmisFieldsetKarajaoikeus();
     },
 
+    // The form's steps in order. Drives the progress bar, the continue button's label and whether it's enabled.
+    // - shown: the step is visible (see show*() above; the shown steps are always a prefix of this list)
+    // - filled: its fields have values (raw values, so the button enables while typing)
+    // - done: the step is complete (committed values)
+    // - label: the continue-button text while this is the first step not shown yet
+    getSteps() {
+      const osapuoliFilled = (osapuoli) => ['Yritys', 'Ytunnus', 'Yhteyshenkilo', 'Email', 'Puhelin'].every((kentta) => this[`${osapuoli}${kentta}Raaka`]);
+      const steps = [
+        {
+          shown: true,
+          filled: this.radioLaskutusmuoto === 'tuntilaskutus' ? this.tuntihintaRaaka : this.radioLaskutusmuoto === 'urakkalaskutus' && this.urakkahintaRaaka,
+          done: this.onkoValmisFieldsetLaskutusperuste(),
+        },
+        this.radioLaskutusmuoto === 'tuntilaskutus' && {
+          label: 'continueToHours',
+          shown: this.showTuntimaara(),
+          filled: this.radioAllokaatio && this.radioVoimassaolo
+            && (this.radioVoimassaolo !== 'eraantyy' || this.loppupaivamaaraRaaka)
+            && (this.radioAllokaatio !== 'sovittu-allokaatio' || (this.tuntejaViikossaRaaka && this.alkupaivamaaraRaaka)),
+          done: this.onkoValmisFieldsetTuntimaara(),
+        },
+        { label: 'continueToClientInfo', shown: this.showTilaajanTiedot(), filled: osapuoliFilled('tilaajan'), done: this.onkoValmisFieldsetTilaajanTiedot() },
+        { label: 'continueToSupplierInfo', shown: this.showToimittajanTiedot(), filled: osapuoliFilled('toimittajan'), done: this.onkoValmisFieldsetToimittajanTiedot() },
+        {
+          label: 'continueToProject',
+          shown: this.showProjektinTiedot(),
+          filled: this.radioKonsultinRooli && this.projektinNimiRaaka && (this.radioKonsultinRooli !== 'radioConsultantRoleOther' || this.muuRooliRaaka),
+          done: this.onkoValmisFieldsetProjektinTiedot(),
+        },
+        { label: 'continueToIPR', shown: this.showIPR(), filled: this.radioIPR, done: this.onkoValmisFieldsetIPR() },
+        { label: 'continueToLocation', shown: this.showSijainti(), filled: this.radioSijainti, done: this.onkoValmisFieldsetSijainti() },
+        // Work hours (remote) or work equipment (on-site); which one isn't known until a location is picked.
+        {
+          label: { etana: 'continueToWorkHours', lasna: 'continueToWorkEquipment' }[this.radioSijainti] || 'continue',
+          shown: this.showTyoajat() || this.showTyovalineet(),
+          filled: this.radioSijainti === 'etana' ? this.radioTyoajat : this.radioTyovalineet,
+          done: this.onkoValmisFieldsetSijainti() && (this.radioSijainti === 'etana' ? this.onkoValmisFieldsetTyoajat() : this.onkoValmisFieldsetTyovalineet()),
+        },
+        { label: 'continueToReferenceRights', shown: this.showReferenceRights(), filled: this.radioReferenceRights, done: this.onkoValmisFieldsetReferenceRights() },
+        { label: 'continueToKarajaoikeus', shown: this.showKarajaoikeus(), filled: this.karajaoikeusRaaka, done: this.onkoValmisFieldsetKarajaoikeus() },
+        { label: 'continueToMuut', shown: this.showMuut(), filled: this.onkoMuutTaytetty(), done: this.onkoValmisFieldsetMuut() },
+      ];
+      return steps.filter(Boolean);
+    },
+
     getFormProgress() {
-      const totalSteps = this.radioLaskutusmuoto === 'tuntilaskutus' ? 11 : 10;
-
-      let completedSteps = this.onkoValmisFieldsetLaskutusperuste() ? 1 : 0;
-
-      // If laskutusmuoto is tuntilaskutus, we have 1 additional top level fieldset: tuntimaara
-      if (this.radioLaskutusmuoto === 'tuntilaskutus') {
-        if (this.onkoValmisFieldsetTuntimaara()) {
-          // Allocation fieldset is completed so +1
-          completedSteps++;
-        }
-      }
-
-      // Location remote/on-site affects which one of 2 top level fieldsets is shown after that one
-      // (the other one we don't need to show to the user, because we can already provide the correct answer for it based on location).
-      if (this.onkoValmisFieldsetSijainti()) {
-        completedSteps++;
-        if (this.radioSijainti === 'etana' && this.onkoValmisFieldsetTyoajat()) completedSteps++;
-        if (this.radioSijainti === 'lasna' && this.onkoValmisFieldsetTyovalineet()) completedSteps++;
-      }
-
-      // Other top-level fieldsets will be always required
-      if (this.onkoValmisFieldsetTilaajanTiedot()) completedSteps++;
-      if (this.onkoValmisFieldsetToimittajanTiedot()) completedSteps++;
-      if (this.onkoValmisFieldsetProjektinTiedot()) completedSteps++;
-      if (this.onkoValmisFieldsetIPR()) completedSteps++;
-      if (this.onkoValmisFieldsetReferenceRights()) completedSteps++;
-      if (this.onkoValmisFieldsetKarajaoikeus()) completedSteps++;
-      if (this.onkoValmisFieldsetMuut()) completedSteps++;
-
-      // Calculate current progress
-      return Math.round((completedSteps / totalSteps) * 100);
+      const steps = this.getSteps();
+      return Math.round((steps.filter((step) => step.done).length / steps.length) * 100);
     },
 
-    // Get the text for the continue button based on current state
     getContinueButtonText() {
-      if (!this.showTuntimaara() && this.radioLaskutusmuoto === 'tuntilaskutus') return this.t('continueToHours');
-      if (!this.showTilaajanTiedot()) return this.t('continueToClientInfo');
-      if (!this.showToimittajanTiedot()) return this.t('continueToSupplierInfo');
-      if (!this.showProjektinTiedot()) return this.t('continueToProject');
-      if (!this.showIPR()) return this.t('continueToIPR');
-      if (!this.showSijainti()) return this.t('continueToLocation');
-      if (!this.radioSijainti) return this.t('continue');
-      if (!this.showTyoajat() && this.radioSijainti === 'etana') return this.t('continueToWorkHours');
-      if (!this.showTyovalineet() && this.radioSijainti === 'lasna') return this.t('continueToWorkEquipment');
-      if (!this.showReferenceRights()) return this.t('continueToReferenceRights');
-      if (!this.showKarajaoikeus()) return this.t('continueToKarajaoikeus');
-      if (!this.showMuut()) return this.t('continueToMuut');
-      if (this.getFormProgress() < 100) return this.t('continue');
-      return this.t('continueToGenerate');
+      const nextStep = this.getSteps().find((step) => !step.shown);
+      if (nextStep) return this.t(nextStep.label);
+      return this.t(this.getFormProgress() < 100 ? 'continue' : 'continueToGenerate');
     },
 
-    // Check if the continue button should be disabled
+    // The continue button is enabled when every shown step is filled in. When all are, it is enabled
+    // (and yellow) both for "collapse the 'muut' section" and for "generate the contract".
     canContinue() {
-      // Disable if laskutusperuste has empty fields
-      if (!this.radioLaskutusmuoto) {
-        return false;
-      }
-      if (this.radioLaskutusmuoto === 'tuntilaskutus' && !this.tuntihintaRaaka) {
-        return false;
-      }
-      if (this.radioLaskutusmuoto === 'urakkalaskutus' && !this.urakkahintaRaaka) {
-        return false;
-      }
-
-      // Allow continuing to tuntimaara in some cases
-      if (!this.showTuntimaara() && this.radioLaskutusmuoto === 'tuntilaskutus') {
-        return true;
-      }
-
-      // Disable if tuntimaara is shown but has empty fields
-      if (this.showTuntimaara()) {
-        if (!this.radioAllokaatio || !this.radioVoimassaolo) {
-          return false;
-        }
-        if (this.radioVoimassaolo === 'eraantyy' && !this.loppupaivamaaraRaaka) {
-          return false;
-        }
-        if (this.radioAllokaatio === 'sovittu-allokaatio' && (!this.tuntejaViikossaRaaka || !this.alkupaivamaaraRaaka)) {
-          return false;
-        }
-      }
-
-      // Allow continuing to tilaajan tiedot always
-      if (!this.showTilaajanTiedot()) {
-        return true;
-      }
-
-      // Disable if tilaajan tiedot has empty fields
-      if (!this.tilaajanYritysRaaka || !this.tilaajanYtunnusRaaka || !this.tilaajanYhteyshenkiloRaaka || !this.tilaajanEmailRaaka || !this.tilaajanPuhelinRaaka) {
-        return false;
-      }
-
-      // Allow continuing to toimittajan tiedot always
-      if (!this.showToimittajanTiedot()) {
-        return true;
-      }
-
-      // Disable if toimittajan tiedot has empty fields
-      if (!this.toimittajanYritysRaaka || !this.toimittajanYtunnusRaaka || !this.toimittajanYhteyshenkiloRaaka || !this.toimittajanEmailRaaka || !this.toimittajanPuhelinRaaka) {
-        return false;
-      }
-
-      // Allow continuing to projektin tiedot always
-      if (!this.showProjektinTiedot()) {
-        return true;
-      }
-
-      // Disable if projektin tiedot has empty fields
-      if (!this.radioKonsultinRooli || !this.projektinNimiRaaka) {
-        return false;
-      }
-      if (this.radioKonsultinRooli === 'radioConsultantRoleOther' && !this.muuRooliRaaka) {
-        return false;
-      }
-
-      // Allow continuing to IPR always
-      if (!this.showIPR()) {
-        return true;
-      }
-
-      // Disable if IPR has empty fields
-      if (!this.radioIPR) {
-        return false;
-      }
-
-      // Allow continuing to sijainti always
-      if (!this.showSijainti()) {
-        return true;
-      }
-
-      // Disable if sijainti has empty fields
-      if (!this.radioSijainti) {
-        return false;
-      }
-
-      // Allow continuing to tyoajat in some cases
-      if (!this.showTyoajat() && this.radioSijainti === 'etana') {
-        return true;
-      }
-
-      // Disable if tyoajat is shown but has empty fields
-      if (this.showTyoajat()) {
-        if (!this.radioTyoajat) {
-          return false;
-        }
-      }
-
-      // Allow continuing to tyovalineet in some cases
-      if (!this.showTyovalineet() && this.radioSijainti === 'lasna') {
-        return true;
-      }
-
-      // Disable if tyovalineet is shown but has empty fields
-      if (this.showTyovalineet()) {
-        if (!this.radioTyovalineet) {
-          return false;
-        }
-      }
-
-      // Allow continuing to reference rights always
-      if (!this.showReferenceRights()) {
-        return true;
-      }
-
-      // Disable if reference rights has empty fields
-      if (!this.radioReferenceRights) {
-        return false;
-      }
-
-      // Allow continuing to karajaoikeus always
-      if (!this.showKarajaoikeus()) {
-        return true;
-      }
-      
-      // Disable if karajaoikeus has empty fields
-      if (!this.karajaoikeusRaaka) {
-        return false;
-      }
-
-      // Allow continuing to muut always
-      if (!this.showMuut()) {
-        return true;
-      }
-
-      // Disable if muut has empty fields
-      if (!this.onkoMuutTaytetty()) {
-        return false;
-      }
-
-      // Special thing here. This "true" makes the continue button yellow for both "Continue to collapse 'muut' section" and "Continue to generate contract".
-      return true;
+      return this.getSteps().every((step) => !step.shown || step.filled);
     },
 
     // blob: URL of the generated PDF, shared by the preview and the download. The preview is shown while it's set.

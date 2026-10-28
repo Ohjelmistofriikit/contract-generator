@@ -67,7 +67,7 @@ Identifiers are mostly Finnish; follow the existing names.
 - `fooRaaka` is the raw value bound with `x-model`. `fooValmis` is the committed value, copied (and validated) by `kirjaaValmisFoo()` on blur / Enter. The PDF and the collapsed summaries use `*Valmis`; `canContinue()` checks `*Raaka`.
 - `radioFoo` holds a radio choice; `fooValmis: false` booleans mark that the user has moved past a radio-only step.
 - `onkoValmisFieldsetFoo()` says whether a step is complete. `showFoo()` says whether a step is visible. These are **computed on purpose**, not flags (see the comment above `showTuntimaara`): users can go back and change earlier answers, and the form must advance with a single click.
-- Some steps are conditional: `tuntimaara` only for hourly billing, `tyoajat` (remote) vs. `tyovalineet` (on-site) depending on `radioSijainti`. Keep `getFormProgress()`, `getContinueButtonText()` and `canContinue()` consistent when adding or changing steps.
+- Some steps are conditional: `tuntimaara` only for hourly billing, `tyoajat` (remote) vs. `tyovalineet` (on-site) depending on `radioSijainti`. When adding or changing a step, add its `show*()` (chained to the previous step) and a row in `getSteps()`, which drives the progress bar, the continue-button label and `canContinue()`.
 - `locations.fi` and `locations.en` list the same courts **in the same order**; `changeLanguage` maps the selected court between languages by position. Add or reorder courts in both lists together.
 - Supported languages are the keys of `translations`; anything else in `?lang=` or localStorage falls back to `fi`.
 
