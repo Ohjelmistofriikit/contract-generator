@@ -263,6 +263,7 @@ function getAlpineState() {
         this.toimittajanYtunnusWarning = '';
       } else if (!trimmedYtunnus) {
         // Y-tunnus is empty, don't allow user to proceed.
+        this.toimittajanYtunnusValmis = '';
         this.toimittajanYtunnusError = this.t('ytunnusRequired');
         this.toimittajanYtunnusWarning = '';
       } else {

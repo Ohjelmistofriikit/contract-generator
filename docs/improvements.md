@@ -20,7 +20,7 @@ Fix these first. Items 1.1–1.3 affect the text of generated contracts.
 - [x] **1.4 Dates can show the previous day.**
   [globalstate.js:150](../globalstate.js#L150) and [globalstate.js:164](../globalstate.js#L164): `new Date('YYYY-MM-DD')` reads the string as UTC midnight, and `getDate()` returns local time, so users in time zones west of UTC see the day before. Fix: split the `YYYY-MM-DD` string directly. The same formatting code appears twice (and a third time in `downloadClicked`), so turn it into one helper.
 
-- [ ] **1.5 Supplier Y-tunnus check differs from the client one.**
+- [x] **1.5 Supplier Y-tunnus check differs from the client one.**
   [globalstate.js:266](../globalstate.js#L266): in `kirjaaValmisToimittajanYtunnus`, the empty-field branch does not clear `toimittajanYtunnusValmis`, unlike the client version. If a valid Y-tunnus is entered and then deleted, the old value stays and is still shown in the collapsed summary. Low impact: the continue button is disabled while the field is empty (`canContinue` checks the raw value), so the user can't generate with the stale value without noticing.
 
 - [ ] **1.6 Missing `:` in a binding.**
