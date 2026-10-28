@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -257,7 +257,7 @@
       }
     </style>
   </head>
-  <body class="bg-blueish" x-data="getAlpineState()">
+  <body class="bg-blueish" x-data="getAlpineState()" x-effect="document.documentElement.lang = currentLanguage">
     <!-- Logo -->
     <div class="absolute top-4 left-4 z-50 flex items-center p-2">
       <img src="./assets/logo.svg" alt="Ohjelmistofriikit logo" class="h-8 md:h-10 w-auto">

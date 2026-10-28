@@ -73,7 +73,7 @@ All in [pdfgeneration.js](../js/pdfgeneration.js). These look like typos and wor
 - [x] **Move hard-coded texts to `translations.js`:**
   - the fixed-price `confirm()` message in `continueClicked` ([globalstate.js:747](../js/globalstate.js#L747))
   - the hard-coded Finnish `title` attributes in `index.html`: `"Valmis"`, `"Muokkaa"`, `"Numero, esimerkiksi 100 tai 100,00"`, `"Valitse päivämäärä jolloin työ alkaa"`, `"Useimmissa sopimuksissa nykypäivänä IPR menee tilaajalle"`
-- [ ] **Bind `<html lang>` to the language.** It is fixed to `"en"`, but the default language is Finnish. Set it from `currentLanguage` (e.g. in `changeLanguage` and at init) for screen readers and hyphenation.
+- [x] **Bind `<html lang>` to the language.** It is fixed to `"en"`, but the default language is Finnish. Set it from `currentLanguage` (e.g. in `changeLanguage` and at init) for screen readers and hyphenation.
 - [ ] **Fix the section-number comments** in [pdfgeneration.js](../js/pdfgeneration.js). The comments number sections 1–23, but optional sections shift the real numbering. Drop the numbers, or keep them as names only.
 - [ ] **Remove the 12 copies of the edit-icon SVG** in `index.html`. Use a CSS class with a background image, or one `<symbol>` referenced with `<use href>`.
 - [ ] **Small cleanups:**
