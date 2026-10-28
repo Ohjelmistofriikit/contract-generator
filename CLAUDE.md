@@ -14,7 +14,7 @@ Pass no path argument: `live-server index.html` serves `index.html` in place of 
 
 ## Build step (CSS only)
 
-`vendor/tailwind.min.css` is **generated and committed**. It contains only the Tailwind 2.2.19 classes found in `index.html` and `js/**/*.js`.
+`vendor/tailwind.min.css` is **generated and committed**. It contains only the Tailwind 4 classes found in `index.html` and `js/`. The input file is `tailwind.css`; there is no `tailwind.config.js` (Tailwind 4 is configured in CSS).
 
 ```sh
 npm install                # once; dev tooling only
@@ -22,9 +22,13 @@ npm run build:css          # regenerates vendor/tailwind.min.css
 ```
 
 - **Re-run `npm run build:css` and commit the output whenever you add a Tailwind class** that isn't used anywhere yet. Otherwise the class silently has no styling. Not needed for changes that only reuse existing classes or touch JS logic.
-- Write class names out in full (in `class` or as string literals in `:class`). The purge scans the source text, so a class assembled at runtime (e.g. `'px-' + n`) is removed.
-- `tailwind.config.js` uses classic purge, **not JIT**, on purpose. JIT changes the CSS rule order, which changes the result for elements with conflicting classes (e.g. the download button has both `px-4` and `px-6`).
-- Custom colours (`bg-blueish`, `text-yellowish`, …) are plain CSS in the `<style>` block in `index.html`, not Tailwind config.
+- Write class names out in full (in `class` or as string literals in `:class`). Tailwind scans the source text, so a class assembled at runtime (e.g. `'px-' + n`) is not generated.
+- `tailwind.css` scans only `index.html` and `js/` (`source(none)` + `@source`). Without that, Tailwind would scan `vendor/` and add thousands of unused classes.
+- Don't put two utilities for the same property on one element (e.g. `px-4 px-6`). Tailwind 4 decides which one wins by its own sort order, not by class order.
+- Use Tailwind 4 names: `shrink-0` (not `flex-shrink-0`), `bg-gray-800/90` (not `bg-opacity-*`), `rounded-sm` for the old bare `rounded`. The page was built with Tailwind 2, whose `yellow`/`green` are `amber`/`emerald` today.
+- `tailwind.css` restores three Tailwind 2 defaults the design relies on: gray-200 border colour, pointer cursor on buttons, gray-400 placeholders.
+- The `<style>` block in `index.html` (custom colours like `bg-blueish`, `.input-text`, `.w-fit`, …) is wrapped in `@layer utilities` on purpose. Tailwind 4 puts its utilities in cascade layers, and unlayered CSS would always override them; in the same layer, the inline rules win by specificity and order as they did before. Put new custom CSS inside that layer; keep `@font-face` outside it.
+- Tailwind 4 needs a modern browser (Safari 16.4+, Chrome 111+, Firefox 128+). Older browsers get a mostly unstyled page.
 
 ## Files
 

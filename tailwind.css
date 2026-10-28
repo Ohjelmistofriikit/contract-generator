@@ -1,0 +1,18 @@
+/* Tailwind 4 input. `npm run build:css` generates vendor/tailwind.min.css from this file. */
+/* Only scan our own files; vendor/ (pdf.js, jsPDF) would add thousands of unused classes. */
+@import "tailwindcss" source(none);
+@source "./index.html";
+@source "./js";
+
+/* Keep Tailwind 2 defaults that the page was designed with. */
+@layer base {
+  *, ::after, ::before, ::backdrop, ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+  button:not(:disabled), [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  input::placeholder, textarea::placeholder {
+    color: var(--color-gray-400);
+  }
+}

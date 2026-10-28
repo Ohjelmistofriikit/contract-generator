@@ -3,11 +3,10 @@
   "private": true,
   "description": "Dev tooling only. The site itself has no build step and runs from the committed files.",
   "scripts": {
-    "build:css": "tailwindcss --config tailwind.config.js --output vendor/tailwind.min.css --minify"
+    "build:css": "tailwindcss --input tailwind.css --output vendor/tailwind.min.css --minify"
   },
   "devDependencies": {
-    "autoprefixer": "10.4.21",
-    "postcss": "8.5.6",
-    "tailwindcss": "2.2.19"
+    "@tailwindcss/cli": "4.3.3",
+    "tailwindcss": "4.3.3"
   }
 }

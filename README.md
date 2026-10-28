@@ -6,7 +6,7 @@ https://sopimusgeneraattori.ohjelmistofriikit.fi/
 
 The contract generator is static HTML, JS and CSS that runs straight from the committed files. Serve the repo root locally with e.g. `npx live-server` (without a path argument). The main dependencies are AlpineJS, PDFjs and jsPDF; they are pre-built and bundled into `vendor/`.
 
-The only generated file is `vendor/tailwind.min.css`, which contains just the Tailwind classes the page uses. After adding a new Tailwind class, regenerate and commit it:
+The only generated file is `vendor/tailwind.min.css` (Tailwind 4, built from `tailwind.css`), which contains just the Tailwind classes the page uses. After adding a new Tailwind class, regenerate and commit it:
 
 ```sh
 npm install
