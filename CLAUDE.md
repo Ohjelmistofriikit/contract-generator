@@ -74,7 +74,7 @@ Identifiers are mostly Finnish; follow the existing names.
 
 ## Alpine gotchas
 
-- Timing hacks are deliberate: `setTimeout` waits for Alpine to update the DOM (`tarvittaessaScrollaaAlas`, the `piilotaFormi` initial-load guard, re-syncing the court `<select>` after a language switch). `$nextTick`, `:selected` and `:key` were tried for the select and did not work.
+- Timing hacks are deliberate: `setTimeout` waits for Alpine to update the DOM (`tarvittaessaScrollaaAlas`, the `piilotaFormi` initial-load guard, re-syncing the court `<select>` after a language switch). `$nextTick`, `:selected`, `:key` and reordering the assignments in `changeLanguage` were tried for the select and did not work.
 - Each fieldset has its own `x-data="{ onFocus: false }"` scope for expand/collapse, so an `x-ref` inside a fieldset belongs to that scope, not to the root state.
 - Script order in `<head>` matters: `js/translations.js` and `js/globalstate.js` load synchronously before Alpine (`defer`). The PDF scripts (jsPDF, the three font files, `js/pdfgeneration.js`) are `defer`red because they're only needed on generate; keep jsPDF before the font files.
 

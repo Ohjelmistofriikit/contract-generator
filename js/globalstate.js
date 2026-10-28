@@ -1,30 +1,40 @@
 function getAlpineState() {
+  // localStorage throws when storage is blocked (some privacy settings and embedded contexts);
+  // the remembered language is optional, so the page must still work without it.
+  let storedLanguage = null;
+  try {
+    storedLanguage = localStorage.getItem('contractGenerator_language');
+  } catch {}
+
   return {
     // Language preference:
     // - if a supported lang is in query param, use that;
     // - else if a supported lang is in localStorage, use that;
     // - else default to 'fi'
-    currentLanguage: [new URLSearchParams(window.location.search).get('lang'), localStorage.getItem('contractGenerator_language')]
+    currentLanguage: [new URLSearchParams(window.location.search).get('lang'), storedLanguage]
       .find((lang) => Object.keys(translations).includes(lang)) || 'fi',
 
     changeLanguage(newLanguage) {
-      localStorage.setItem('contractGenerator_language', newLanguage);
+      try {
+        localStorage.setItem('contractGenerator_language', newLanguage);
+      } catch {}
 
       // Court names are language-specific, so map the selected court to the new language.
       // locations.fi and locations.en list the same courts in the same order.
       const oldCourts = Object.keys(locations[this.currentLanguage]);
       const newCourts = Object.keys(locations[newLanguage]);
       const translateCourt = (court) => newCourts[oldCourts.indexOf(court)] || court;
-      this.karajaoikeusRaaka = translateCourt(this.karajaoikeusRaaka);
-      this.karajaoikeusValmis = translateCourt(this.karajaoikeusValmis);
-      this.asetaOletusMatkustusalue(newLanguage);
-
-      // A generated PDF is in the old language; drop it (hides the preview) so the user generates it again.
-      this.setPdfUrl('');
+      const karajaoikeusRaaka = translateCourt(this.karajaoikeusRaaka);
+      const karajaoikeusValmis = translateCourt(this.karajaoikeusValmis);
 
       this.currentLanguage = newLanguage;
-      // x-model sets the <select> value before the court options re-render in the new language,
-      // so the select would show the wrong court. Re-apply the value once the options exist.
+      this.karajaoikeusRaaka = karajaoikeusRaaka;
+      this.karajaoikeusValmis = karajaoikeusValmis;
+      this.asetaOletusMatkustusalue();
+
+      // x-model sets the court <select>'s value before its options re-render in the new language, so the
+      // select would show the wrong court. Re-apply the value once the options exist. ($nextTick, :selected,
+      // :key on the options and reordering these assignments were all tried and don't fix it.)
       setTimeout(() => {
         const courtSelect = document.getElementById('karajaoikeus');
         if (courtSelect) {
@@ -32,17 +42,17 @@ function getAlpineState() {
         }
       });
 
+      // A generated PDF is in the old language; drop it (hides the preview) so the user generates it again.
+      this.setPdfUrl('');
+
+      // Finnish is the default; only English is kept in the URL (for sharing).
+      const url = new URL(window.location);
       if (newLanguage === 'en') {
-        // Add query param to URL
-        const url = new URL(window.location);
         url.searchParams.set('lang', 'en');
-        window.history.replaceState({}, '', url);
       } else {
-        // Remove query param from URL (if it exists)
-        const url = new URL(window.location);
         url.searchParams.delete('lang');
-        window.history.replaceState({}, '', url);
       }
+      window.history.replaceState({}, '', url);
     },
 
     // Translation helper method with fallback to key
