@@ -269,14 +269,14 @@
         <button
           @click="changeLanguage('fi')"
           :class="currentLanguage === 'fi' ? 'text-yellowish bg-gray-700' : 'text-whiteish hover:text-yellowish hover:bg-gray-600'"
-          class="px-3 py-1 rounded-sm text-sm font-bold transition-colors"
+          class="px-3 py-1 rounded-sm text-sm font-bold transition-colors cursor-pointer"
         >
           FI
         </button>
         <button
           @click="changeLanguage('en')"
           :class="currentLanguage === 'en' ? 'text-yellowish bg-gray-700' : 'text-whiteish hover:text-yellowish hover:bg-gray-600'"
-          class="px-3 py-1 rounded-sm text-sm font-bold transition-colors"
+          class="px-3 py-1 rounded-sm text-sm font-bold transition-colors cursor-pointer"
         >
           EN
         </button>
@@ -296,7 +296,7 @@
         <div class="flex justify-center mb-6 md:mb-8">
           <button 
             onclick="document.querySelector('#form-section').scrollIntoView({ behavior: 'smooth' })"
-            class="px-6 py-3 bg-yellowish text-blueish font-bold rounded-lg text-base hover:opacity-90 transition-opacity w-full lg:w-auto max-w-sm"
+            class="px-6 py-3 bg-yellowish text-blueish font-bold rounded-lg text-base hover:opacity-90 transition-opacity w-full lg:w-auto max-w-sm cursor-pointer"
             x-text="t('startButton')"
           >
           </button>
@@ -724,7 +724,7 @@
                     :placeholder="t('placeholderInputWeeklyHours')"
                     autocomplete="off"
                     tabindex="0"
-                    class="w-40 input-text text-center"
+                    class="w-40 input-text text-center placeholder:text-gray-400"
                   />
                   <label for="tuntejaViikossa" class="ml-1" x-text="t('hoursPerWeek')"></label>
                 </div>
@@ -904,7 +904,7 @@
                         :placeholder="t('placeholderInputClientCompany')"
                         autocomplete="off"
                         tabindex="0"
-                        class="input-text px-3 py-2"
+                        class="input-text px-3 py-2 placeholder:text-gray-400"
                       />
                     </div>
                     <div class="flex flex-col">
@@ -920,7 +920,7 @@
                         placeholder="1234567-1"
                         autocomplete="off"
                         tabindex="0"
-                        class="input-text px-3 py-2"
+                        class="input-text px-3 py-2 placeholder:text-gray-400"
                       />
                       <div x-show="tilaajanYtunnusError" x-text="tilaajanYtunnusError" class="text-red-500 text-sm mt-1"></div>
                       <div x-show="tilaajanYtunnusWarning" x-text="tilaajanYtunnusWarning" class="text-amber-500 text-sm mt-1"></div>
@@ -941,7 +941,7 @@
                       :placeholder="t('placeholderInputClientContactPerson')"
                       autocomplete="off"
                       tabindex="0"
-                      class="input-text px-3 py-2"
+                      class="input-text px-3 py-2 placeholder:text-gray-400"
                     />
                   </div>
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
@@ -958,7 +958,7 @@
                         :placeholder="t('placeholderInputClientEmail')"
                         autocomplete="off"
                         tabindex="0"
-                        class="input-text px-3 py-2"
+                        class="input-text px-3 py-2 placeholder:text-gray-400"
                         :class="tilaajanEmailError ? 'border-red-500' : ''"
                       />
                       <div x-show="tilaajanEmailError" x-text="tilaajanEmailError" class="text-red-500 text-sm mt-1"></div>
@@ -976,7 +976,7 @@
                         placeholder="040 123 4567"
                         autocomplete="off"
                         tabindex="0"
-                        class="input-text px-3 py-2"
+                        class="input-text px-3 py-2 placeholder:text-gray-400"
                         :class="tilaajanPuhelinError ? 'border-red-500' : ''"
                       />
                       <div x-show="tilaajanPuhelinError" x-text="tilaajanPuhelinError" class="text-red-500 text-sm mt-1"></div>
@@ -1063,7 +1063,7 @@
                         :placeholder="t('placeholderInputFreelancerCompany')"
                         autocomplete="off"
                         tabindex="0"
-                        class="input-text px-3 py-2"
+                        class="input-text px-3 py-2 placeholder:text-gray-400"
                       />
                     </div>
                     <div class="flex flex-col">
@@ -1079,7 +1079,7 @@
                         placeholder="1234567-1"
                         autocomplete="off"
                         tabindex="0"
-                        class="input-text px-3 py-2"
+                        class="input-text px-3 py-2 placeholder:text-gray-400"
                       />
                       <div x-show="toimittajanYtunnusError" x-text="toimittajanYtunnusError" class="text-red-500 text-sm mt-1"></div>
                       <div x-show="toimittajanYtunnusWarning" x-text="toimittajanYtunnusWarning" class="text-amber-500 text-sm mt-1"></div>
@@ -1100,7 +1100,7 @@
                       :placeholder="t('placeholderInputFreelancerContactPerson')"
                       autocomplete="off"
                       tabindex="0"
-                      class="input-text px-3 py-2"
+                      class="input-text px-3 py-2 placeholder:text-gray-400"
                     />
                   </div>
 
@@ -1118,7 +1118,7 @@
                         :placeholder="t('placeholderInputFreelancerEmail')"
                         autocomplete="off"
                         tabindex="0"
-                        class="input-text px-3 py-2"
+                        class="input-text px-3 py-2 placeholder:text-gray-400"
                         :class="toimittajanEmailError ? 'border-red-500' : ''"
                       />
                       <div x-show="toimittajanEmailError" x-text="toimittajanEmailError" class="text-red-500 text-sm mt-1"></div>
@@ -1136,7 +1136,7 @@
                         placeholder="050 987 6543"
                         autocomplete="off"
                         tabindex="0"
-                        class="input-text px-3 py-2"
+                        class="input-text px-3 py-2 placeholder:text-gray-400"
                         :class="toimittajanPuhelinError ? 'border-red-500' : ''"
                       />
                       <div x-show="toimittajanPuhelinError" x-text="toimittajanPuhelinError" class="text-red-500 text-sm mt-1"></div>
@@ -1216,7 +1216,7 @@
                         :placeholder="t('placeholderProjectName')"
                         autocomplete="off"
                         tabindex="0"
-                        class="input-text px-3 py-2"
+                        class="input-text px-3 py-2 placeholder:text-gray-400"
                       />
                   </div>
 
@@ -2074,7 +2074,7 @@
                   placeholder="14"
                   autocomplete="off"
                   tabindex="0"
-                  class="w-16 input-text text-center"
+                  class="w-16 input-text text-center placeholder:text-gray-400"
                 />
                 <label for="maksuaika" x-text="t('ofDaysToPay')" class="ml-2"></label>
               </div>
@@ -2114,7 +2114,7 @@
                     placeholder="25"
                     autocomplete="off"
                     tabindex="0"
-                    class="w-16 input-text text-center"
+                    class="w-16 input-text text-center placeholder:text-gray-400"
                   />
                   <label for="matkakorvaus" class="ml-2">€/h
                     <span x-text="t('travelHourCompensation')"></span>
@@ -2178,7 +2178,7 @@
                         placeholder="50"
                         autocomplete="off"
                         tabindex="0"
-                        class="w-24 sm:w-16 input-text text-center mb-1 sm:mb-0"
+                        class="w-24 sm:w-16 input-text text-center mb-1 sm:mb-0 placeholder:text-gray-400"
                         :class="!ylityokorvausValmis ? 'border-2 border-amber-400' : ''"
                       />
                       <label x-show="radioLaskutusmuoto === 'tuntilaskutus'" for="ylityokorvaus" x-text="t('inAdditionToHourlyRate')" class="ml-1"></label>
@@ -2259,7 +2259,7 @@
                     autocomplete="off"
                     tabindex="0"
                     rows="4"
-                    class="w-full input-text px-3 py-2"
+                    class="w-full input-text px-3 py-2 placeholder:text-gray-400"
                     :class="checkboxVapaateksti && !vapaatekstiValmis ? 'border-2 border-amber-400' : ''"
                   ></textarea>
                 </div>
@@ -2273,7 +2273,7 @@
               id="continueButton"
               x-ref="continueButton"
               :disabled="!canContinue()"
-              :class="canContinue() ? 'bg-yellowish text-blueish hover:opacity-90' : 'bg-gray-600 text-gray-400 cursor-not-allowed opacity-50'"
+              :class="canContinue() ? 'bg-yellowish text-blueish hover:opacity-90 cursor-pointer' : 'bg-gray-600 text-gray-400 cursor-not-allowed opacity-50'"
               class="px-6 py-3 font-bold rounded-lg w-full transition-opacity"
               x-text="getContinueButtonText()"
               tabindex="0"
@@ -2307,7 +2307,7 @@
       <button 
         id="save-pdf-button"
         @click="downloadClicked()"
-        class="absolute bottom-4 right-4 bg-yellowish text-blueish px-6 py-3 font-bold rounded-lg"
+        class="absolute bottom-4 right-4 bg-yellowish text-blueish px-6 py-3 font-bold rounded-lg cursor-pointer"
         x-text="t('buttonTextDownloadPDF')"
         style="border: 3px solid var(--blueish);"
       ></button>
