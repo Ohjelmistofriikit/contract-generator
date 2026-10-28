@@ -55,7 +55,7 @@ All in [pdfgeneration.js](../js/pdfgeneration.js). These look like typos and wor
 ## 3. Performance and repo size
 
 - [ ] **Purge Tailwind.** `assets/tailwind.min.css` is the full Tailwind 2.2.19 build (2.9 MB), sent to every visitor. A one-time run of the Tailwind CLI against `index.html` would cut it to about 20 KB. Commit the output so there is still no build step at runtime, and add the regeneration command to the README, because new classes need a re-run.
-- [ ] **Defer the PDF scripts.** `jspdf.umd.min.js` and the three `PlusJakartaSans-*.js` font files (~740 KB together) block page rendering in `<head>`. They are only needed when the user clicks generate, so add `defer`. `translations.js` and `globalstate.js` must still load before Alpine (Alpine already uses `defer`).
+- [x] **Defer the PDF scripts.** `jspdf.umd.min.js` and the three `PlusJakartaSans-*.js` font files (~740 KB together) block page rendering in `<head>`. They are only needed when the user clicks generate, so add `defer`. `translations.js` and `globalstate.js` must still load before Alpine (Alpine already uses `defer`).
 - [x] **Delete the unused pdf.js files (~12 MB):**
   - `assets/pdfjs/build/*.map`, `assets/pdfjs/web/viewer.mjs.map`
   - `assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf` (the pdf.js demo document)

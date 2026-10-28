@@ -34,12 +34,12 @@
     <!-- AlpineJS dependency -->
     <script defer src="./vendor/alpinejs.min.js"></script>
 
-    <!-- PDF related stuff -->
-    <script src="./vendor/jspdf.umd.min.js"></script>
-    <script src="./assets/fonts/PlusJakartaSans-bold.js"></script>
-    <script src="./assets/fonts/PlusJakartaSans-normal.js"></script>
-    <script src="./assets/fonts/PlusJakartaSans-italic.js"></script>
-    <script src="./js/pdfgeneration.js"></script>
+    <!-- PDF related stuff. Only used when the user generates a PDF, so deferred to not block rendering. -->
+    <script defer src="./vendor/jspdf.umd.min.js"></script>
+    <script defer src="./assets/fonts/PlusJakartaSans-bold.js"></script>
+    <script defer src="./assets/fonts/PlusJakartaSans-normal.js"></script>
+    <script defer src="./assets/fonts/PlusJakartaSans-italic.js"></script>
+    <script defer src="./js/pdfgeneration.js"></script>
 
     <!-- Tailwind, old version 2.2.19 -->
     <link
