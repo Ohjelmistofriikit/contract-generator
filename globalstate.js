@@ -586,6 +586,7 @@ function getAlpineState() {
       if (!this.showProjektinTiedot()) return this.t('continueToProject');
       if (!this.showIPR()) return this.t('continueToIPR');
       if (!this.showSijainti()) return this.t('continueToLocation');
+      if (!this.radioSijainti) return this.t('continue');
       if (!this.showTyoajat() && this.radioSijainti === 'etana') return this.t('continueToWorkHours');
       if (!this.showTyovalineet() && this.radioSijainti === 'lasna') return this.t('continueToWorkEquipment');
       if (!this.showReferenceRights()) return this.t('continueToReferenceRights');

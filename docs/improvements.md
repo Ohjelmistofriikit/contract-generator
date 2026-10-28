@@ -33,7 +33,7 @@ Fix these first. Items 1.1–1.3 affect the text of generated contracts.
   - `getContinueButtonText`: `!this.radioSijainti === ''` is always `false`, so the line never runs. Remove it, or fix the condition if it is needed.
   - `onkoValmisFieldsetLaskutusperuste`: `this.tuntihintaValmis && this.tuntihintaValmis` (and the same for `urakkahintaValmis`) repeats the same check.
 
-- [ ] **1.9 Wrong continue-button label while the location is unanswered.**
+- [x] **1.9 Wrong continue-button label while the location is unanswered.**
   Found while removing the dead line in 1.8, which apparently tried to handle this case. When the location section is shown but neither option is picked, the (disabled) button reads "Jatka referenssioikeuteen →" instead of a generic "Jatka". Cosmetic: the button is disabled, so the user can't skip ahead. Fix in `getContinueButtonText`: return `t('continue')` when `showSijainti() && !radioSijainti`.
 
 - [ ] **1.10 Stale PDF after switching language.**
