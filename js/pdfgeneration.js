@@ -8,6 +8,10 @@ const FONT_STYLE_PARAGRAPH = 'normal';
 
 const MARGIN_TOP = 20;
 const MARGIN_X = 20;
+// Start a new page once the cursor passes this y position (mm, A4 is 297 mm high).
+const PAGE_BREAK_Y = 270;
+// Start the signature section on a new page if the cursor is below this, so it isn't split.
+const SIGNATURES_MAX_START_Y = 200;
 
 function getPDF(state) {
   const { jsPDF } = window.jspdf;
@@ -23,7 +27,7 @@ function getPDF(state) {
 
   // Helper that adds new page when we are close to the bottom of the page
   const addNewPageIfNeeded = () => {
-    if (yPos > 270) {
+    if (yPos > PAGE_BREAK_Y) {
       doc.addPage();
       yPos = MARGIN_TOP;
     }
@@ -78,7 +82,7 @@ function getPDF(state) {
   doc.text(documentTitleText, PAGE_WIDTH / 2, yPos, { align: 'center' });
   yPos += 24;
 
-  // 1. Sopimuksen osapuolet
+  // Sopimuksen osapuolet
   addSectionTitle(
     "Sopimuksen osapuolet",
     "Parties to the Agreement"
@@ -92,7 +96,7 @@ function getPDF(state) {
     `${state.toimittajanYritysValmis} (${state.toimittajanYtunnusValmis}) (hereinafter "the Supplier")`
   );
 
-  // 2. Yhteyshenkilöt
+  // Yhteyshenkilöt
   addSectionTitle(
     "Yhteyshenkilöt",
     "Contact Persons"
@@ -106,7 +110,7 @@ function getPDF(state) {
     `The Supplier's contact person: ${state.toimittajanYhteyshenkiloValmis} (${state.toimittajanPuhelinValmis}, ${state.toimittajanEmailValmis})`
   );
 
-  // 3. Sopimuksen kohde ja tarkoitus
+  // Sopimuksen kohde ja tarkoitus
   addSectionTitle(
     "Sopimuksen kohde ja tarkoitus",
     "Scope and Purpose of the Agreement"
@@ -141,7 +145,7 @@ function getPDF(state) {
     unexpectedError();
   }
 
-  // 4. Laskutus
+  // Laskutus
   if (state.radioLaskutusmuoto === 'tuntilaskutus' && state.radioAllokaatio === 'nollatuntisopimus') {
     addSectionTitle(
       "Tuntiperusteinen laskutus",
@@ -217,7 +221,7 @@ function getPDF(state) {
     unexpectedError();
   }
 
-  // 5. Voimassaolo
+  // Voimassaolo
   addSectionTitle(
     "Voimassaolo",
     "Validity"
@@ -253,7 +257,7 @@ function getPDF(state) {
     unexpectedError();
   }
 
-  // 6. Konsultti
+  // Konsultti
   addSectionTitle(
     "Konsultti",
     "Consultant"
@@ -267,7 +271,7 @@ function getPDF(state) {
     "The Supplier may not change the Consultant to another person without the Client's written consent. If the Consultant is unavailable due to illness or other reasons independent of the Supplier, the Supplier will notify the Client without undue delay, and consulting is suspended for such time without consequences for either party, unless the parties agree on alternative arrangements."
   );
 
-  // 7. Alihankinta
+  // Alihankinta
   addSectionTitle(
     "Alihankinta",
     "Subcontracting"
@@ -277,7 +281,7 @@ function getPDF(state) {
     "The Supplier may not use subcontractors without the Client's written approval."
   );
 
-  // 8. Konsultointi ei muodosta työsuhdetta Tilaajaan
+  // Konsultointi ei muodosta työsuhdetta Tilaajaan
   addSectionTitle(
     "Konsultointi ei muodosta työsuhdetta Tilaajaan",
     "Independent Contractor"
@@ -287,7 +291,7 @@ function getPDF(state) {
     "The Client is not the Consultant's employer. The Consultant is not an employee of the Client. This Agreement or consulting services thereof will not create  employment relationship between the Client and the Consultant. This Agreement does not restrict the Supplier from making other agreements with other clients and companies."
   );
 
-  // 9. Maksuaika
+  // Maksuaika
   addSectionTitle(
     "Maksuaika",
     "Payment Terms"
@@ -297,7 +301,7 @@ function getPDF(state) {
     `Invoices must be paid within ${state.maksuaikaValmis} days net from the invoice date. Interest on delayed payments accrues in accordance with the Finnish Interest Act (korkolaki).`
   );
 
-  // 10. Konsultoinnin suorittaminen
+  // Konsultoinnin suorittaminen
   addSectionTitle(
     "Konsultoinnin suorittaminen",
     "Provision of Services"
@@ -326,7 +330,7 @@ function getPDF(state) {
     unexpectedError();
   }
 
-  // 11. Tilaajan ohjelmistot ja työvälineet
+  // Tilaajan ohjelmistot ja työvälineet
   addSectionTitle(
     "Tilaajan ohjelmistot ja työvälineet",
     "The Client's Software and Tools"
@@ -336,7 +340,7 @@ function getPDF(state) {
     "The Client shall arrange and provide for the Supplier, at the Client’s cost, necessary rights to use and access any and all systems, cloud services, software, and other services as well as other than ordinary tools and equipment that may be used by the Client and/or otherwise required to carry out the Services."
   );
 
-  // 12. Korvaus poikkeavasta työajasta [OPTIONAL]
+  // Korvaus poikkeavasta työajasta [OPTIONAL]
   if (state.checkboxYlityokorvaus && state.ylityokorvausValmis) {
     addSectionTitle(
       "Korvaus poikkeavasta työajasta",
@@ -352,7 +356,7 @@ function getPDF(state) {
     );
   }
 
-  // 13. Matkakorvaukset
+  // Matkakorvaukset
   addSectionTitle(
     "Matkakorvaukset",
     "Travel Compensation"
@@ -366,7 +370,7 @@ function getPDF(state) {
     `Should the Client require the Consultant to travel outside the aforementioned area, the Supplier has the right to charge separately for reasonable travel and accommodation costs, travel time hourly compensation, as well as per diem and kilometer allowances. Per diem and kilometer allowances are charged according to the then-current Tax Administration's current guidelines. Travel time hourly compensation is ${state.matkakorvausValmis} €/hour + VAT. Other costs are charged according to actual expenses.`
   );
 
-  // 14. Aineettomat oikeudet
+  // Aineettomat oikeudet
   addSectionTitle(
     "Aineettomat oikeudet",
     "Intellectual Property Rights"
@@ -397,7 +401,7 @@ function getPDF(state) {
     unexpectedError();
   }
 
-  // 15. Henkilötietojen käsittely
+  // Henkilötietojen käsittely
   addSectionTitle(
     "Henkilötietojen käsittely",
     "Processing of Personal Data"
@@ -407,7 +411,7 @@ function getPDF(state) {
     "The Client may provide Personal data to the Supplier for processing on the Client’s behalf only if the parties agree upon such processing and related terms in writing in advance."
   );
 
-  // 16. Yksisuuntainen houkuttelukielto [OPTIONAL]
+  // Yksisuuntainen houkuttelukielto [OPTIONAL]
   if (state.checkboxHoukuttelukielto) {
     addSectionTitle(
       "Yksisuuntainen houkuttelukielto",
@@ -419,7 +423,7 @@ function getPDF(state) {
     );
   }
 
-  // 17. Salassapito
+  // Salassapito
   addSectionTitle(
     "Salassapito",
     "Confidentiality"
@@ -429,7 +433,7 @@ function getPDF(state) {
     "The parties commit to keep confidential, during the term of the Agreement and for three years thereafter, any information and material received from the other party that is either marked as confidential or reasonably understood as such."
   );
 
-  // 18. Reference Rights [OPTIONAL]
+  // Reference Rights [OPTIONAL]
   if (state.radioReferenceRights === 'wideReferenceRights') {
     addSectionTitle(
       "Referenssioikeus",
@@ -454,7 +458,7 @@ function getPDF(state) {
     unexpectedError();
   }
 
-  // 19. Takuu
+  // Takuu
   addSectionTitle(
     "Takuu",
     "Warranty"
@@ -472,7 +476,7 @@ function getPDF(state) {
     "The Supplier shall correct the errors or re-perform consulting services at its own expense, provided that the Client notifies the Supplier of the error in writing by the due date of the invoice concerning the respective services. The duties set forth in this section define Supplier’s sole responsibilities and liabilities as well as exclusive remedies available for the Client in case of the any errors or deficiencies in the consulting services or deliverables thereof."
   );
 
-  // 20. Yleiset vastuut ja velvoitteet
+  // Yleiset vastuut ja velvoitteet
   addSectionTitle(
     "Yleiset vastuut ja velvoitteet",
     "General Responsibilities and Obligations"
@@ -514,7 +518,7 @@ function getPDF(state) {
     "Notwithstanding the termination of the Agreement, such terms and provisions that by their nature are intended to remain in force after the Agreement ends, will survive termination."
   );
 
-  // 21. Sovellettava laki
+  // Sovellettava laki
   addSectionTitle(
     "Sovellettava laki",
     "Applicable Law"
@@ -524,7 +528,7 @@ function getPDF(state) {
     `This Agreement shall be governed by the laws of Finland, without regard to its principles and rules on choice of laws. Any dispute, controversy or claim arising out of this Agreement, which cannot be resolved through negotiations within reasonable time, shall be resolved in ${state.getCourtInflectedForm(state.karajaoikeusValmis)}.`
   );
 
-  // 22. Vapaateksti [OPTIONAL]
+  // Vapaateksti [OPTIONAL]
   if (state.checkboxVapaateksti && state.vapaatekstiValmis) {
     addSectionTitle(
       "Muuta",
@@ -536,8 +540,8 @@ function getPDF(state) {
     );
   }
 
-  // 23. Allekirjoitukset
-  if (yPos > 200) {
+  // Allekirjoitukset
+  if (yPos > SIGNATURES_MAX_START_Y) {
     // Making sure signature section fits entirely on the page
     doc.addPage();
     yPos = MARGIN_TOP;
