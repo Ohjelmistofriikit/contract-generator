@@ -29,9 +29,12 @@ Fix these first. Items 1.1–1.3 affect the text of generated contracts.
 - [x] **1.7 Variables leak into global scope.**
   [pdfgeneration.js:577-593](../pdfgeneration.js#L577-L593): `doc.text(text = …, x = …, y = …, options = …)` assigns to undeclared variables, which creates globals named `text`, `x`, `y` and `options`. Pass plain arguments instead.
 
-- [ ] **1.8 Dead and redundant code.**
+- [x] **1.8 Dead and redundant code.**
   - [globalstate.js:564](../globalstate.js#L564): `!this.radioSijainti === ''` is always `false`, so the line never runs. Remove it, or fix the condition if it is needed.
   - [globalstate.js:129-131](../globalstate.js#L129-L131): `this.tuntihintaValmis && this.tuntihintaValmis` (and the same for `urakkahintaValmis`) repeats the same check.
+
+- [ ] **1.9 Wrong continue-button label while the location is unanswered.**
+  Found while removing the dead line in 1.8, which apparently tried to handle this case. When the location section is shown but neither option is picked, the (disabled) button reads "Jatka referenssioikeuteen →" instead of a generic "Jatka". Cosmetic: the button is disabled, so the user can't skip ahead. Fix in `getContinueButtonText`: return `t('continue')` when `showSijainti() && !radioSijainti`.
 
 ## 2. Text fixes in the English contract ⚖ legal review
 

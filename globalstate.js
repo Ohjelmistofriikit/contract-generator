@@ -136,9 +136,9 @@ function getAlpineState() {
     // Milloin fieldset laskutusperuste on valmis
     onkoValmisFieldsetLaskutusperuste() {
       if (this.radioLaskutusmuoto === 'tuntilaskutus') {
-        return this.tuntihintaValmis && this.tuntihintaValmis;
+        return this.tuntihintaValmis;
       } else if (this.radioLaskutusmuoto === 'urakkalaskutus') {
-        return this.urakkahintaValmis && this.urakkahintaValmis;
+        return this.urakkahintaValmis;
       }
       return false;
     },
@@ -560,7 +560,6 @@ function getAlpineState() {
       if (!this.showSijainti()) return this.t('continueToLocation');
       if (!this.showTyoajat() && this.radioSijainti === 'etana') return this.t('continueToWorkHours');
       if (!this.showTyovalineet() && this.radioSijainti === 'lasna') return this.t('continueToWorkEquipment');
-      if (!this.showTyoajat() && !this.showTyovalineet() && !this.radioSijainti === '') return this.t('continue'); // Awkward but what else can we do here?
       if (!this.showReferenceRights()) return this.t('continueToReferenceRights');
       if (!this.showKarajaoikeus()) return this.t('continueToKarajaoikeus');
       if (!this.showMuut()) return this.t('continueToMuut');
