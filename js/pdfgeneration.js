@@ -311,7 +311,7 @@ function getPDF(state) {
       "Konsultointi suoritetaan pääsääntöisesti etänä. Konsultti päättää itse omista työajoistaan. Toimittaja vastaa työtilansa ja tavanomaisten työvälineiden järjestämisestä.",
       "The consulting services are provided primarily remotely. The Consultant decides independently  the working hours. The Supplier shall equip its’ Consultants with the necessary working space  and ordinary work tools and equipment for carrying out the assigned tasks."
     );
-  } else if (state.radioSijainti === 'etana' && state.radioTyoajat !== 'milloinTahansa') {
+  } else if (state.radioSijainti === 'etana' && state.radioTyoajat === 'tilaajanNormi') {
     addParagraph(
       "Konsultointi suoritetaan pääsääntöisesti etänä Tilaajan normaalien työaikojen puitteissa. Toimittaja vastaa työtilansa ja tavanomaisten työvälineiden järjestämisestä.",
       "The consulting services are provided primarily remotely within the Client’s normal working hours. The Supplier shall equip its’ Consultants with the necessary working space and ordinary work tools and equipment for carrying out the assigned tasks."

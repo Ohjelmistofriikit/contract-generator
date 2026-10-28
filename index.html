@@ -708,7 +708,7 @@
 
               <!-- Fieldset Sovittu allokaatio -->
               <fieldset
-                x-show="radioLaskutusmuoto === 'tuntilaskutus' && radioAllokaatio === 'sovittu-allokaatio'"
+                x-show="onkoSovittuAllokaatio()"
                 x-transition:enter.duration.400ms
                 @transitionstart.once="$refs.tuntejaViikossaRaaka.focus({ preventScroll: true }); tarvittaessaScrollaaAlas();"
                 class="p-4 pl-5 pt-4 mt-4 border-2 border-gray-700 border-dotted rounded-sm"
@@ -1974,7 +1974,7 @@
             x-ref="fieldsetMuut"
             x-data="{ onFocus: false }"
             @focusin="onFocus = true; userIndicatedMuutIsValmis = false;"
-            @focusout="onFocus = false; userIndicatedMuutIsValmis = true; setTimeout(() => { if (!onFocus) $refs.continueButton.focus({ preventScroll: true }); }, 50);"
+            @focusout="onFocus = false; userIndicatedMuutIsValmis = true;"
             x-transition:enter.duration.400ms
             @transitionstart.once="$refs.maksuaikaRaaka.focus({ preventScroll: true }); tarvittaessaScrollaaAlas();"
             tabindex="0"
@@ -1988,7 +1988,7 @@
               <span x-text="t('otherTerms')"></span>
               <!-- Warning indicator for incomplete optional items -->
               <span 
-                x-show="!matkakorvausRaaka || !matkustusalueRaaka || !maksuaikaRaaka || (checkboxYlityokorvaus && !ylityokorvausValmis)" 
+                x-show="!onkoMuutTaytetty()" 
                 class="ml-2 text-amber-400 text-sm"
                 :title="t('fillSelectedSections')"
               >
@@ -2009,7 +2009,7 @@
                     <span x-text="maksuaikaValmis"></span>
                     <span x-text="t('days')"></span>
                   </div>
-                  <div x-show="radioLaskutusmuoto === 'tuntilaskutus' && radioAllokaatio === 'sovittu-allokaatio'" class="text-gray-300">
+                  <div x-show="onkoSovittuAllokaatio()" class="text-gray-300">
                     <span x-text="t('terminationPeriod')"></span>
                     <span x-text="irtisanomisaikaViikoissaValmis" class="text-yellowish"></span>
                     <span x-text="t('weeks')" class="text-yellowish"></span>
@@ -2063,7 +2063,7 @@
               </div>
 
               <!-- Input Irtisanomisaika -->
-              <div x-show="radioLaskutusmuoto === 'tuntilaskutus' && radioAllokaatio === 'sovittu-allokaatio'" class="mb-4">
+              <div x-show="onkoSovittuAllokaatio()" class="mb-4">
                 <input
                   id="irtisanomisaika"
                   x-model="irtisanomisaikaViikoissaRaaka"
@@ -2273,7 +2273,7 @@
                   :style="`width: ${getFormProgress()}%`"
                 ></div>
               </div>
-              <div class="text-xs mt-2" x-text="`${getFormProgress()}% ${t('complete')}`"></div>
+              <div class="text-xs mt-2" x-text="`${getFormProgress()}% ${t('completeProgress')}`"></div>
             </div>
           </div>
 

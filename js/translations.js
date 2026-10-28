@@ -120,7 +120,7 @@ const translations = {
 
     // Progress
     progress: "Edistyminen",
-    complete: "valmiina",
+    completeProgress: "valmiina",
 
     // Form labels
     client: "Tilaaja",
@@ -180,7 +180,6 @@ const translations = {
     placeholderInputFreelancerEmail: "kaija@koodikuntoon.fi",
 
     // Termination
-    terminationPeriod: "Irtisanomisaika",
     terminationWeeks: "viikon irtisanomisaika",
     weeks: "viikkoa",
 
@@ -379,7 +378,7 @@ const translations = {
 
     // Progress
     progress: "Progress",
-    complete: "complete",
+    completeProgress: "complete",
 
     // Form labels
     client: "The client",
@@ -422,7 +421,7 @@ const translations = {
     indefinitelyValid: "in force indefinitely",
     zeroHourContractLabel: "Zero-hour contract,",
     validUntil: "in force until",
-    until: "until",
+    until: "",
 
     placeholderProjectName: "e.g. Webstore development, or Mobile app design",
     inAdditionToHourlyRate: "€/h on top of hourly rate",
@@ -439,7 +438,6 @@ const translations = {
     placeholderInputFreelancerEmail: "cecilia@cleancode.fi",
 
     // Termination
-    terminationPeriod: "Termination period",
     terminationWeeks: "week termination period",
     weeks: "weeks",
 
@@ -486,7 +484,7 @@ const translations = {
     flexibleWorkingHoursLabel: "Any hours: the freelancer can decide when to work",
     clientWorkingHoursPart1: "The work will be performed during",
     clientWorkingHoursPart2: "the client's normal working hours",
-    clientWorkingHoursPart3: " ",
+    clientWorkingHoursPart3: "",
     clientWorkingHoursLabel: "Restricted hours: client's normal working hours",
 
     // Summary labels

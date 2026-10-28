@@ -47,7 +47,7 @@ function getAlpineState() {
 
     // Translation helper method with fallback to key
     t(key) {
-      return translations[this.currentLanguage]?.[key] || key;
+      return translations[this.currentLanguage]?.[key] ?? key;
     },
 
     // Validation functions
@@ -143,9 +143,10 @@ function getAlpineState() {
       this.tuntihintaValmis = this.tuntihintaRaaka;
 
       // Special thing here: default value for ylityökorvaus is 50% of the hourly rate.
-      if (!this.ylityokorvaustaMuokattuManuaalisesti) {
-        this.ylityokorvausRaaka = Math.round((this.tuntihintaRaaka * 0.5));
-        this.ylityokorvausValmis = this.ylityokorvausRaaka;
+      const oletus = this.getOletusYlityokorvaus();
+      if (!this.ylityokorvaustaMuokattuManuaalisesti && oletus) {
+        this.ylityokorvausRaaka = oletus;
+        this.ylityokorvausValmis = oletus;
       }
     },
 
@@ -309,9 +310,6 @@ function getAlpineState() {
     kirjaaValmisIrtisanomisaikaViikoissa() {
       this.irtisanomisaikaViikoissaValmis = this.irtisanomisaikaViikoissaRaaka;
     },
-    onkoValmisFieldsetIrtisanomisaika() {
-      return this.irtisanomisaikaViikoissaValmis;
-    },
 
     // Aineettomat oikeudet
     radioIPR: '',
@@ -396,7 +394,13 @@ function getAlpineState() {
     ylityokorvaustaMuokattuManuaalisesti: false,
     kirjaaValmisYlityokorvaus() {
       this.ylityokorvausValmis = this.ylityokorvausRaaka;
-      this.ylityokorvaustaMuokattuManuaalisesti = true;
+      // Only count it as edited if it differs from the default (blur alone doesn't count).
+      this.ylityokorvaustaMuokattuManuaalisesti = this.ylityokorvausRaaka !== (this.getOletusYlityokorvaus() || '50');
+    },
+    // 50% of the hourly rate, as a string; '' if the rate isn't a positive number. Accepts "100,00".
+    getOletusYlityokorvaus() {
+      const tuntihinta = parseFloat(String(this.tuntihintaValmis).replace(',', '.'));
+      return tuntihinta > 0 ? String(Math.round(tuntihinta / 2)) : '';
     },
     checkboxHoukuttelukielto: false,
     checkboxVapaateksti: false,
@@ -411,8 +415,18 @@ function getAlpineState() {
     // In addition, we want to prepare for the possibility that the user might
     // break the pre-filled overtime value.
     userIndicatedMuutIsValmis: false,
+    // Whether the required 'muut' fields are filled in. Uses the raw values so the warning and the
+    // continue button react while typing. The notice period is only used with an agreed allocation.
+    onkoMuutTaytetty() {
+      return this.matkakorvausRaaka && this.matkustusalueRaaka && this.maksuaikaRaaka
+        && (!this.checkboxYlityokorvaus || this.ylityokorvausRaaka)
+        && (!this.onkoSovittuAllokaatio() || this.irtisanomisaikaViikoissaRaaka);
+    },
+    onkoSovittuAllokaatio() {
+      return this.radioLaskutusmuoto === 'tuntilaskutus' && this.radioAllokaatio === 'sovittu-allokaatio';
+    },
     onkoValmisFieldsetMuut() {
-      return this.userIndicatedMuutIsValmis && this.matkakorvausRaaka && this.matkustusalueRaaka && this.maksuaikaRaaka && (!this.checkboxYlityokorvaus || this.ylityokorvausValmis);
+      return this.userIndicatedMuutIsValmis && this.onkoMuutTaytetty();
     },
 
     getConsultantRoleText(inflected = false) {
@@ -457,6 +471,9 @@ function getAlpineState() {
     // NOTE: Don't refactor these to boolean flags. There are 2 reasons for this:
     // 1. Users can go back and modify previous sections, which in some cases changes which sections should be shown.
     // 2. We want users to be able to progress with ONE click of the continue button, rather than two clicks (defocus-click and change-state-click).
+    // Each step is shown once the previous *shown* step is complete, so the visible steps are always
+    // a prefix of the form: stale answers in a step that no longer applies (e.g. work hours after
+    // switching from remote to on-site) can't reveal the steps after it.
     showTuntimaara() {
       return this.onkoValmisFieldsetLaskutusperuste() && this.radioLaskutusmuoto === 'tuntilaskutus';
     },
@@ -467,31 +484,31 @@ function getAlpineState() {
       return this.onkoValmisFieldsetLaskutusperuste();
     },
     showToimittajanTiedot() {
-      return this.onkoValmisFieldsetTilaajanTiedot();
+      return this.showTilaajanTiedot() && this.onkoValmisFieldsetTilaajanTiedot();
     },
     showProjektinTiedot() {
-      return this.onkoValmisFieldsetToimittajanTiedot();
+      return this.showToimittajanTiedot() && this.onkoValmisFieldsetToimittajanTiedot();
     },
     showIPR() {
-      return this.onkoValmisFieldsetProjektinTiedot();
+      return this.showProjektinTiedot() && this.onkoValmisFieldsetProjektinTiedot();
     },
     showSijainti() {
-      return this.onkoValmisFieldsetIPR();
+      return this.showIPR() && this.onkoValmisFieldsetIPR();
     },
     showTyoajat() {
-      return this.onkoValmisFieldsetSijainti() && this.radioSijainti == 'etana';
+      return this.showSijainti() && this.onkoValmisFieldsetSijainti() && this.radioSijainti === 'etana';
     },
     showTyovalineet() {
-      return this.onkoValmisFieldsetSijainti() && this.radioSijainti == 'lasna';
+      return this.showSijainti() && this.onkoValmisFieldsetSijainti() && this.radioSijainti === 'lasna';
     },
     showReferenceRights() {
-      return this.onkoValmisFieldsetTyoajat() || this.onkoValmisFieldsetTyovalineet();
+      return (this.showTyoajat() && this.onkoValmisFieldsetTyoajat()) || (this.showTyovalineet() && this.onkoValmisFieldsetTyovalineet());
     },
     showKarajaoikeus() {
-      return this.onkoValmisFieldsetReferenceRights();
+      return this.showReferenceRights() && this.onkoValmisFieldsetReferenceRights();
     },
     showMuut() {
-      return this.onkoValmisFieldsetKarajaoikeus();
+      return this.showKarajaoikeus() && this.onkoValmisFieldsetKarajaoikeus();
     },
 
     getFormProgress() {
@@ -681,7 +698,7 @@ function getAlpineState() {
       }
 
       // Disable if muut has empty fields
-      if (!this.matkakorvausRaaka || !this.matkustusalueRaaka || !this.maksuaikaRaaka || (this.checkboxYlityokorvaus && !this.ylityokorvausRaaka)) {
+      if (!this.onkoMuutTaytetty()) {
         return false;
       }
 
