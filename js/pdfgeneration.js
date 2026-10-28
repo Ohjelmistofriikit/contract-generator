@@ -39,6 +39,11 @@ function getPDF(state) {
     doc.setFontSize(FONT_SIZE_SECTION_TITLE);
     doc.setFont(FONT_NAME, FONT_STYLE_SECTION_TITLE);
     yPos += 1;
+    // Don't leave a title alone at the bottom of a page: start a new page if its first paragraph line wouldn't fit.
+    if (yPos + 11 > PAGE_BREAK_Y) {
+      doc.addPage();
+      yPos = MARGIN_TOP;
+    }
     // Section titles should be only 1 line, but just in case, split text into lines that fit within the max line width
     const lines = doc.splitTextToSize(titleText, MAX_LINE_WIDTH);
     for (let line of lines) {
@@ -557,7 +562,7 @@ function getPDF(state) {
   );
   yPos += 20;
   doc.setFontSize(FONT_SIZE_PARAGRAPH);
-  doc.setFont(FONT_NAME, "normal");
+  doc.setFont(FONT_NAME, FONT_STYLE_PARAGRAPH);
   if (state.currentLanguage === 'fi') {
     doc.text("Tilaajan puolesta", MARGIN_X, yPos);
     doc.text("Toimittajan puolesta", PAGE_WIDTH / 2 + 10, yPos);

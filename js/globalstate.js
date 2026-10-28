@@ -514,8 +514,7 @@ function getAlpineState() {
     getFormProgress() {
       const totalSteps = this.radioLaskutusmuoto === 'tuntilaskutus' ? 11 : 10;
 
-      // Count always starts at 1, because progress indicator will not be visible until laskutusperuste is filled
-      let completedSteps = 1;
+      let completedSteps = this.onkoValmisFieldsetLaskutusperuste() ? 1 : 0;
 
       // If laskutusmuoto is tuntilaskutus, we have 1 additional top level fieldset: tuntimaara
       if (this.radioLaskutusmuoto === 'tuntilaskutus') {
