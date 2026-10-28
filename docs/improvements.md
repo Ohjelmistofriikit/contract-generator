@@ -26,7 +26,7 @@ Fix these first. Items 1.1–1.3 affect the text of generated contracts.
 - [ ] **1.6 Missing `:` in a binding.**
   [index.html:718](../index.html#L718): `title="t('placeholderInputWeeklyHours')"` shows that literal text as the tooltip. It should be `:title="…"`.
 
-- [ ] **1.7 Variables leak into global scope.**
+- [x] **1.7 Variables leak into global scope.**
   [pdfgeneration.js:577-593](../pdfgeneration.js#L577-L593): `doc.text(text = …, x = …, y = …, options = …)` assigns to undeclared variables, which creates globals named `text`, `x`, `y` and `options`. Pass plain arguments instead.
 
 - [ ] **1.8 Dead and redundant code.**

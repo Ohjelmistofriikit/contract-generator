@@ -573,11 +573,7 @@ function getPDF(state) {
   const pageCount = doc.internal.getNumberOfPages();
   for (let i = 1; i <= pageCount; i++) {
       doc.setPage(i);
-      doc.text(
-        text = `${i}/${pageCount}`, 
-        x = doc.internal.pageSize.width - 13,
-        y = 10
-      );
+      doc.text(`${i}/${pageCount}`, PAGE_WIDTH - 13, 10);
   }
 
   // Add promotional text at the bottom of the last page
@@ -586,12 +582,7 @@ function getPDF(state) {
     : "This contract was created using ohjelmistofriikit.fi contract template.";
   doc.setFontSize(FONT_SIZE_PARAGRAPH);
   doc.setFont(FONT_NAME, "italic");
-  doc.text(
-    text = promotext,
-    x = PAGE_WIDTH / 2,
-    y = PAGE_HEIGHT - 10,
-    options = { align: 'center' }
-  );
+  doc.text(promotext, PAGE_WIDTH / 2, PAGE_HEIGHT - 10, { align: 'center' });
 
   return doc.output('datauristring');
 }
