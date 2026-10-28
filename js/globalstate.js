@@ -363,12 +363,12 @@ function getAlpineState() {
     maksuaikaRaaka: '14',
     maksuaikaValmis: '14',
     kirjaaValmisMaksuaika() {
-      this.maksuaikaValmis = this.maksuaikaRaaka || '14';
+      this.maksuaikaValmis = this.maksuaikaRaaka;
     },
     matkakorvausRaaka: '25',
     matkakorvausValmis: '25',
     kirjaaValmisMatkakorvaus() {
-      this.matkakorvausValmis = this.matkakorvausRaaka || '25';
+      this.matkakorvausValmis = this.matkakorvausRaaka;
     },
     matkustusalueRaaka: '',
     matkustusalueValmis: '',

@@ -3,3 +3,15 @@
 @import "tailwindcss" source(none);
 @source "./index.html";
 @source "./js";
+
+/* Ohjelmistofriikit colour palette: generates bg-blueish, text-yellowish, hover:text-yellowish, ...
+   `static` so the variables exist even if no utility uses a colour (the <style> block in index.html uses them). */
+@theme static {
+  --color-yellowish: #f2ff66;
+  --color-blueish: #011627;
+  --color-light-blue: #09ceff;
+  --color-whiteish: #fafafb;
+  --color-grayish: #e1e3e5;
+  /* Muted text in the collapsed section summaries. */
+  --color-summary: #d1d5dbde;
+}

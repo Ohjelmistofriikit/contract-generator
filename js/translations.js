@@ -66,7 +66,6 @@ const translations = {
     step2LinkText: "tältä",
     step3Title: "Allekirjoita",
     step3Desc: "Tarkista sopimus ja allekirjoita yhdessä asiakkaan kanssa.",
-    importantNotice: "Tärkeä huomautus",
     disclaimer: "Ohjelmistofriikit ei vastaa sopimuksen käytöstä aiheutuvista seurauksista. Tarkista aina sopimuksen sisältö ennen allekirjoittamista.",
     openSource: "Sopimuspohja on avointa lähdekoodia",
     googledocLink: "https://docs.google.com/document/d/1JotIerKLs3uVF7vTsnuyz1EzujCtkTSfwnFcK7fxwyc/edit?usp=sharing",
@@ -74,10 +73,8 @@ const translations = {
     // Form sections
     formStart: "Luonnostele sopimus",
     billingBasis: "Laskutusperuste",
-    contractParties: "Sopimuksen osapuolet",
     clientInfo: "Tilaajan tiedot",
     supplierInfo: "Freelancerin tiedot",
-    contactPersons: "Yhteyshenkilöt",
     projectInfo: "Projektin tiedot",
     numberOfHours: "Tuntimäärä",
     terminationPeriod: "Irtisanomisaika",
@@ -94,7 +91,6 @@ const translations = {
     projectBilling: "Urakkalaskutus",
     hourlyRate: "Tuntihinta",
     projectPrice: "Urakkahinta",
-    paymentTerms: "Maksuaika",
     days: "päivää",
     hourlyRateLabel: "€/h",
     projectRateLabel: "€",
@@ -116,7 +112,6 @@ const translations = {
     continue: "Jatka →",
 
     // Final button
-    createContract: "Luo sopimus",
 
     // Progress
     progress: "Edistyminen",
@@ -169,8 +164,6 @@ const translations = {
     inAdditionToHourlyRate: "€/h tuntihinnan päälle",
     inAdditionToFixedPrice: "€/h urakkahinnan päälle",
     placeholderInputWeeklyHours: "esim. 37,5",
-    placeholderInputTravelArea: "pääkaupunkiseudulla",
-    placeholderInputDistrictCourt: "Helsingin käräjäoikeudessa",
 
     placeholderInputClientCompany: "Pertin Puutavara Oy",
     placeholderInputClientContactPerson: "Pertti Perttunen",
@@ -206,7 +199,6 @@ const translations = {
     radioConsultantRoleProjectManagement: "Projektinjohto",
     radioConsultantRoleProjectManagementInflected: "projektinjohdon tehtävissä",
     radioConsultantRoleOther: "Muu",
-    radioConsultantRoleOtherInflected: "määrittelemättömissä tehtävissä",
 
     // Location
     workRemotelyPart1: "Työ suoritetaan enimmäkseen",
@@ -224,7 +216,6 @@ const translations = {
     clientWorkingHoursLabel: "Rajoitetut työajat: työ suoritetaan tilaajan normaalien työaikojen puitteissa",
 
     // Summary labels
-    project: "Projekti",
 
     // Badge
     recommended: "SUOSITUS",
@@ -238,20 +229,12 @@ const translations = {
     // Location details
     travelWithin: "Matkakorvaus",
     notCharged: "poislukien matkustaminen",
-    disputesResolvedAt: "Mahdolliset riidat ratkaistaan",
-    travelNotChargedPrefix: "Missä tapahtuvasta matkustamisesta ei veloiteta",
-    disputeResolutionPrefix: "Missä ratkaistaan mahdolliset riidat",
-    travelTimeCompensation: "Matka-ajan korvaus",
-    travelTimeCompensationRate: "€/tunti + ALV",
-    travelTimeCompensationText: "Matka-ajan tuntikorvaus on {0} €/tunti + ALV.",
 
     // Location
     remote: "Etätyö (enimmäkseen etänä)",
     onsite: "Lähityö (enimmäkseen läsnä tilaajan toimistolla)",
 
     // Working hours
-    flexibleHours: "Freelancer saa päättää itse mihin kellonaikoihin tekee töitä",
-    clientHours: "Työ suoritetaan tilaajan normaalien työaikojen puitteissa",
 
     // Referenssioikeus
     legendReferenceRights: "Referenssioikeus",
@@ -265,31 +248,16 @@ const translations = {
     // Other terms
     dueDateDays: "Maksuaika",
     ofDaysToPay: "päivän maksuaika",
-    travelHourCompensationShort: "Matkakorvaus",
     travelHourCompensation: "korvaus matkustamisesta,",
     excludingTravel: "poislukien matkustaminen",
     overtimeCompensation: "Ylityökorvaus",
     nonSolicitationShort: "Houkuttelukielto",
     nonSolicitation: "Houkuttelukielto",
-    paymentTermsClause: "Laskujen maksuaika",
     freeText: "Vapaa teksti",
     prefixToFreeText: "Osapuolet ovat lisäksi ja/tai edellä sovitusta poiketen sopineet seuraavaa...",
-    percentageIncrease: "Prosentuaalinen lisä",
-    fixedRate: "Kiinteä tuntihinta",
-    percentageExtra: "% ylimääräinen korvaus normaalista tuntiveloituksesta",
-    overtimeRate: "€/tunti + ALV ylityökorvauksena",
     optionalSectionsInfo: "Olemme esitäyttäneet tämän osion valinnoilla, joita suosittelemme aiemmin antamiesi tietojen pohjalta.",
     fillSelectedSections: "Täytä valitut osiot",
-    selectCompensationType: "Valitse korvaustyyppi alla",
-    fillPercentage: "Täytä prosentti",
-    fillHourlyRate: "Täytä tuntihinta",
-    fillTextBelow: "Täytä teksti alla",
-    enterPercentageHelp: "Syötä prosenttiluku, esim. 50",
-    enterHourlyRateHelp: "Syötä tuntihinta, esim. 120",
-    fillFieldOrUncheck: "Täytä tämä kenttä tai poista ruksi ylhäältä",
-    paymentTermsShort: "Maksuaika",
     somethingInTextAreaShort: "Lisäehtoja vapaatekstikentässä",
-    selected: "Valittu",
     edit: "Muokkaa",
     complete: "Valmis",
     numberExamplePrice: "Numero, esimerkiksi 100 tai 100,00",
@@ -324,7 +292,6 @@ const translations = {
     step2LinkText: "this",
     step3Title: "Sign",
     step3Desc: "Review the contract and sign together with the client.",
-    importantNotice: "Important notice",
     disclaimer: "Ohjelmistofriikit is not responsible for the consequences of using the contract. You should always read your contract before signing it.",
     openSource: "The contract template is open source",
     googledocLink: "https://docs.google.com/document/d/1xfQ-sxhk4n_5Zr5eBm9NOEbIZQ6UsRTO4R-FeW-VhfA/edit?usp=sharing",
@@ -332,10 +299,8 @@ const translations = {
     // Form sections
     formStart: "Draft a contract",
     billingBasis: "Billing basis",
-    contractParties: "Contract parties",
     clientInfo: "Client's information",
     supplierInfo: "Freelancer's information",
-    contactPersons: "Contact persons",
     projectInfo: "Project Information",
     numberOfHours: "Hours",
     terminationPeriod: "Termination period",
@@ -352,7 +317,6 @@ const translations = {
     projectBilling: "Project billing",
     hourlyRate: "Hourly rate",
     projectPrice: "Project price",
-    paymentTerms: "Payment terms",
     days: "days",
     hourlyRateLabel: "€/hour",
     projectRateLabel: "€",
@@ -374,7 +338,6 @@ const translations = {
     continue: "Continue →",
 
     // Final button
-    createContract: "Create Contract",
 
     // Progress
     progress: "Progress",
@@ -382,7 +345,6 @@ const translations = {
 
     // Form labels
     client: "The client",
-    supplier: "The freelancer",
     clientCompany: "The client",
     clientBusinessId: "Business ID",
     supplierCompany: "Freelancer's company name",
@@ -427,8 +389,6 @@ const translations = {
     inAdditionToHourlyRate: "€/h on top of hourly rate",
     inAdditionToFixedPrice: "€/h on top of fixed price",
     placeholderInputWeeklyHours: "e.g. 37.5",
-    placeholderInputTravelArea: "Helsinki metropolitan area",
-    placeholderInputDistrictCourt: "District Court of Helsinki",
 
     placeholderInputClientCompany: "Winston Wood Oy",
     placeholderInputClientContactPerson: "Willy Winston",
@@ -464,7 +424,6 @@ const translations = {
     radioConsultantRoleProjectManagement: "Project Management",
     radioConsultantRoleProjectManagementInflected: "on project management",
     radioConsultantRoleOther: "Other",
-    radioConsultantRoleOtherInflected: "in undetermined role",
 
     // Työvälineet
     workEquipmentBy: "Work is performed using",
@@ -488,7 +447,6 @@ const translations = {
     clientWorkingHoursLabel: "Restricted hours: client's normal working hours",
 
     // Summary labels
-    project: "Project",
 
     // Badge
     recommended: "RECOMMENDED",
@@ -496,20 +454,12 @@ const translations = {
     // Location details
     travelWithin: "Travel compensation",
     notCharged: "except for travel within",
-    disputesResolvedAt: "Possible disputes resolved at",
-    travelNotChargedPrefix: "Which area is excluded from travel compensation",
-    disputeResolutionPrefix: "Where will disputes be resolved",
-    travelTimeCompensationText: "Travel time compensation is {0} €/hour + VAT.",
-    travelTimeCompensation: "Travel time compensation",
-    travelTimeCompensationRate: "€/hour + VAT",
 
     // Location
     remote: "Remote work (mostly remote)",
     onsite: "On-site work (mostly at the client's office)",
 
     // Working hours
-    flexibleHours: "Freelancer can decide their own working hours",
-    clientHours: "Work is performed within client's normal working hours",
 
     // Reference rights
     legendReferenceRights: "Reference rights",
@@ -523,31 +473,16 @@ const translations = {
     // Other terms
     dueDateDays: "Payment term",
     ofDaysToPay: "day payment term",
-    travelHourCompensationShort: "Travel time compensation",
     travelHourCompensation: "compensation for travel,",
     excludingTravel: "except for travel within",
     overtimeCompensation: "Overtime compensation",
     nonSolicitation: "Non-solicitation clause",
-    paymentTermsClause: "Invoice payment period",
     freeText: "Free text",
     prefixToFreeText: "The parties have in addition and/or contrary to above, agreed upon the following...",
-    percentageIncrease: "Percentage increase",
-    fixedRate: "Fixed hourly rate",
-    percentageExtra: "% extra compensation from normal hourly billing",
-    overtimeRate: "€/hour + VAT as overtime compensation",
     optionalSectionsInfo: "We have prefilled this section based on your earlier inputs.",
     fillSelectedSections: "Fill selected sections",
-    selectCompensationType: "Select compensation type below",
-    fillPercentage: "Fill percentage",
-    fillHourlyRate: "Fill hourly rate",
-    fillTextBelow: "Fill text below",
-    enterPercentageHelp: "Enter percentage number, e.g. 50",
-    enterHourlyRateHelp: "Enter hourly rate, e.g. 120",
-    fillFieldOrUncheck: "Fill this field or uncheck the box above",
     nonSolicitationShort: "Non-solicitation clause",
-    paymentTermsShort: "Payment terms",
     somethingInTextAreaShort: "Additional terms in free text area",
-    selected: "Selected",
     edit: "Edit",
     complete: "Complete",
     numberExamplePrice: "Number, e.g. 100 or 100.00",
