@@ -39,7 +39,7 @@ npm run build:css          # regenerates vendor/tailwind.min.css
 - `js/translations.js`: UI strings (`translations.fi` / `.en`) and `locations` (district court → default travel area, per language).
 - `vendor/`: third-party builds. Never edit by hand; replace on upgrade.
   - `alpinejs.min.js` (Alpine 3.17.5), `jspdf.umd.min.js` (jsPDF 4.2.1)
-  - `pdfjs/` (pdf.js 5.3.31 viewer for the preview), trimmed: no source maps, demo PDF, debugger, `standard_fonts`, `cmaps`, `wasm` or `iccs` (our PDFs embed their font and have no images, so pdf.js never loads them); viewer locales only `fi`, `sv-SE`, `en-US`. When upgrading, apply the same trim and keep `web/locale/locale.json` in sync with the locale folders, or browsers in a missing language get a failed request instead of the English fallback.
+  - `pdfjs/` (pdf.js 6.4.299 **legacy** build of the viewer, for the preview; the standard build needs very new browsers), trimmed: no source maps, demo PDF, debugger, `standard_fonts`, `cmaps`, `wasm` or `iccs` (our PDFs embed their font and have no images, so pdf.js never loads them); viewer locales only `fi`, `sv-SE`, `en-US`. When upgrading, apply the same trim and keep `web/locale/locale.json` in sync with the locale folders, or browsers in a missing language get a failed request instead of the English fallback.
   - `tailwind.min.css`: generated, see Build step.
 - `assets/`: our own static files.
   - `fonts/PlusJakartaSans-VariableFont_wght.woff2`: web font.

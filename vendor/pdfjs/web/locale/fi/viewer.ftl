@@ -112,14 +112,6 @@ pdfjs-document-properties-size-kb = { NUMBER($kb, maximumSignificantDigits: 3) }
 #   $mb (Number) - the PDF file size in megabytes
 #   $b (Number) - the PDF file size in bytes
 pdfjs-document-properties-size-mb = { NUMBER($mb, maximumSignificantDigits: 3) } Mt ({ $b } tavua)
-# Variables:
-#   $size_kb (Number) - the PDF file size in kilobytes
-#   $size_b (Number) - the PDF file size in bytes
-pdfjs-document-properties-kb = { $size_kb } kt ({ $size_b } tavua)
-# Variables:
-#   $size_mb (Number) - the PDF file size in megabytes
-#   $size_b (Number) - the PDF file size in bytes
-pdfjs-document-properties-mb = { $size_mb } Mt ({ $size_b } tavua)
 pdfjs-document-properties-title = Otsikko:
 pdfjs-document-properties-author = Tekijä:
 pdfjs-document-properties-subject = Aihe:
@@ -129,10 +121,6 @@ pdfjs-document-properties-modification-date = Muokkauspäivämäärä:
 # Variables:
 #   $dateObj (Date) - the creation/modification date and time of the PDF file
 pdfjs-document-properties-date-time-string = { DATETIME($dateObj, dateStyle: "short", timeStyle: "medium") }
-# Variables:
-#   $date (Date) - the creation/modification date of the PDF file
-#   $time (Time) - the creation/modification time of the PDF file
-pdfjs-document-properties-date-string = { $date }, { $time }
 pdfjs-document-properties-creator = Luoja:
 pdfjs-document-properties-producer = PDF-tuottaja:
 pdfjs-document-properties-version = PDF-versio:
@@ -165,6 +153,27 @@ pdfjs-document-properties-linearized = Nopea web-katselu:
 pdfjs-document-properties-linearized-yes = Kyllä
 pdfjs-document-properties-linearized-no = Ei
 pdfjs-document-properties-close-button = Sulje
+pdfjs-digital-signature-properties-view-certificate = Näytä varmenne
+# Shown beneath an invalid signature card to explain why verification
+# failed. The text comes from NSS (e.g. "Signature integrity has been
+# compromised", "PKCS#7 signature could not be parsed") and is not
+# itself localized — it is the underlying error message produced by
+# the verification backend.
+# Variables:
+#   $reason (String) - error message describing why the signature
+#                      could not be verified.
+pdfjs-digital-signature-properties-reason = Syy: { $reason }
+# Variables:
+#   $dateObj (Date) - the signing time from the /Sig dict's /M entry.
+pdfjs-digital-signature-properties-timestamp = Aikaleima: { DATETIME($dateObj, dateStyle: "short", timeStyle: "medium") }
+# Variables:
+#   $count (Number) - number of nested sub-signatures (one per earlier
+#                     incremental revision of the document).
+pdfjs-digital-signature-properties-sub-signatures =
+    { $count ->
+        [one] Aliallekirjoitus ({ $count })
+       *[other] Aliallekirjoitukset ({ $count })
+    }
 
 ## Print
 
@@ -178,23 +187,6 @@ pdfjs-printing-not-ready = Varoitus: PDF-tiedosto ei ole vielä latautunut kokon
 
 ## Tooltips and alt text for side panel toolbar buttons
 
-pdfjs-toggle-sidebar-button =
-    .title = Näytä/piilota sivupaneeli
-pdfjs-toggle-sidebar-notification-button =
-    .title = Näytä/piilota sivupaneeli (dokumentissa on sisällys/liitteitä/tasoja)
-pdfjs-toggle-sidebar-button-label = Näytä/piilota sivupaneeli
-pdfjs-document-outline-button =
-    .title = Näytä dokumentin sisällys (laajenna tai kutista kohdat kaksoisnapsauttamalla)
-pdfjs-document-outline-button-label = Dokumentin sisällys
-pdfjs-attachments-button =
-    .title = Näytä liitteet
-pdfjs-attachments-button-label = Liitteet
-pdfjs-layers-button =
-    .title = Näytä tasot (kaksoisnapsauta palauttaaksesi kaikki tasot oletustilaan)
-pdfjs-layers-button-label = Tasot
-pdfjs-thumbs-button =
-    .title = Näytä pienoiskuvat
-pdfjs-thumbs-button-label = Pienoiskuvat
 pdfjs-current-outline-item-button =
     .title = Etsi nykyinen sisällyksen kohta
 pdfjs-current-outline-item-button-label = Nykyinen sisällyksen kohta
@@ -207,18 +199,23 @@ pdfjs-additional-layers = Lisätasot
 
 # Variables:
 #   $page (Number) - the page number
-pdfjs-thumb-page-title =
-    .title = Sivu { $page }
-# Variables:
-#   $page (Number) - the page number
 pdfjs-thumb-page-canvas =
     .aria-label = Pienoiskuva sivusta { $page }
+# Variables:
+#   $page (Number) - the page number
+pdfjs-thumb-page-checkbox1 =
+    .title = Valitse sivu { $page }
+# Variables:
+#   $page (Number) - the page number
+#   $total (Number) - the number of pages
+pdfjs-thumb-page-title1 =
+    .title = Sivu { $page }/{ $total }
 
 ## Find panel button title and messages
 
 pdfjs-find-input =
-    .title = Etsi
     .placeholder = Etsi dokumentista…
+    .title = Etsi
 pdfjs-find-previous-button =
     .title = Etsi hakusanan edellinen osuma
 pdfjs-find-previous-button-label = Edellinen
@@ -275,10 +272,6 @@ pdfjs-rendering-error = Tapahtui virhe piirrettäessä sivua.
 
 ## Annotations
 
-# Variables:
-#   $date (Date) - the modification date of the annotation
-#   $time (Time) - the modification time of the annotation
-pdfjs-annotation-date-string = { $date }, { $time }
 # .alt: This is used as a tooltip.
 # Variables:
 #   $type (String) - an annotation type from a list defined in the PDF spec
@@ -302,9 +295,13 @@ pdfjs-web-fonts-disabled = Verkkosivujen omat kirjasinlajit on estetty: ei voida
 
 pdfjs-editor-free-text-button =
     .title = Teksti
+pdfjs-editor-color-picker-free-text-input =
+    .title = Muuta tekstin väriä
 pdfjs-editor-free-text-button-label = Teksti
 pdfjs-editor-ink-button =
     .title = Piirros
+pdfjs-editor-color-picker-ink-input =
+    .title = Vaihda piirustuksen väriä
 pdfjs-editor-ink-button-label = Piirros
 pdfjs-editor-stamp-button =
     .title = Lisää tai muokkaa kuvia
@@ -313,9 +310,17 @@ pdfjs-editor-highlight-button =
     .title = Korostus
 pdfjs-editor-highlight-button-label = Korostus
 pdfjs-highlight-floating-button1 =
-    .title = Korostus
     .aria-label = Korostus
+    .title = Korostus
 pdfjs-highlight-floating-button-label = Korostus
+pdfjs-comment-floating-button =
+    .aria-label = Kommentti
+    .title = Kommentti
+pdfjs-comment-floating-button-label = Kommentti
+pdfjs-editor-comment-button =
+    .aria-label = Kommentti
+    .title = Kommentti
+pdfjs-editor-comment-button-label = Kommentti
 pdfjs-editor-signature-button =
     .title = Lisää allekirjoitus
 pdfjs-editor-signature-button-label = Lisää allekirjoitus
@@ -378,20 +383,27 @@ pdfjs-editor-add-saved-signature-button =
 pdfjs-free-text2 =
     .aria-label = Tekstimuokkain
     .default-content = Aloita kirjoittaminen…
-pdfjs-free-text =
-    .aria-label = Tekstimuokkain
-pdfjs-free-text-default-content = Aloita kirjoittaminen…
-pdfjs-ink =
-    .aria-label = Piirrustusmuokkain
-pdfjs-ink-canvas =
-    .aria-label = Käyttäjän luoma kuva
+# Used to show how many comments are present in the pdf file.
+# Variables:
+#   $count (Number) - the number of comments.
+pdfjs-editor-comments-sidebar-title =
+    { $count ->
+        [one] Kommentti
+       *[other] Kommenttia
+    }
+pdfjs-editor-comments-sidebar-close-button =
+    .aria-label = Sulje sivupaneeli
+    .title = Sulje sivupaneeli
+pdfjs-editor-comments-sidebar-close-button-label = Sulje sivupaneeli
+# Instructional copy to add a comment by selecting text or an annotations.
+pdfjs-editor-comments-sidebar-no-comments1 = Näetkö jotain huomionarvoista? Korosta se ja jätä kommentti.
+pdfjs-editor-comments-sidebar-no-comments-link = Lue lisää
 
 ## Alt-text dialog
 
 pdfjs-editor-alt-text-button-label = Vaihtoehtoinen teksti
 pdfjs-editor-alt-text-edit-button =
     .aria-label = Muokkaa vaihtoehtoista tekstiä
-pdfjs-editor-alt-text-edit-button-label = Muokkaa vaihtoehtoista tekstiä
 pdfjs-editor-alt-text-dialog-label = Valitse vaihtoehto
 pdfjs-editor-alt-text-dialog-description = Vaihtoehtoinen teksti ("alt-teksti") auttaa ihmisiä, jotka eivät näe kuvaa tai kun kuva ei lataudu.
 pdfjs-editor-alt-text-add-description-label = Lisää kuvaus
@@ -411,14 +423,6 @@ pdfjs-editor-alt-text-button =
 ## Editor resizers
 ## This is used in an aria label to help to understand the role of the resizer.
 
-pdfjs-editor-resizer-label-top-left = Vasen yläkulma - muuta kokoa
-pdfjs-editor-resizer-label-top-middle = Ylhäällä keskellä - muuta kokoa
-pdfjs-editor-resizer-label-top-right = Oikea yläkulma - muuta kokoa
-pdfjs-editor-resizer-label-middle-right = Keskellä oikealla - muuta kokoa
-pdfjs-editor-resizer-label-bottom-right = Oikea alakulma - muuta kokoa
-pdfjs-editor-resizer-label-bottom-middle = Alhaalla keskellä - muuta kokoa
-pdfjs-editor-resizer-label-bottom-left = Vasen alakulma - muuta kokoa
-pdfjs-editor-resizer-label-middle-left = Keskellä vasemmalla - muuta kokoa
 pdfjs-editor-resizer-top-left =
     .aria-label = Vasen yläkulma - muuta kokoa
 pdfjs-editor-resizer-top-middle =
@@ -512,17 +516,18 @@ pdfjs-editor-alt-text-settings-dialog-label = Kuvan vaihtoehtoisen tekstin asetu
 pdfjs-editor-alt-text-settings-automatic-title = Automaattinen vaihtoehtoinen teksti
 pdfjs-editor-alt-text-settings-create-model-button-label = Luo vaihtoehtoinen teksti automaattisesti
 pdfjs-editor-alt-text-settings-create-model-description = Ehdottaa kuvauksia, jotka auttavat ihmisiä, jotka eivät näe kuvaa tai kun kuva ei lataudu.
-# Variables:
-#   $totalSize (Number) - the total size (in MB) of the AI model.
-pdfjs-editor-alt-text-settings-download-model-label = Vaihtoehtoisen tekstin tekoälymalli ({ $totalSize } Mt)
-pdfjs-editor-alt-text-settings-ai-model-description = Toimii paikallisesti laitteellasi, joten tietosi pysyvät yksityisinä. Vaadittu automaattiselle vaihtoehtoiselle tekstille.
-pdfjs-editor-alt-text-settings-delete-model-button = Poista
-pdfjs-editor-alt-text-settings-download-model-button = Lataa
-pdfjs-editor-alt-text-settings-downloading-model-button = Ladataan…
 pdfjs-editor-alt-text-settings-editor-title = Vaihtoehtoisen tekstin muokkain
 pdfjs-editor-alt-text-settings-show-dialog-button-label = Näytä vaihtoehtoisen tekstin muokkain heti, kun lisäät kuvan
 pdfjs-editor-alt-text-settings-show-dialog-description = Auttaa varmistamaan, että kaikissa kuvissasi on vaihtoehtoinen teksti.
 pdfjs-editor-alt-text-settings-close-button = Sulje
+
+## Accessibility labels (announced by screen readers) for objects added to the editor.
+
+pdfjs-editor-highlight-added-alert = Korostus lisätty
+pdfjs-editor-freetext-added-alert = Teksti lisätty
+pdfjs-editor-ink-added-alert = Piirustus lisätty
+pdfjs-editor-stamp-added-alert = Kuva lisätty
+pdfjs-editor-signature-added-alert = Allekirjoitus lisätty
 
 ## "Annotations removed" bar
 
@@ -531,6 +536,7 @@ pdfjs-editor-undo-bar-message-freetext = Teksti poistettu
 pdfjs-editor-undo-bar-message-ink = Piirustus poistettu
 pdfjs-editor-undo-bar-message-stamp = Kuva poistettu
 pdfjs-editor-undo-bar-message-signature = Allekirjoitus poistettu
+pdfjs-editor-undo-bar-message-comment = Kommentti poistettu
 # Variables:
 #   $count (Number) - the number of removed annotations.
 pdfjs-editor-undo-bar-message-multiple =
@@ -592,6 +598,8 @@ pdfjs-editor-add-signature-save-checkbox = Tallenna allekirjoitus
 pdfjs-editor-add-signature-save-warning-message = Olet saavuttanut viiden tallennetun allekirjoituksen rajan. Poista yksi säästääksesi lisää.
 pdfjs-editor-add-signature-image-upload-error-title = Kuvaa ei voitu lähettää
 pdfjs-editor-add-signature-image-upload-error-description = Tarkista verkkoyhteyden tila tai kokeile toista kuvaa.
+pdfjs-editor-add-signature-image-no-data-error-title = Tätä kuvaa ei voida muuntaa allekirjoitukseksi
+pdfjs-editor-add-signature-image-no-data-error-description = Yritä lähettää eri kuva.
 pdfjs-editor-add-signature-error-close-button = Sulje
 
 ## Dialog buttons
@@ -599,6 +607,191 @@ pdfjs-editor-add-signature-error-close-button = Sulje
 pdfjs-editor-add-signature-cancel-button = Peruuta
 pdfjs-editor-add-signature-add-button = Lisää
 pdfjs-editor-edit-signature-update-button = Päivitä
+
+## Comment popup
+
+pdfjs-editor-edit-comment-popup-button-label = Muokkaa kommenttia
+pdfjs-editor-edit-comment-popup-button =
+    .title = Muokkaa kommenttia
+pdfjs-editor-delete-comment-popup-button-label = Poista kommentti
+pdfjs-editor-delete-comment-popup-button =
+    .title = Poista kommentti
+pdfjs-show-comment-button =
+    .title = Näytä kommentti
+
+##  Edit a comment dialog
+
+# An existing comment is edited
+pdfjs-editor-edit-comment-dialog-title-when-editing = Muokkaa kommenttia
+pdfjs-editor-edit-comment-dialog-save-button-when-editing = Päivitä
+# No existing comment
+pdfjs-editor-edit-comment-dialog-title-when-adding = Lisää kommentti
+pdfjs-editor-edit-comment-dialog-save-button-when-adding = Lisää
+pdfjs-editor-edit-comment-dialog-text-input =
+    .placeholder = Aloita kirjoittaminen…
+pdfjs-editor-edit-comment-dialog-cancel-button = Peruuta
+
+## Edit a comment button in the editor toolbar
+
+pdfjs-editor-add-comment-button =
+    .title = Lisää kommentti
+
+## The view manager is a sidebar displaying different views:
+##  - thumbnails;
+##  - outline;
+##  - attachments;
+##  - layers.
+## The thumbnails view is used to edit the pdf: remove/insert pages, ...
+
+pdfjs-toggle-views-manager-notification-button =
+    .title = Näytä/piilota sivupaneeli (dokumentissa on pienoiskuvat/sisällys/liitteitä/tasoja)
+pdfjs-toggle-views-manager-button1-label = Hallitse sivuja
+pdfjs-views-manager-sidebar =
+    .aria-label = Sivupaneeli
+pdfjs-views-manager-sidebar-resizer =
+    .aria-label = Sivupaneelin koon muuttaja
+pdfjs-views-manager-view-selector-button =
+    .title = Näkymät
+pdfjs-views-manager-view-selector-button-label = Näkymät
+pdfjs-views-manager-pages-title = Sivut
+pdfjs-views-manager-outlines-title1 = Dokumentin sisällys
+    .title = Dokumentin sisällys (napsauta kahdesti laajentaaksesi/supistaaksesi kohteet)
+pdfjs-views-manager-attachments-title = Liitteet
+pdfjs-views-manager-layers-title1 = Tasot
+    .title = Tasot (napsauta kahdesti nollataksesi tasot niiden oletustilaan)
+pdfjs-views-manager-pages-option-label = Sivut
+pdfjs-views-manager-outlines-option-label = Dokumentin sisällys
+pdfjs-views-manager-attachments-option-label = Liitteet
+pdfjs-views-manager-layers-option-label = Tasot
+pdfjs-views-manager-add-file-button =
+    .title = Lisää tiedosto
+pdfjs-views-manager-add-file-button-label = Lisää tiedosto
+# Variables:
+#   $count (Number) - the number of selected pages.
+pdfjs-views-manager-pages-status-action-label =
+    { $count ->
+        [one] { $count } valittu
+       *[other] { $count } valittu
+    }
+pdfjs-views-manager-pages-status-none-action-label = Valitse sivut
+pdfjs-views-manager-pages-status-action-button-label = Hallitse
+pdfjs-views-manager-pages-status-copy-button-label = Kopioi
+pdfjs-views-manager-pages-status-cut-button-label = Leikkaa
+pdfjs-views-manager-pages-status-delete-button-label = Poista
+pdfjs-views-manager-pages-status-export-selected-button-label = Vie valitut…
+# Variables:
+#   $count (Number) - the number of selected pages to be cut.
+pdfjs-views-manager-status-undo-cut-label =
+    { $count ->
+        [one] 1 sivu leikattu
+       *[other] { $count } sivua leikattu
+    }
+# Variables:
+#   $count (Number) - the number of selected pages to be copied.
+pdfjs-views-manager-pages-status-undo-copy-label =
+    { $count ->
+        [one] 1 sivu kopioitu
+       *[other] { $count } sivua kopioitu
+    }
+# Variables:
+#   $count (Number) - the number of selected pages to be deleted.
+pdfjs-views-manager-pages-status-undo-delete-label =
+    { $count ->
+        [one] 1 sivu poistettu
+       *[other] { $count } sivua poistettu
+    }
+pdfjs-views-manager-pages-status-waiting-ready-label = Tiedostoa valmistellaan…
+pdfjs-views-manager-pages-status-waiting-uploading-label = Lähetetään tiedostoa…
+pdfjs-views-manager-status-warning-cut-label = Leikkaaminen epäonnistui. Päivitä sivu ja yritä uudelleen.
+pdfjs-views-manager-status-warning-copy-label = Kopiointi epäonnistui. Päivitä sivu ja yritä uudelleen.
+pdfjs-views-manager-status-warning-delete-label = Poisto epäonnistui. Päivitä sivu ja yritä uudelleen.
+pdfjs-views-manager-status-warning-save-label = Tallentaminen epäonnistui. Päivitä sivu ja yritä uudelleen.
+pdfjs-views-manager-status-undo-button-label = Kumoa
+pdfjs-views-manager-status-done-button-label = Valmis
+pdfjs-views-manager-status-close-button =
+    .title = Sulje
+pdfjs-views-manager-status-close-button-label = Sulje
+pdfjs-views-manager-paste-button-label = Liitä
+pdfjs-views-manager-paste-button-before =
+    .title = Liitä ennen ensimmäistä sivua
+# Variables:
+#   $page (Number) - the page number after which the paste button is.
+pdfjs-views-manager-paste-button-after =
+    .title = Liitä sivun { $page } jälkeen
+# Badge used to promote a new feature in the UI, keep it as short as possible.
+# It's spelled uppercase for English, but it can be translated as usual.
+pdfjs-new-badge-content = UUTTA
+pdfjs-views-manager-waiting-for-file = Lähetetään tiedostoa…
+pdfjs-toggle-views-manager-button1 =
+    .title = Hallitse sivuja
+
+## Digital signature properties (signature verification panel)
+
+pdfjs-digital-signature-properties-button =
+    .aria-label = Digitaalisen allekirjoituksen ominaisuudet
+    .title = Digitaalisen allekirjoituksen ominaisuudet
+pdfjs-digital-signature-properties-button-label = Digitaalisen allekirjoituksen ominaisuudet
+
+## Banner shown above the signature list summarising the overall
+## verification state of the document. Each variant is selected by the
+## viewer based on the worst per-signature status; one signature is
+## enough to lower the banner.
+##
+## Variables:
+##   $count (Number) - number of signatures at the worst level.
+
+pdfjs-digital-signature-properties-banner-verified = Asiakirja allekirjoitettiin kelvollisella digitaalisella allekirjoituksella
+pdfjs-digital-signature-properties-banner-unknown =
+    { $count ->
+        [one] Asiakirja allekirjoitettu, mutta { $count } digitaalista allekirjoitusta ei voitu vahvistaa
+       *[other] Asiakirja allekirjoitettu, mutta { $count } digitaalista allekirjoitusta ei voitu vahvistaa
+    }
+pdfjs-digital-signature-properties-banner-untrusted =
+    { $count ->
+        [one] Asiakirja on allekirjoitettu { $count } varmenteella, johon ei luoteta
+       *[other] Asiakirja on allekirjoitettu { $count } varmenteella, joihin ei luoteta
+    }
+pdfjs-digital-signature-properties-banner-expired =
+    { $count ->
+        [one] Asiakirja allekirjoitettu { $count } vanhentuneella varmenteella
+       *[other] Asiakirja allekirjoitettu { $count } vanhentuneella varmenteella
+    }
+pdfjs-digital-signature-properties-banner-invalid =
+    { $count ->
+        [one] Asiakirjassa on { $count } virheellinen digitaalinen allekirjoitus
+       *[other] Asiakirjassa on { $count } virheellistä digitaalista allekirjoitusta
+    }
+pdfjs-digital-signature-properties-banner-revoked =
+    { $count ->
+        [one] Asiakirja allekirjoitettu { $count } kumotulla varmenteella
+       *[other] Asiakirja allekirjoitettu { $count } kumotulla varmenteella
+    }
+
+## Per-signature status row. Only three distinct strings are needed:
+## the signature crypto either verified (the cert chain may still be
+## untrusted/expired/revoked, but that's surfaced on the cert row
+## below), or it failed, or its sub-format isn't supported.
+
+pdfjs-digital-signature-properties-status-verified = Tila: Allekirjoitus vahvistettu
+pdfjs-digital-signature-properties-status-invalid = Tila: Allekirjoitus virheellinen
+pdfjs-digital-signature-properties-status-unknown = Tila: Vahvistus epäonnistui (ei tuettu)
+
+## Per-signature certificate row. The variants with an issuer / date in
+## parentheses embed fully-localized context — no English fall-through.
+##
+## Variables:
+##   $issuer (String) - issuer or subject common name from the cert.
+##   $dateObj (Date)  - notAfter date for the expired-with-date form.
+
+pdfjs-digital-signature-properties-certificate-trusted = Varmenne: Luotettu ({ $issuer })
+pdfjs-digital-signature-properties-certificate-unknown = Varmenne: Ei saatavilla
+pdfjs-digital-signature-properties-certificate-untrusted = Varmenne: Ei-luotettu
+pdfjs-digital-signature-properties-certificate-untrusted-unknown-issuer = Varmenne: Tuntematon myöntäjä ({ $issuer })
+pdfjs-digital-signature-properties-certificate-untrusted-self-signed = Varmenne: Itse allekirjoitettu ({ $issuer })
+pdfjs-digital-signature-properties-certificate-untrusted-untrusted-issuer = Varmenne: Ei-luotettu myöntäjä ({ $issuer })
+pdfjs-digital-signature-properties-certificate-expired = Varmenne: Vanhentunut
+pdfjs-digital-signature-properties-certificate-expired-with-date = Varmenne: Vanhentunut ({ DATETIME($dateObj, dateStyle: "medium") })
+pdfjs-digital-signature-properties-certificate-revoked = Varmenne: Kumottu
 
 ## Main menu for adding/removing signatures
 

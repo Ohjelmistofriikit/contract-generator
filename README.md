@@ -49,10 +49,10 @@ After an approved change to the contract text or contract logic:
 |---|---|---|---|
 | Alpine.js | 3.17.5 | `vendor/alpinejs.min.js` | `https://cdn.jsdelivr.net/npm/alpinejs@<version>/dist/cdn.min.js` |
 | jsPDF | 4.2.1 | `vendor/jspdf.umd.min.js` | `https://cdn.jsdelivr.net/npm/jspdf@<version>/dist/jspdf.umd.min.js` |
-| pdf.js | 5.3.31 | `vendor/pdfjs/` | `pdfjs-<version>-dist.zip` from https://github.com/mozilla/pdf.js/releases |
+| pdf.js | 6.4.299 (legacy build) | `vendor/pdfjs/` | `pdfjs-<version>-legacy-dist.zip` from https://github.com/mozilla/pdf.js/releases |
 | Tailwind CSS | see `package.json` | `vendor/tailwind.min.css` | `npm install -D -E tailwindcss@<version> @tailwindcss/cli@<version>`, then `npm run build:css` |
 
-**pdf.js** is only used for the preview. After unpacking a new release into `vendor/pdfjs/`, remove what the preview doesn't need: `*.map` files, `web/compressed.tracemonkey-pldi-09.pdf`, `web/debugger.*`, `web/standard_fonts/`, `web/cmaps/`, `web/wasm/`, `web/iccs/` (only needed for PDFs that don't embed their fonts or contain images; ours embed Plus Jakarta Sans), and the `web/locale/` folders other than `fi`, `sv-SE` and `en-US`. Then edit `web/locale/locale.json` to list only those three; a language listed there without its folder breaks the viewer for browsers in that language. Check the preview still loads.
+**pdf.js** is only used for the preview. Use the **legacy** build: the standard build of pdf.js 6 needs JavaScript features only the newest browsers have (e.g. `Map.prototype.getOrInsertComputed`; Chrome 140 fails, Chrome 156 works), and the preview would silently stay empty elsewhere. After unpacking a new release into `vendor/pdfjs/`, remove what the preview doesn't need: `*.map` files, `web/compressed.tracemonkey-pldi-09.pdf`, `web/debugger.*`, `web/standard_fonts/`, `web/cmaps/`, `web/wasm/`, `web/iccs/` (only needed for PDFs that don't embed their fonts or contain images; ours embed Plus Jakarta Sans), and the `web/locale/` folders other than `fi`, `sv-SE` and `en-US`. Then edit `web/locale/locale.json` to list only those three; a language listed there without its folder breaks the viewer for browsers in that language. Check the preview still loads.
 
 **Fonts** (Plus Jakarta Sans, from Google Fonts, OFL licence):
 
