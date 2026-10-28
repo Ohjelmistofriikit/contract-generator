@@ -27,7 +27,7 @@ npm run build:css          # regenerates vendor/tailwind.min.css
 - Don't put two utilities for the same property on one element (e.g. `px-4 px-6`). Tailwind 4 decides which one wins by its own sort order, not by class order.
 - Use Tailwind 4 names: `shrink-0` (not `flex-shrink-0`), `bg-gray-800/90` (not `bg-opacity-*`), `rounded-sm` for the old bare `rounded`. The page was built with Tailwind 2, whose `yellow`/`green` are `amber`/`emerald` today.
 - Always pair a border width with a colour class (`border-2 border-gray-700`); Tailwind 4's default border colour is `currentColor`, which is white-ish on this page.
-- Tailwind 4 doesn't give buttons a pointer cursor or placeholders a gray colour by default, so the page sets them per element: give new buttons `cursor-pointer` and new inputs with a placeholder `placeholder:text-gray-400`.
+- Tailwind 4 doesn't give buttons a pointer cursor or placeholders a gray colour by default. The `<style>` block sets both: `button:not(:disabled) { cursor: pointer }` (like the existing `label` rule) and `.input-text::placeholder`. New text inputs should use the `.input-text` class.
 - The `<style>` block in `index.html` (custom colours like `bg-blueish`, `.input-text`, …) is wrapped in `@layer utilities` on purpose. Tailwind 4 puts its utilities in cascade layers, and unlayered CSS would always override them; in the same layer, the inline rules win by specificity and order as they did before. Put new custom CSS inside that layer; keep `@font-face` outside it.
 - Tailwind 4 needs a modern browser (Safari 16.4+, Chrome 111+, Firefox 128+). Older browsers get a mostly unstyled page.
 
