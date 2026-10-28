@@ -23,7 +23,7 @@ Fix these first. Items 1.1–1.3 affect the text of generated contracts.
 - [x] **1.5 Supplier Y-tunnus check differs from the client one.**
   [globalstate.js:266](../globalstate.js#L266): in `kirjaaValmisToimittajanYtunnus`, the empty-field branch does not clear `toimittajanYtunnusValmis`, unlike the client version. If a valid Y-tunnus is entered and then deleted, the old value stays and is still shown in the collapsed summary. Low impact: the continue button is disabled while the field is empty (`canContinue` checks the raw value), so the user can't generate with the stale value without noticing.
 
-- [ ] **1.6 Missing `:` in a binding.**
+- [x] **1.6 Missing `:` in a binding.**
   [index.html:718](../index.html#L718): `title="t('placeholderInputWeeklyHours')"` shows that literal text as the tooltip. It should be `:title="…"`.
 
 - [x] **1.7 Variables leak into global scope.**
