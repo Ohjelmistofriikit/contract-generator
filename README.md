@@ -47,7 +47,7 @@ After an approved change to the contract text or contract logic:
 
 | Library | Version | File(s) | Get it from |
 |---|---|---|---|
-| Alpine.js | 3.14.9 | `vendor/alpinejs.min.js` | `https://cdn.jsdelivr.net/npm/alpinejs@<version>/dist/cdn.min.js` |
+| Alpine.js | 3.17.5 | `vendor/alpinejs.min.js` | `https://cdn.jsdelivr.net/npm/alpinejs@<version>/dist/cdn.min.js` |
 | jsPDF | 2.5.1 | `vendor/jspdf.umd.min.js` | `https://cdn.jsdelivr.net/npm/jspdf@<version>/dist/jspdf.umd.min.js` |
 | pdf.js | 5.3.31 | `vendor/pdfjs/` | `pdfjs-<version>-dist.zip` from https://github.com/mozilla/pdf.js/releases |
 | Tailwind CSS | see `package.json` | `vendor/tailwind.min.css` | `npm install -D -E tailwindcss@<version> @tailwindcss/cli@<version>`, then `npm run build:css` |
