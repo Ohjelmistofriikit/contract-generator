@@ -79,16 +79,8 @@
           background-size: contain;
         }
 
-        /** Since we are using v2 of Tailwind,
-          * we don't have w-fit that newer Tailwind versions have,
-          * so we are declaring w-fit here. */
-        .w-fit {
-          width: fit-content;
-        }
-
-        /** Since we are not using proper Tailwind config, we do this hacky thing
-          * to get Ohjelmistofriikit color palette available for use with a syntax
-          * that will be similar to using Tailwind with proper Tailwind config. */
+        /** Ohjelmistofriikit colour palette as CSS variables, with Tailwind-style class names
+          * (bg-blueish, text-yellowish, ...). */
 
         :root {
           --yellowish: #f2ff66;
@@ -899,7 +891,7 @@
                         x-model="tilaajanYritysRaaka"
                         x-ref="tilaajanYritysRaaka"
                         @keydown.enter.prevent="$el.blur(); setTimeout(() => { $refs.tilaajanYtunnusRaaka.focus({ preventScroll: true }); }, 10);"
-                        @blur="kirjaaValmisTilaajanYritys();"
+                        @blur="kirjaaValmisTeksti('tilaajan', 'Yritys');"
                         type="text"
                         name="tilaajanYritys"
                         :placeholder="t('placeholderInputClientCompany')"
@@ -936,7 +928,7 @@
                       x-model="tilaajanYhteyshenkiloRaaka"
                       x-ref="tilaajanYhteyshenkiloRaaka"
                       @keydown.enter.prevent="$el.blur(); setTimeout(() => { $refs.tilaajanEmailRaaka.focus({ preventScroll: true }); }, 10);"
-                      @blur="kirjaaValmisTilaajanYhteyshenkilo();"
+                      @blur="kirjaaValmisTeksti('tilaajan', 'Yhteyshenkilo');"
                       type="text"
                       name="tilaajanYhteyshenkilo"
                       :placeholder="t('placeholderInputClientContactPerson')"
@@ -1056,7 +1048,7 @@
                         x-model="toimittajanYritysRaaka"
                         x-ref="toimittajanYritysRaaka"
                         @keydown.enter.prevent="$el.blur(); setTimeout(() => { $refs.toimittajanYtunnusRaaka.focus({ preventScroll: true }); }, 10);"
-                        @blur="kirjaaValmisToimittajanYritys();"
+                        @blur="kirjaaValmisTeksti('toimittajan', 'Yritys');"
                         type="text"
                         name="toimittajanYritys"
                         :placeholder="t('placeholderInputFreelancerCompany')"
@@ -1093,7 +1085,7 @@
                       x-model="toimittajanYhteyshenkiloRaaka"
                       x-ref="toimittajanYhteyshenkiloRaaka"
                       @keydown.enter.prevent="$el.blur(); setTimeout(() => { $refs.toimittajanEmailRaaka.focus({ preventScroll: true }); }, 10);"
-                      @blur="kirjaaValmisToimittajanYhteyshenkilo();"
+                      @blur="kirjaaValmisTeksti('toimittajan', 'Yhteyshenkilo');"
                       type="text"
                       name="toimittajanYhteyshenkilo"
                       :placeholder="t('placeholderInputFreelancerContactPerson')"
@@ -2285,7 +2277,7 @@
     </section>
 
     <!-- PDF Preview Section -->
-    <section x-show="previewRendered" id="pdf-preview-section" class="p-0 max-w-5xl mx-auto relative" style="min-height: 90vh; height: 90vh;">
+    <section x-show="pdfUrl" id="pdf-preview-section" class="p-0 max-w-5xl mx-auto relative" style="min-height: 90vh; height: 90vh;">
       <iframe id="pdf-viewer" width="100%" class="rounded-sm" style="height: 90vh; min-height: 90vh;"></iframe>
       <button 
         id="save-pdf-button"

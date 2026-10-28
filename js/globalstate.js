@@ -19,8 +19,7 @@ function getAlpineState() {
       this.karajaoikeusValmis = translateCourt(this.karajaoikeusValmis);
       this.asetaOletusMatkustusalue(newLanguage);
 
-      // A generated PDF is in the old language; hide it so the user generates it again.
-      this.previewRendered = false;
+      // A generated PDF is in the old language; drop it (hides the preview) so the user generates it again.
       this.setPdfUrl('');
 
       this.currentLanguage = newLanguage;
@@ -208,6 +207,9 @@ function getAlpineState() {
     // the commit/validation logic is shared: `osapuoli` is the field-name prefix, 'tilaajan' or
     // 'toimittajan', e.g. kirjaaValmisYtunnus('tilaajan') commits tilaajanYtunnusRaaka.
     // *Error / *Warning hold translation keys, translated in the template so they follow language switches.
+    kirjaaValmisTeksti(osapuoli, kentta) {
+      this[`${osapuoli}${kentta}Valmis`] = this[`${osapuoli}${kentta}Raaka`];
+    },
     kirjaaValmisYtunnus(osapuoli) {
       const ytunnus = this[`${osapuoli}YtunnusRaaka`].trim();
       if (!ytunnus) {
@@ -243,18 +245,12 @@ function getAlpineState() {
     // Tilaaja
     tilaajanYritysRaaka: '',
     tilaajanYritysValmis: '',
-    kirjaaValmisTilaajanYritys() {
-      this.tilaajanYritysValmis = this.tilaajanYritysRaaka;
-    },
     tilaajanYtunnusRaaka: '',
     tilaajanYtunnusValmis: '',
     tilaajanYtunnusError: '',
     tilaajanYtunnusWarning: '',
     tilaajanYhteyshenkiloRaaka: '',
     tilaajanYhteyshenkiloValmis: '',
-    kirjaaValmisTilaajanYhteyshenkilo() {
-      this.tilaajanYhteyshenkiloValmis = this.tilaajanYhteyshenkiloRaaka;
-    },
     tilaajanEmailRaaka: '',
     tilaajanEmailValmis: '',
     tilaajanEmailError: '',
@@ -268,18 +264,12 @@ function getAlpineState() {
     // Toimittaja
     toimittajanYritysRaaka: '',
     toimittajanYritysValmis: '',
-    kirjaaValmisToimittajanYritys() {
-      this.toimittajanYritysValmis = this.toimittajanYritysRaaka;
-    },
     toimittajanYtunnusRaaka: '',
     toimittajanYtunnusValmis: '',
     toimittajanYtunnusError: '',
     toimittajanYtunnusWarning: '',
     toimittajanYhteyshenkiloRaaka: '',
     toimittajanYhteyshenkiloValmis: '',
-    kirjaaValmisToimittajanYhteyshenkilo() {
-      this.toimittajanYhteyshenkiloValmis = this.toimittajanYhteyshenkiloRaaka;
-    },
     toimittajanEmailRaaka: '',
     toimittajanEmailValmis: '',
     toimittajanEmailError: '',
@@ -699,8 +689,7 @@ function getAlpineState() {
       return true;
     },
 
-    previewRendered: false,
-    // blob: URL of the generated PDF, shared by the preview and the download.
+    // blob: URL of the generated PDF, shared by the preview and the download. The preview is shown while it's set.
     pdfUrl: '',
     setPdfUrl(url) {
       if (this.pdfUrl) {
@@ -722,7 +711,6 @@ function getAlpineState() {
 
       this.setPdfUrl(URL.createObjectURL(getPDF(this)));
       document.getElementById('pdf-viewer').src = `vendor/pdfjs/web/viewer.html?file=${encodeURIComponent(this.pdfUrl)}`;
-      this.previewRendered = true;
       setTimeout(() => {
         window.scrollTo({
           top: document.body.scrollHeight,
