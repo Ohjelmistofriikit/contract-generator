@@ -584,5 +584,5 @@ function getPDF(state) {
   doc.setFont(FONT_NAME, "italic");
   doc.text(promotext, PAGE_WIDTH / 2, PAGE_HEIGHT - 10, { align: 'center' });
 
-  return doc.output('datauristring');
+  return doc.output('blob');
 }

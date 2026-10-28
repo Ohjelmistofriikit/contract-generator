@@ -21,7 +21,7 @@ function getAlpineState() {
 
       // A generated PDF is in the old language; hide it so the user generates it again.
       this.previewRendered = false;
-      this.pdfDataUri = '';
+      this.setPdfUrl('');
 
       this.currentLanguage = newLanguage;
       // x-model sets the <select> value before the court options re-render in the new language,
@@ -699,8 +699,14 @@ function getAlpineState() {
     },
 
     previewRendered: false,
-    pdfDataUri: '',
-    filename: '',
+    // blob: URL of the generated PDF, shared by the preview and the download.
+    pdfUrl: '',
+    setPdfUrl(url) {
+      if (this.pdfUrl) {
+        URL.revokeObjectURL(this.pdfUrl);
+      }
+      this.pdfUrl = url;
+    },
     continueClicked() {
       if (this.getFormProgress() < 100) {
         // Nothing happens other than defocus, which we use to progress through the form
@@ -716,23 +722,8 @@ function getAlpineState() {
         }
       }
 
-      // Generate PDF contents
-      this.pdfDataUri = getPDF(this);
-
-      function dataURItoBlob(dataURI) {
-        const byteString = atob(dataURI.split(',')[1]);
-        const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-        const ab = new ArrayBuffer(byteString.length);
-        const ia = new Uint8Array(ab);
-        for (let i = 0; i < byteString.length; i++) {
-          ia[i] = byteString.charCodeAt(i);
-        }
-        return new Blob([ab], { type: mimeString });
-      }
-
-      const blob = dataURItoBlob(this.pdfDataUri);
-      const blobUrl = URL.createObjectURL(blob);
-      document.getElementById('pdf-viewer').src = `vendor/pdfjs/web/viewer.html?file=${encodeURIComponent(blobUrl)}`;
+      this.setPdfUrl(URL.createObjectURL(getPDF(this)));
+      document.getElementById('pdf-viewer').src = `vendor/pdfjs/web/viewer.html?file=${encodeURIComponent(this.pdfUrl)}`;
       this.previewRendered = true;
       setTimeout(() => {
         window.scrollTo({
@@ -743,19 +734,17 @@ function getAlpineState() {
     },
 
     downloadClicked() {
-        // Set filename for download
-        const sanitizedClientName = this.tilaajanYritysValmis.replace(/[^a-zA-Z0-9åäöÅÄÖ\s]/g, '').replace(/\s+/g, '_');
-        const formattedDate = `${new Date().getDate().toString().padStart(2, '0')}.${(new Date().getMonth() + 1).toString().padStart(2, '0')}.${new Date().getFullYear()}`;
-        const prefix = this.currentLanguage === 'en' ? 'ConsultingContract' : 'Konsultointisopimus';
-        const filename = `${prefix}_${sanitizedClientName}_${formattedDate}.pdf`;
+      const sanitizedClientName = this.tilaajanYritysValmis.replace(/[^a-zA-Z0-9åäöÅÄÖ\s]/g, '').replace(/\s+/g, '_');
+      const today = new Date();
+      const formattedDate = `${String(today.getDate()).padStart(2, '0')}.${String(today.getMonth() + 1).padStart(2, '0')}.${today.getFullYear()}`;
+      const prefix = this.currentLanguage === 'en' ? 'ConsultingContract' : 'Konsultointisopimus';
 
-        // Download pdfDataUri
-        const link = document.createElement('a');
-        link.href = this.pdfDataUri;
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+      const link = document.createElement('a');
+      link.href = this.pdfUrl;
+      link.download = `${prefix}_${sanitizedClientName}_${formattedDate}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   }
 }

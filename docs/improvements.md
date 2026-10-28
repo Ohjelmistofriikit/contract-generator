@@ -69,7 +69,7 @@ All in [pdfgeneration.js](../js/pdfgeneration.js). These look like typos and wor
 ## 4. Simplification and code quality
 
 - [x] **Remove the client/supplier duplication** in [globalstate.js](../js/globalstate.js). The `kirjaaValmis*` handlers for company, Y-tunnus, contact person, email and phone are near-copies for `tilaajan*` and `toimittajan*`. Generic helpers (e.g. `commitYtunnus('tilaajan')`, `commitEmail(prefix)`, `commitPhone(prefix)`) would remove about 120 lines and fix 1.5 as a side effect.
-- [ ] **Simplify PDF output.** Remove `dataURItoBlob` ([globalstate.js:758](../js/globalstate.js#L758)): get a blob directly with `doc.output('blob')` and use one blob URL for both the preview and the download. Revoke the previous URL with `URL.revokeObjectURL` when the user generates again; the current code leaks one per generation.
+- [x] **Simplify PDF output.** Remove `dataURItoBlob` ([globalstate.js:758](../js/globalstate.js#L758)): get a blob directly with `doc.output('blob')` and use one blob URL for both the preview and the download. Revoke the previous URL with `URL.revokeObjectURL` when the user generates again; the current code leaks one per generation.
 - [ ] **Move hard-coded texts to `translations.js`:**
   - the fixed-price `confirm()` message in `continueClicked` ([globalstate.js:747](../js/globalstate.js#L747))
   - the hard-coded Finnish `title` attributes in `index.html`: `"Valmis"`, `"Muokkaa"`, `"Numero, esimerkiksi 100 tai 100,00"`, `"Valitse päivämäärä jolloin työ alkaa"`, `"Useimmissa sopimuksissa nykypäivänä IPR menee tilaajalle"`
