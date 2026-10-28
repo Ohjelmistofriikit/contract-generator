@@ -4,7 +4,16 @@ https://sopimusgeneraattori.ohjelmistofriikit.fi/
 
 ## Development
 
-The contract generator is static HTML, JS and CSS. You can serve it locally with e.g. live-server. The main dependencies are AlpineJS, PDFjs and jsPDF. The dependencies are pre-built and bundled into the repo. There is no build step.
+The contract generator is static HTML, JS and CSS that runs straight from the committed files. Serve the repo root locally with e.g. `npx live-server` (without a path argument). The main dependencies are AlpineJS, PDFjs and jsPDF; they are pre-built and bundled into `vendor/`.
+
+The only generated file is `vendor/tailwind.min.css`, which contains just the Tailwind classes the page uses. After adding a new Tailwind class, regenerate and commit it:
+
+```sh
+npm install
+npm run build:css
+```
+
+See [CLAUDE.md](CLAUDE.md) for the project layout and conventions.
 
 ## License
 
