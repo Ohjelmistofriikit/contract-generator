@@ -415,8 +415,8 @@
     <button 
       onclick="document.querySelector('#form-section').scrollIntoView({ behavior: 'smooth' })"
       class="hidden md:block absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce cursor-pointer"
-      aria-label="Scroll to form section"
-      title="Click to scroll to form"
+      :aria-label="t('scrollToForm')"
+      :title="t('scrollToForm')"
     >
       <svg class="w-6 h-6 text-whiteish" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
@@ -462,7 +462,7 @@
               <span 
                 x-show="onkoValmisFieldsetLaskutusperuste()" 
                 class="ml-2 text-emerald-400 text-sm"
-                title="Valmis"
+                :title="t('complete')"
               >
                 ✓
               </span>
@@ -492,7 +492,7 @@
                 </div>
 
                 </div>
-                <div class="flex items-center" title="Muokkaa">
+                <div class="flex items-center" :title="t('edit')">
                   <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -557,7 +557,7 @@
                   @blur="kirjaaValmisTuntihinta();"
                   type="text"
                   name="tuntihinta"
-                  title="Numero, esimerkiksi 100 tai 100,00"
+                  :title="t('numberExampleHourlyRate')"
                   autocomplete="off"
                   tabindex="0"
                   class="w-16 input-text text-center"
@@ -585,7 +585,7 @@
                   @blur="kirjaaValmisUrakkahinta();"
                   type="text"
                   name="urakkahinta"
-                  title="Numero, esimerkiksi 100 tai 100,00"
+                  :title="t('numberExampleHourlyRate')"
                   autocomplete="off"
                   tabindex="0"
                   class="w-28 input-text text-center"
@@ -620,7 +620,7 @@
               <span 
                 x-show="onkoValmisFieldsetTuntimaara()" 
                 class="ml-2 text-emerald-400 text-sm"
-                title="Valmis"
+                :title="t('complete')"
               >
                 ✓
               </span>
@@ -655,7 +655,7 @@
                     <span x-text="t('until')"></span>
                   </span>
                 </div>
-                <div class="flex items-center" title="Muokkaa">
+                <div class="flex items-center" :title="t('edit')">
                   <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -740,7 +740,7 @@
                     @blur="kirjaaValmisAlkupaivamaara();"
                     type="date"
                     name="alkupaivamaara"
-                    title="Valitse päivämäärä jolloin työ alkaa"
+                    :title="t('startDateHelp')"
                     autocomplete="off"
                     tabindex="0"
                     class="w-40 input-text text-center"
@@ -850,7 +850,7 @@
               <span 
                 x-show="onkoValmisFieldsetTilaajanTiedot()" 
                 class="ml-2 text-emerald-400 text-sm"
-                title="Valmis"
+                :title="t('complete')"
               >
                 ✓
               </span>
@@ -876,7 +876,7 @@
                     <span x-text="tilaajanPuhelinValmis"></span>)
                   </div>
                 </div>
-                <div class="flex items-center" title="Muokkaa">
+                <div class="flex items-center" :title="t('edit')">
                   <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -1009,7 +1009,7 @@
               <span 
                 x-show="onkoValmisFieldsetToimittajanTiedot()" 
                 class="ml-2 text-emerald-400 text-sm"
-                title="Valmis"
+                :title="t('complete')"
               >
                 ✓
               </span>
@@ -1035,7 +1035,7 @@
                     <span x-text="toimittajanPuhelinValmis"></span>)
                   </div>
                 </div>
-                <div class="flex items-center" title="Muokkaa">
+                <div class="flex items-center" :title="t('edit')">
                   <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -1168,7 +1168,7 @@
               <span 
                 x-show="onkoValmisFieldsetProjektinTiedot()" 
                 class="ml-2 text-emerald-400 text-sm"
-                title="Valmis"
+                :title="t('complete')"
               >
                 ✓
               </span>
@@ -1189,7 +1189,7 @@
                     <span x-text="projektinNimiValmis"></span>
                   </div>
                 </div>
-                <div class="flex items-center" title="Muokkaa">
+                <div class="flex items-center" :title="t('edit')">
                   <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -1392,7 +1392,7 @@
               <span 
                 x-show="onkoValmisFieldsetIPR()" 
                 class="ml-2 text-emerald-400 text-sm"
-                title="Valmis"
+                :title="t('complete')"
               >
                 ✓
               </span>
@@ -1410,7 +1410,7 @@
                   <span x-show="radioIPR === 'toimittajalle'" x-text="t('supplierKeepsIPR')" class="text-yellowish"></span>
                   <span x-show="radioIPR === 'tilaajalle'" x-text="t('clientKeepsIPR')" class="text-yellowish"></span>
                 </div>
-                <div class="flex items-center" title="Muokkaa">
+                <div class="flex items-center" :title="t('edit')">
                   <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -1460,7 +1460,7 @@
                   <span x-text="t('radioClientKeepsIPR')"></span>
                   <span
                     x-text="t('recommended')"
-                    title="Useimmissa sopimuksissa nykypäivänä IPR menee tilaajalle"
+                    :title="t('iprHelp')"
                     class="badge"
                     :style="!radioIPR ? 'visibility: visible;' : 'visibility: hidden;'"
                   >
@@ -1500,7 +1500,7 @@
               <span 
                 x-show="onkoValmisFieldsetSijainti()" 
                 class="ml-2 text-emerald-400 text-sm"
-                title="Valmis"
+                :title="t('complete')"
               >
                 ✓
               </span>
@@ -1523,7 +1523,7 @@
                     <span x-text="t('workOnsitePart2')" class="text-yellowish"></span>
                   </div>
                 </div>
-                <div class="flex items-center" title="Muokkaa">
+                <div class="flex items-center" :title="t('edit')">
                   <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -1603,7 +1603,7 @@
               <span 
                 x-show="onkoValmisFieldsetTyovalineet()" 
                 class="ml-2 text-emerald-400 text-sm"
-                title="Valmis"
+                :title="t('complete')"
               >
                 ✓
               </span>
@@ -1624,7 +1624,7 @@
                   <span x-text="t('workEquipmentBy')"></span>
                   <span x-text="t('tyovalineetTilaaja')" class="text-yellowish"></span>
                 </div>
-                <div class="flex items-center" title="Muokkaa">
+                <div class="flex items-center" :title="t('edit')">
                   <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -1704,7 +1704,7 @@
               <span 
                 x-show="onkoValmisFieldsetTyoajat()" 
                 class="ml-2 text-emerald-400 text-sm"
-                title="Valmis"
+                :title="t('complete')"
               >
                 ✓
               </span>
@@ -1726,7 +1726,7 @@
                   <span class="text-yellowish" x-text="t('clientWorkingHoursPart2')"></span>
                   <span x-text="t('clientWorkingHoursPart3')"></span>
                 </div>
-                <div class="flex items-center" title="Muokkaa">
+                <div class="flex items-center" :title="t('edit')">
                   <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -1808,7 +1808,7 @@
               <span 
                 x-show="onkoValmisFieldsetReferenceRights()" 
                 class="ml-2 text-emerald-400 text-sm"
-                title="Valmis"
+                :title="t('complete')"
               >
                 ✓
               </span>
@@ -1822,7 +1822,7 @@
             >
               <div class="flex justify-between">
                 <div x-text="t(radioReferenceRights)" class="text-gray-300"></div>
-                <div class="flex items-center" title="Muokkaa">
+                <div class="flex items-center" :title="t('edit')">
                   <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -1853,7 +1853,7 @@
                 <span
                   x-show="!radioReferenceRights"
                   x-text="t('recommended')"
-                  title="Auttaa freelanceriä uusien asiakkaiden hankinnassa"
+                  :title="t('referenceRightsHelp')"
                   class="badge"
                 >
                 </span>
@@ -1929,7 +1929,7 @@
               <span 
                 x-show="onkoValmisFieldsetKarajaoikeus()" 
                 class="ml-2 text-emerald-400 text-sm"
-                title="Valmis"
+                :title="t('complete')"
               >
                 ✓
               </span>
@@ -1946,7 +1946,7 @@
                   <span x-text="t('prefixKarajaoikeus')"></span>
                   <span x-text="getCourtInflectedForm(karajaoikeusValmis)" class="text-yellowish"></span>
                 </div>
-                <div class="flex items-center" title="Muokkaa">
+                <div class="flex items-center" :title="t('edit')">
                   <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -2048,7 +2048,7 @@
                     <span x-text="t('somethingInTextAreaShort')"></span>
                   </div>
                 </div>
-                <div class="flex items-center" title="Muokkaa">
+                <div class="flex items-center" :title="t('edit')">
                   <svg width="24" height="24" viewBox="0 0 139 139" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M100.224 20.2879L111.752 8.75319C114.155 6.35006 117.414 5 120.813 5C124.211 5 127.47 6.35006 129.874 8.75319C132.277 11.1563 133.627 14.4157 133.627 17.8142C133.627 21.2127 132.277 24.4721 129.874 26.8752L57.3103 99.4384C53.6977 103.049 49.2427 105.703 44.3475 107.16L26 112.627L31.4667 94.2792C32.9241 89.384 35.5778 84.929 39.1883 81.3164L100.224 20.2879ZM100.224 20.2879L118.25 38.3142M108 85.2934V117.752C108 121.829 106.38 125.740 103.497 128.623C100.613 131.507 96.7027 133.127 92.625 133.127H20.875C16.7973 133.127 12.8866 131.507 10.0032 128.623C7.11986 125.74 5.5 121.829 5.5 117.752V46.0017C5.5 41.924 7.11986 38.0133 10.0032 35.1299C12.8866 32.2466 16.7973 30.6267 20.875 30.6267H53.3333" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -2070,7 +2070,7 @@
                   @blur="kirjaaValmisMaksuaika();"
                   type="text"
                   name="maksuaika"
-                  title="Numero, esimerkiksi 14 tai 30"
+                  :title="t('numberExamplePaymentTerm')"
                   placeholder="14"
                   autocomplete="off"
                   tabindex="0"
@@ -2089,7 +2089,7 @@
                   @blur="kirjaaValmisIrtisanomisaikaViikoissa();"
                   type="text"
                   name="irtisanomisaika"
-                  title="Numero, esimerkiksi 4"
+                  :title="t('numberExampleNoticePeriod')"
                   autocomplete="off"
                   tabindex="0"
                   class="w-16 input-text text-center"
@@ -2110,7 +2110,7 @@
                     @blur="kirjaaValmisMatkakorvaus();"
                     type="text"
                     name="matkakorvaus"
-                    title="Numero, esimerkiksi 25"
+                    :title="t('numberExampleTravelRate')"
                     placeholder="25"
                     autocomplete="off"
                     tabindex="0"
@@ -2189,7 +2189,7 @@
                     <span 
                       x-show="checkboxYlityokorvaus && !ylityokorvausRaaka" 
                       class="block mt-1 sm:inline sm:ml-2 sm:mt-0 text-amber-400 text-sm"
-                      title="Täytä ylityökorvaus tai poista valinta"
+                      :title="t('fillOvertimeOrUncheck')"
                     >
                       ⚠️
                     </span>

@@ -714,10 +714,7 @@ function getAlpineState() {
       }
       if (this.radioLaskutusmuoto === 'urakkalaskutus') {
         // Remind user that attachment is required for urakkalaskutus
-        const attachmentReminderMessage = this.currentLanguage === 'fi' ?
-          'Olet valinnut urakkamuotoisen sopimuksen. Tällöin edellytetään urakan tarkempaa määrittelyä liitteessä, joka sinun tulee muodostaa tämän sopimusgeneraattorin ulkopuolella. Sopimuksessa viitataan liitteeseen, eikä sopimus ole pätevä ilman liitettä. Lisäksi voit halutessasi kirjata liitteeseen maksuaikataulun urakan edistymisen eri vaiheista, mutta se ei ole pakollista. Painamalla "yes" vahvistat että ymmärrät liitteen merkityksen.' :
-          'You have selected fixed-price contract. In this situation you need to specify the scope of the project in an attachment which you need to prepare outside this contract generator. The contract refers to the attachment, and the contract is not valid without an attachment. Additionally, you can specify a payment schedule based on the progress of the project in the attachment, though that part is not mandatory. Select "yes" to confirm that you understand the significance of the attachment.';
-        if (!confirm(attachmentReminderMessage)) {
+        if (!confirm(this.t('attachmentReminder'))) {
           return;
         }
       }
