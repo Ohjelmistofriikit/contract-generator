@@ -5,7 +5,7 @@ function getAlpineState() {
     // - else if a supported lang is in localStorage, use that;
     // - else default to 'fi'
     currentLanguage: [new URLSearchParams(window.location.search).get('lang'), localStorage.getItem('contractGenerator_language')]
-      .find((lang) => lang === 'fi' || lang === 'en') || 'fi',
+      .find((lang) => Object.keys(translations).includes(lang)) || 'fi',
 
     changeLanguage(newLanguage) {
       localStorage.setItem('contractGenerator_language', newLanguage);
@@ -17,11 +17,7 @@ function getAlpineState() {
       const translateCourt = (court) => newCourts[oldCourts.indexOf(court)] || court;
       this.karajaoikeusRaaka = translateCourt(this.karajaoikeusRaaka);
       this.karajaoikeusValmis = translateCourt(this.karajaoikeusValmis);
-      // Travel area defaults from the court; keep it if the user has edited it.
-      if (!this.matkustusaluettaMuokattuManuaalisesti && this.karajaoikeusValmis) {
-        this.matkustusalueRaaka = locations[newLanguage][this.karajaoikeusValmis] || '';
-        this.matkustusalueValmis = this.matkustusalueRaaka;
-      }
+      this.asetaOletusMatkustusalue(newLanguage);
 
       this.currentLanguage = newLanguage;
       // x-model sets the <select> value before the court options re-render in the new language,
@@ -387,10 +383,7 @@ function getAlpineState() {
       this.karajaoikeusValmis = this.karajaoikeusRaaka;
 
       // Special thing here: default value for matkustusalue is set based on karajaoikeus.
-      if (!this.matkustusaluettaMuokattuManuaalisesti) {
-        this.matkustusalueRaaka = locations[this.currentLanguage][this.karajaoikeusRaaka] || '';
-        this.matkustusalueValmis = this.matkustusalueRaaka;
-      }
+      this.asetaOletusMatkustusalue();
     },
     onkoValmisFieldsetKarajaoikeus() {
       return this.karajaoikeusValmis;
@@ -434,7 +427,17 @@ function getAlpineState() {
     kirjaaValmisMatkustusalue() {
       this.matkustusalueValmis = this.matkustusalueRaaka;
       // Only count it as edited if it differs from the court's default (blur alone doesn't count).
-      this.matkustusaluettaMuokattuManuaalisesti = this.matkustusalueRaaka !== (locations[this.currentLanguage][this.karajaoikeusValmis] || '');
+      this.matkustusaluettaMuokattuManuaalisesti = this.matkustusalueRaaka !== this.getOletusMatkustusalue();
+    },
+    getOletusMatkustusalue(lang = this.currentLanguage) {
+      return locations[lang][this.karajaoikeusValmis] || '';
+    },
+    // Resets matkustusalue to the court's default, unless the user has edited it.
+    asetaOletusMatkustusalue(lang = this.currentLanguage) {
+      if (!this.matkustusaluettaMuokattuManuaalisesti) {
+        this.matkustusalueRaaka = this.getOletusMatkustusalue(lang);
+        this.matkustusalueValmis = this.matkustusalueRaaka;
+      }
     },
     checkboxYlityokorvaus: true,
     ylityokorvausRaaka: '50',
