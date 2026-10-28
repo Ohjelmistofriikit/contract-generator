@@ -1933,7 +1933,7 @@
             x-transition:enter.duration.400ms
             @transitionstart.once="$refs.maksuaikaRaaka.focus({ preventScroll: true }); tarvittaessaScrollaaAlas();"
             tabindex="0"
-            class="border-2 p-4 pl-5 mt-4 rounded-sm"
+            class="border-2 p-4 pl-5 mt-4 rounded-sm min-w-0"
             :class="onFocus ? 'border-gray-500 border-dashed' : 'border-gray-700 border-solid'"
           >
             <legend
@@ -2068,7 +2068,7 @@
                       name="matkustusalue"
                       autocomplete="off"
                       tabindex="0"
-                      class="input-text text-center shrink-0 w-80 min-w-80"
+                      class="input-text text-center w-80 max-w-full"
                     />
                   </span>
                 </div>
