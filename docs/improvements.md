@@ -107,7 +107,7 @@ Open questions about what the contract says. Not to be changed until reviewed (s
 
 Raised by the deep review (content questions, not code):
 
-- Fixed-price contracts refer to "liitteessä" / "the Appendix" without an attachment title or date field.
+- [x] Fixed-price contracts referred to "liitteessä" / "the Appendix" without naming it. Approved in the PR #4 review: the scope clause now names "Liite 1 (Urakan määrittely)" / "Appendix 1 (Project Specification)", and a "Liitteet" / "Appendices" section before the signatures lists it. (A date or version field for the appendix would need new form UI; not added.)
 
 ### 6.1 Payment term is also the acceptance period in fixed-price contracts
 

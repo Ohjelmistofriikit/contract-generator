@@ -219,8 +219,8 @@ function getPDF(state) {
       `The deliverables provided by the Supplier are considered to be accepted by the Client if the Client does not present the Supplier with a specified written complaint within ${state.maksuaikaValmis} days of receiving the deliverables.`
     );
     addParagraph(
-      "Urakkaan kuuluva kokonaisuus on määritelty tarkemmin liitteessä.",
-      "The scope included in the project is defined in more detail in the Appendix.",
+      "Urakkaan kuuluva kokonaisuus on määritelty tarkemmin liitteessä 1 (Urakan määrittely).",
+      "The scope included in the project is defined in more detail in Appendix 1 (Project Specification).",
     )
   } else {
     unexpectedError();
@@ -542,6 +542,18 @@ function getPDF(state) {
     addParagraph(
       `Osapuolet ovat lisäksi ja/tai edellä sovitusta poiketen sopineet seuraavaa: ${state.vapaatekstiValmis}`,
       `The parties have additionally and/or as modification to the above agreed upon the following: ${state.vapaatekstiValmis}`
+    );
+  }
+
+  // Liitteet [OPTIONAL]: fixed-price contracts define the scope in an appendix the user writes separately.
+  if (state.radioLaskutusmuoto === 'urakkalaskutus') {
+    addSectionTitle(
+      "Liitteet",
+      "Appendices"
+    );
+    addParagraph(
+      "Liite 1: Urakan määrittely",
+      "Appendix 1: Project Specification"
     );
   }
 
