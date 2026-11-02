@@ -2,19 +2,19 @@
 
 Findings from a code review (2026-10-28). Each item was checked against the code; items marked **Check** need a human decision. Check items off as they are fixed. Line numbers refer to the code at the time of the review and may drift.
 
-> **Policy: contract clause text is not changed without legal review.** Even small, well-meant wording changes can change the legal meaning of a clause. Items that touch the text in `pdfgeneration.js` (1.1, 1.3, section 2 and section 6) are marked **⚖ legal review** and are deferred until reviewed. Code-only fixes can go ahead.
+> **Policy: contract clause text is not changed without the maintainers' explicit approval** (e.g. in a PR review). Even small, well-meant wording changes can change the legal meaning of a clause. Code-only fixes can go ahead.
 
 ## 1. Bugs
 
 Fix these first. Items 1.1–1.3 affect the text of generated contracts.
 
-- [ ] **1.1 Wrong sentence in the English fixed-price contract.** ⚖ legal review
+- [x] **1.1 Wrong sentence in the English fixed-price contract.** Approved in the PR #4 review; replaced with the sentence the hourly contracts already use ("Should the Client not provide such instructions, the Supplier may send invoices to the Client in any reasonable manner deemed appropriate by the Supplier.").
   [pdfgeneration.js:206](../js/pdfgeneration.js#L206): the English billing paragraph for `urakkalaskutus` contains "Should the Supplier not meet the allocation due to reasons attributable to the Supplier, the Supplier is entitled to invoice only the actual hours." That sentence was copy-pasted from the allocation contract and makes no sense in a fixed-price one. The Finnish version says something else: if the Client does not give billing details, the Supplier may send the invoice in any reasonable way. Replace the English sentence with a translation of the Finnish one. Every English fixed-price contract generated so far contains this error.
 
 - [x] **1.2 Changing language after picking a court produces a mixed-language contract.**
   The court list comes from `getCourts()`, which depends on the current language, but `karajaoikeusRaaka`/`karajaoikeusValmis` and the travel area derived from it (`matkustusalue*`) keep the value from the language that was active when they were picked. Example: pick "Helsingin käräjäoikeus", switch to EN, generate → an English contract that says "shall be resolved in Helsingin käräjäoikeudessa". Fix: in `changeLanguage`, clear these fields or map them to the other language (the keys of `locations.fi` and `locations.en` are in matching order). Fixed by mapping by position. **Caveat:** this relies on both lists keeping the same order; a court added or reordered in only one language would silently map to the wrong court. A test should check that the lists line up.
 
-- [ ] **1.3 Finnish travel area means "to", not "within", for the capital region.** ⚖ legal review
+- [x] ~~**1.3 Finnish travel area means "to", not "within", for the capital region.**~~ Won't do (PR #4 review): the user filling in the form has the final say on how the travel area is described, and both forms are correct.
   [translations.js](../js/translations.js), `locations.fi`: the three Uusimaa courts map to `"pääkaupunkiseudulle"` ("to the capital region"). In the contract this reads "Pääkaupunkiseudulle tapahtuvasta matkustamisesta ei veloiteta…" (no charge for travel *to* the capital region). That is grammatical, but every other region uses the "in" ending (`Etelä-Karjalassa`, `Pirkanmaalla`…), and the English contract says "within Helsinki metropolitan area". Change it to `"pääkaupunkiseudulla"`. The UI sentence "poislukien matkustaminen …" reads correctly with either form.
 
 - [x] **1.4 Dates can show the previous day.**
@@ -48,18 +48,18 @@ Fix these first. Items 1.1–1.3 affect the text of generated contracts.
 - [ ] **1.13 Continue button says "Jatka →" but generates the PDF.**
   From the deep review. While focus is in 'muut', `userIndicatedMuutIsValmis` is false, so the label is "Jatka →"; mousedown on the button blurs 'muut' (setting it true) before the click, so the one click generates the PDF (and shows the fixed-price confirm). Either intended one-click behaviour with a misleading label, or the click should only collapse 'muut'. Decide which, then fix the label or `continueClicked`.
 
- in the English contract ⚖ legal review
+## 2. Text fixes in the English contract
 
-All in [pdfgeneration.js](../js/pdfgeneration.js). These look like typos and wording slips, but they are still clause text, so they follow the policy above.
+All in [pdfgeneration.js](../js/pdfgeneration.js). Approved in the PR #4 review and done. Apostrophes are standardised on the straight `'` that most strings already used.
 
-- [ ] "Cient’s" → "Client’s" (line 381)
-- [ ] "its’ Consultants" → "its Consultants" (lines 308, 313)
-- [ ] Double spaces: "decides independently  the working hours", "working space  and" (308), "create  employment relationship" (287)
-- [ ] "likely to occur ," → "likely to occur," (486)
-- [ ] "terminate the Agreement to end without a notice period" / "to end with N weeks' notice" (232, 241): reword, e.g. "terminate the Agreement without notice" / "with N weeks' notice"
-- [ ] "according to the then-current Tax Administration's current guidelines" (366): "current" appears twice
-- [ ] Mixed `'` and `’` apostrophes throughout: pick one
-- [ ] Payment term reused as the acceptance period in fixed-price contracts: see 6.1.
+- [x] "Cient’s" → "Client’s" (line 381)
+- [x] "its’ Consultants" → "its Consultants" (lines 308, 313)
+- [x] Double spaces: "decides independently  the working hours", "working space  and" (308), "create  employment relationship" (287)
+- [x] "likely to occur ," → "likely to occur," (486)
+- [x] "terminate the Agreement to end without a notice period" / "to end with N weeks' notice" (232, 241): reword, e.g. "terminate the Agreement without notice" / "with N weeks' notice"
+- [x] "according to the then-current Tax Administration's current guidelines" (366): "current" appears twice
+- [x] Mixed `'` and `’` apostrophes throughout: pick one
+- [x] ~~Payment term reused as the acceptance period in fixed-price contracts~~: intentional (PR #4 review), see 6.1.
 
 ## 3. Performance and repo size
 
@@ -101,16 +101,17 @@ All in [pdfgeneration.js](../js/pdfgeneration.js). These look like typos and wor
 - [x] **Policy on clause text:** state in the README that clause text in `pdfgeneration.js` is changed only after legal review (see the policy at the top of this file).
 - [x] **Checklist after editing contract text:** generate every combination (hourly with no fixed hours / hourly with allocation / fixed-price × remote / on-site × fi / en) and compare with `sample_output_*.pdf`. Regenerate the sample PDFs when the text changes.
 
-## 6. Deferred: contract-logic questions ⚖ legal review
+## 6. Contract-logic questions
 
 Open questions about what the contract says. Not to be changed until reviewed (see the policy at the top).
 
 Raised by the deep review (content questions, not code):
 
-- The non-solicitation clause doesn't say which personnel it covers or whether it continues after the agreement ends.
 - Fixed-price contracts refer to "liitteessä" / "the Appendix" without an attachment title or date field.
 
 ### 6.1 Payment term is also the acceptance period in fixed-price contracts
+
+**Won't do** (PR #4 review): intentional. The form deliberately derives several values like this; don't change the behaviour.
 
 The form asks one number, the payment term in days (`maksuaika`, default 14, labelled only as payment days). For fixed-price contracts (`urakkalaskutus`), the same number is used twice in the contract:
 
