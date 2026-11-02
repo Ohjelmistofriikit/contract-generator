@@ -212,7 +212,7 @@ function getPDF(state) {
     );
     addParagraph(
       "Laskut lähetetään tavalla, jonka Tilaaja ilmoittaa Toimittajalle kirjallisesti. Mikäli Tilaaja ei ilmoita laskutusyhteystietojaan, Toimittaja voi lähettää laskun Tilaajalle kohtuulliseksi katsomallaan tavalla. Mikäli tässä sopimuksessa tai sen liitteissä ei ole määritetty tarkemmin laskujen lähetysajankohtia, Toimittaja lähettää Tilaajalle laskun vasta, kun urakka on toimitettu.",
-      "The Client shall instruct the Supplier in writing regarding how the invoices shall be sent. Should the Supplier not meet the allocation due to reasons attributable to the Supplier, the Supplier is entitled to invoice only the actual hours. Unless is otherwise agreed in writing, the Supplier shall send the invoice after the project is delivered."
+      "The Client shall instruct the Supplier in writing regarding how the invoices shall be sent. Should the Client not provide such instructions, the Supplier may send invoices to the Client in any reasonable manner deemed appropriate by the Supplier. Unless is otherwise agreed in writing, the Supplier shall send the invoice after the project is delivered."
     );
     addParagraph(
       `Urakka katsotaan toimitetuksi, jos Tilaaja ei esitä Toimittajalle perusteltua kirjallista huomautusta ${state.maksuaikaValmis} päivän kuluessa urakan tulosten vastaanottamisesta.`,
@@ -238,7 +238,7 @@ function getPDF(state) {
     );
     addParagraph(
       "Kumpi tahansa osapuoli voi irtisanoa sopimuksen ilman irtisanomisaikaa.",
-      "Either party may terminate the Agreement to end without a notice period."
+      "Either party may terminate the Agreement without notice."
     );
   } else if (state.radioLaskutusmuoto === 'tuntilaskutus' && state.radioAllokaatio === 'sovittu-allokaatio') {
       addParagraph(
@@ -247,11 +247,11 @@ function getPDF(state) {
       );
       addParagraph(
         `Kumpi tahansa osapuoli voi irtisanoa sopimuksen ${state.irtisanomisaikaViikoissaValmis} viikon irtisanomisajalla.`,
-        `Either party may terminate the Agreement to end with ${state.irtisanomisaikaViikoissaValmis} weeks' notice.`,
+        `Either party may terminate the Agreement with ${state.irtisanomisaikaViikoissaValmis} weeks' notice.`,
       );
       addParagraph(
         "Mikäli Tilaaja ei maksa laskua kokonaisuudessaan sovitun maksuajan mukaisesti, Toimittaja voi lähettää kirjallisen maksumuistutuksen. Mikäli Tilaaja ei maksa laskua 14 päivän kuluessa maksumuistutuksen lähettämisestä, Toimittajalla on oikeus halutessaan keskeyttää tai purkaa sopimus päättymään välittömästi yksipuolisella ilmoituksella. Tässä tilanteessa Tilaaja on velvollinen maksamaan myös normaalia irtisanomisaikaa vastaavan allokaatiohyvityksen.",
-        "If the Client does not pay an invoice in full within the agreed payment term, the Supplier may send a written payment reminder. If the Client does not pay the invoice within 14 days of sending the payment reminder, the Supplier may at Supplier’s discretion suspend or terminate the Agreement with immediate effect by unilateral notice. In such event, the Client is obligated to also pay the allocation credit corresponding to the normal notice period."
+        "If the Client does not pay an invoice in full within the agreed payment term, the Supplier may send a written payment reminder. If the Client does not pay the invoice within 14 days of sending the payment reminder, the Supplier may at Supplier's discretion suspend or terminate the Agreement with immediate effect by unilateral notice. In such event, the Client is obligated to also pay the allocation credit corresponding to the normal notice period."
       );
   } else if (state.radioLaskutusmuoto === 'urakkalaskutus') {
     addParagraph(
@@ -293,7 +293,7 @@ function getPDF(state) {
   );
   addParagraph(
     "Tilaaja ei ole Konsultin työnantaja. Konsultti ei ole työsuhteessa Tilaajaan. Tämä sopimus tai siihen liittyvä konsultointi ei muodosta työsuhdetta Tilaajan ja Konsultin välille, eikä tämä sopimus rajoita Toimittajaa tekemästä muita sopimuksia muiden yritysten kanssa.",
-    "The Client is not the Consultant's employer. The Consultant is not an employee of the Client. This Agreement or consulting services thereof will not create  employment relationship between the Client and the Consultant. This Agreement does not restrict the Supplier from making other agreements with other clients and companies."
+    "The Client is not the Consultant's employer. The Consultant is not an employee of the Client. This Agreement or consulting services thereof will not create employment relationship between the Client and the Consultant. This Agreement does not restrict the Supplier from making other agreements with other clients and companies."
   );
 
   // Maksuaika
@@ -314,22 +314,22 @@ function getPDF(state) {
   if (state.radioSijainti === 'etana' && state.radioTyoajat === 'milloinTahansa') {
     addParagraph(
       "Konsultointi suoritetaan pääsääntöisesti etänä. Konsultti päättää itse omista työajoistaan. Toimittaja vastaa työtilansa ja tavanomaisten työvälineiden järjestämisestä.",
-      "The consulting services are provided primarily remotely. The Consultant decides independently  the working hours. The Supplier shall equip its’ Consultants with the necessary working space  and ordinary work tools and equipment for carrying out the assigned tasks."
+      "The consulting services are provided primarily remotely. The Consultant decides independently the working hours. The Supplier shall equip its Consultants with the necessary working space and ordinary work tools and equipment for carrying out the assigned tasks."
     );
   } else if (state.radioSijainti === 'etana' && state.radioTyoajat === 'tilaajanNormi') {
     addParagraph(
       "Konsultointi suoritetaan pääsääntöisesti etänä Tilaajan normaalien työaikojen puitteissa. Toimittaja vastaa työtilansa ja tavanomaisten työvälineiden järjestämisestä.",
-      "The consulting services are provided primarily remotely within the Client’s normal working hours. The Supplier shall equip its’ Consultants with the necessary working space and ordinary work tools and equipment for carrying out the assigned tasks."
+      "The consulting services are provided primarily remotely within the Client's normal working hours. The Supplier shall equip its Consultants with the necessary working space and ordinary work tools and equipment for carrying out the assigned tasks."
     )
   } else if (state.radioSijainti === 'lasna' && state.radioTyovalineet === 'toimittajanTyovalineet') {
     addParagraph(
       "Konsultointi suoritetaan pääsääntöisesti Tilaajan tiloissa Tilaajan normaalien työaikojen puitteissa. Tilaaja vastaa työtilan järjestämisestä. Toimittaja vastaa tavanomaisten työvälineiden järjestämisestä.",
-      "The consulting services are provided primarily at the Client’s premises within the Client’s normal working hours. The Client is responsible for providing a suitable workspace. The Supplier is responsible for ordinary work equipment."
+      "The consulting services are provided primarily at the Client's premises within the Client's normal working hours. The Client is responsible for providing a suitable workspace. The Supplier is responsible for ordinary work equipment."
     );
   } else if (state.radioSijainti === 'lasna' && state.radioTyovalineet === 'tilaajanTyovalineet') {
     addParagraph(
       "Konsultointi suoritetaan pääsääntöisesti Tilaajan tiloissa Tilaajan normaalien työaikojen puitteissa. Tilaaja vastaa työtilan järjestämisestä. Tilaaja vastaa tavanomaisten työvälineiden järjestämisestä.",
-      "The consulting services are provided primarily at the Client’s premises within the Client’s normal working hours. The Client is responsible for providing a suitable workspace. The Client is responsible for ordinary work equipment."
+      "The consulting services are provided primarily at the Client's premises within the Client's normal working hours. The Client is responsible for providing a suitable workspace. The Client is responsible for ordinary work equipment."
     )
   } else {
     unexpectedError();
@@ -342,7 +342,7 @@ function getPDF(state) {
   );
   addParagraph(
     "Tilaaja vastaa siitä, että Tilaaja järjestää ja luovuttaa kustannuksellaan Toimittajalle konsultoinnin suorittamista varten riittävät oikeudet käyttää ja hyödyntää Tilaajan käyttämiä tai edellyttämiä järjestelmiä, pilvipalveluita, ohjelmistoja ja muita tarvittavia palveluita tai tavanomaisesta poikkeavia työvälineitä.",
-    "The Client shall arrange and provide for the Supplier, at the Client’s cost, necessary rights to use and access any and all systems, cloud services, software, and other services as well as other than ordinary tools and equipment that may be used by the Client and/or otherwise required to carry out the Services."
+    "The Client shall arrange and provide for the Supplier, at the Client's cost, necessary rights to use and access any and all systems, cloud services, software, and other services as well as other than ordinary tools and equipment that may be used by the Client and/or otherwise required to carry out the Services."
   );
 
   // Korvaus poikkeavasta työajasta [OPTIONAL]
@@ -372,7 +372,7 @@ function getPDF(state) {
   );
   addParagraph(
     `Mikäli Tilaaja edellyttää matkustamista edellä mainitun alueen ulkopuolelle, Toimittajalla on oikeus veloittaa erikseen tavanomaiset ja kohtuulliset matka- päiväraha- ja majoituskulut, matka-ajan tuntikorvaus, sekä kilometrikorvaukset. Päiväraha ja kilometrikorvaus veloitetaan Verohallinnon kulloinkin voimassa olevien ohjeiden mukaisesti. Matka-ajan tuntikorvaus on ${state.matkakorvausValmis} €/tunti + alv. Muut kulut veloitetaan toteutuneiden kustannusten mukaisesti.`,
-    `Should the Client require the Consultant to travel outside the aforementioned area, the Supplier has the right to charge separately for reasonable travel and accommodation costs, travel time hourly compensation, as well as per diem and kilometer allowances. Per diem and kilometer allowances are charged according to the then-current Tax Administration's current guidelines. Travel time hourly compensation is ${state.matkakorvausValmis} €/hour + VAT. Other costs are charged according to actual expenses.`
+    `Should the Client require the Consultant to travel outside the aforementioned area, the Supplier has the right to charge separately for reasonable travel and accommodation costs, travel time hourly compensation, as well as per diem and kilometer allowances. Per diem and kilometer allowances are charged according to the then-current Tax Administration's guidelines. Travel time hourly compensation is ${state.matkakorvausValmis} €/hour + VAT. Other costs are charged according to actual expenses.`
   );
 
   // Aineettomat oikeudet
@@ -387,7 +387,7 @@ function getPDF(state) {
     );
     addParagraph(
       "Selvyyden vuoksi todetaan, että edellä sovittu ei koske Toimittajan Tilaajalle mahdollisesti toimittamia avoimen lähdekoodin ohjelmistoja, joita Toimittaja voi toimittaa konsultoinnin tulosten yhteydessä tai osana. Ellei toisin sovita, Tilaajalla on oikeus käyttää näitä Tilaajan omassa sisäisessä toiminnassa ja luovuttaa vastaavia käyttöoikeuksia Tilaajan konserniyhtiölle. Tilaajan omaksi sisäiseksi toiminnaksi ei katsota käyttöoikeuden myymistä tai muuta käytön luovutusta kolmansille osapuolille. Lisäksi, avoimen lähdekoodin ohjelmistoihin sovelletaan niiden ohjelmistokoodista ja -tiedostoista ilmeneviä käyttöoikeusehtoja, eikä tämä sopimus rajoita näistä ilmeneviä Tilaajan oikeuksia avoimen lähdekoodin ohjelmistoihin.",
-      "For clarity, the above does not apply to open source software that the Supplier may deliver to the Client in connection with or as part of consulting services or deliverables thereof. Unless otherwise agreed, the Client has the right to use these for the Client's own internal operations and grant corresponding licenses to the Client's group companies. Transfer or sale of such licenses to third parties shall not be considered as the Client’s own internal operations. Furthermore, separate license terms that are specified in the applicable software documentation, readmes or notice files shall apply to such open source software. Cient’s rights to such open source software under such separate license terms are not restricted by the Agreement."
+      "For clarity, the above does not apply to open source software that the Supplier may deliver to the Client in connection with or as part of consulting services or deliverables thereof. Unless otherwise agreed, the Client has the right to use these for the Client's own internal operations and grant corresponding licenses to the Client's group companies. Transfer or sale of such licenses to third parties shall not be considered as the Client's own internal operations. Furthermore, separate license terms that are specified in the applicable software documentation, readmes or notice files shall apply to such open source software. Client's rights to such open source software under such separate license terms are not restricted by the Agreement."
     );
   } else if (state.radioIPR === 'toimittajalle') {
     addParagraph(
@@ -413,7 +413,7 @@ function getPDF(state) {
   );
   addParagraph(
     "Tilaaja voi saattaa henkilötietoja Toimittajan käsiteltäväksi Tilaajan lukuun vain, jos osapuolet sopivat siitä ja siihen liittyvistä ehdoista kirjallisesti etukäteen.",
-    "The Client may provide Personal data to the Supplier for processing on the Client’s behalf only if the parties agree upon such processing and related terms in writing in advance."
+    "The Client may provide Personal data to the Supplier for processing on the Client's behalf only if the parties agree upon such processing and related terms in writing in advance."
   );
 
   // Yksisuuntainen houkuttelukielto [OPTIONAL]
@@ -446,7 +446,7 @@ function getPDF(state) {
     );
     addParagraph(
       "Toimittajalla on oikeus mainita Tilaaja markkinoinnissa Toimittajan asiakkaana. Toimittaja saa käyttää julkisena referenssinä myös yleisluonteista kuvausta Tilaajalle toimitetusta konsultoinnista ja tuloksista. Referenssioikeus pysyy voimassa sopimuksen päätyttyä.",
-      "The Supplier has the right to reference the Client in marketing as the Supplier’s customer. The Supplier may also use as public reference a general description of consulting services and deliverables provided to the Client. These rights survive the end of the Agreement."
+      "The Supplier has the right to reference the Client in marketing as the Supplier's customer. The Supplier may also use as public reference a general description of consulting services and deliverables provided to the Client. These rights survive the end of the Agreement."
     )
   } else if (state.radioReferenceRights === 'narrowReferenceRights') {
     addSectionTitle(
@@ -455,7 +455,7 @@ function getPDF(state) {
     );
     addParagraph(
       "Toimittajalla on oikeus mainita Tilaaja markkinoinnissa Toimittajan asiakkaana. Referenssioikeus pysyy voimassa sopimuksen päätyttyä.",
-      "The Supplier has the right to reference the Client in marketing as the Supplier’s customer. These rights survive the end of the Agreement."
+      "The Supplier has the right to reference the Client in marketing as the Supplier's customer. These rights survive the end of the Agreement."
     )
   } else if (state.radioReferenceRights === 'noReferenceRights') {
     // No section is added in this case.
@@ -478,7 +478,7 @@ function getPDF(state) {
   );
   addParagraph(
     "Toimittajan vastuu konsultoinnin ja sen tulosten virheistä ja näiden seurauksista rajoittuu virheen korjaamiseen tai konsultoinnin uudelleen tekemiseen omalla kustannuksellaan ja edellyttää, että Tilaaja huomauttaa Toimittajalle virheestä kirjallisesti kyseisen konsultoinnin kattaman laskun eräpäivään mennessä.",
-    "The Supplier shall correct the errors or re-perform consulting services at its own expense, provided that the Client notifies the Supplier of the error in writing by the due date of the invoice concerning the respective services. The duties set forth in this section define Supplier’s sole responsibilities and liabilities as well as exclusive remedies available for the Client in case of the any errors or deficiencies in the consulting services or deliverables thereof."
+    "The Supplier shall correct the errors or re-perform consulting services at its own expense, provided that the Client notifies the Supplier of the error in writing by the due date of the invoice concerning the respective services. The duties set forth in this section define Supplier's sole responsibilities and liabilities as well as exclusive remedies available for the Client in case of the any errors or deficiencies in the consulting services or deliverables thereof."
   );
 
   // Yleiset vastuut ja velvoitteet
@@ -492,7 +492,7 @@ function getPDF(state) {
   );
   addParagraph(
     "Jos osapuoli havaitsee, että konsultointiin vaikuttava viivästys tapahtuu tai on todennäköinen, osapuolen on viipymättä ilmoitettava tästä ja sen vaikutuksista konsultointiin kirjallisesti toiselle sopijapuolelle.",
-    "If a party finds that a delay affecting consulting will or is likely to occur , the party shall without delay notify this and its effects on consulting in writing to the other party."
+    "If a party finds that a delay affecting consulting will or is likely to occur, the party shall without delay notify this and its effects on consulting in writing to the other party."
   );
   addParagraph(
     "Kumpikin osapuoli vastaa siitä, että se tekee sopimuksen toteuttamiseksi tarvittavat päätökset viivytyksettä. Osapuolilla on velvollisuus myötävaikuttaa sopimuksen toteuttamiseen sellaisissa yhteyksissä, jotka ovat osapuolen määrättävissä tai hallinnassa.",
