@@ -15,6 +15,9 @@ function getAlpineState() {
       .find((lang) => Object.keys(translations).includes(lang)) || 'fi',
 
     changeLanguage(newLanguage) {
+      // Clicking the active language's button would otherwise drop the generated PDF.
+      if (newLanguage === this.currentLanguage) return;
+
       try {
         localStorage.setItem('contractGenerator_language', newLanguage);
       } catch {}
