@@ -1,0 +1,12 @@
+{
+  "name": "contract-generator",
+  "private": true,
+  "description": "Dev tooling only. The site itself has no build step and runs from the committed files.",
+  "scripts": {
+    "build:css": "tailwindcss --input tailwind.css --output vendor/tailwind.min.css --minify"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "4.3.3",
+    "tailwindcss": "4.3.3"
+  }
+}
