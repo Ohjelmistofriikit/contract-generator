@@ -156,11 +156,7 @@ function getAlpineState() {
       this.tuntihintaValmis = this.tuntihintaRaaka;
 
       // Special thing here: default value for ylityökorvaus is 50% of the hourly rate.
-      const oletus = this.getOletusYlityokorvaus();
-      if (!this.ylityokorvaustaMuokattuManuaalisesti && oletus) {
-        this.ylityokorvausRaaka = oletus;
-        this.ylityokorvausValmis = oletus;
-      }
+      this.asetaOletusYlityokorvaus();
     },
 
     // Urakkahinta liittyen laskutusmuotoon urakkalaskutus
@@ -408,12 +404,20 @@ function getAlpineState() {
     kirjaaValmisYlityokorvaus() {
       this.ylityokorvausValmis = this.ylityokorvausRaaka;
       // Only count it as edited if it differs from the default (blur alone doesn't count).
-      this.ylityokorvaustaMuokattuManuaalisesti = this.ylityokorvausRaaka !== (this.getOletusYlityokorvaus() || '50');
+      this.ylityokorvaustaMuokattuManuaalisesti = this.ylityokorvausRaaka !== this.getOletusYlityokorvaus();
     },
-    // 50% of the hourly rate, as a string; '' if the rate isn't a positive number. Accepts "100,00".
+    // 50% of the hourly rate for hourly billing, as a string; otherwise (fixed price, or a rate that
+    // isn't a positive number) 50. Accepts "100,00" and "1 000".
     getOletusYlityokorvaus() {
-      const tuntihinta = parseFloat(String(this.tuntihintaValmis).replace(',', '.'));
-      return tuntihinta > 0 ? String(Math.round(tuntihinta / 2)) : '';
+      const tuntihinta = Number(String(this.tuntihintaValmis).replace(/\s/g, '').replace(',', '.'));
+      return this.radioLaskutusmuoto === 'tuntilaskutus' && tuntihinta > 0 ? String(Math.round(tuntihinta / 2)) : '50';
+    },
+    // Resets ylityökorvaus to its default, unless the user has edited it.
+    asetaOletusYlityokorvaus() {
+      if (!this.ylityokorvaustaMuokattuManuaalisesti) {
+        this.ylityokorvausRaaka = this.getOletusYlityokorvaus();
+        this.ylityokorvausValmis = this.ylityokorvausRaaka;
+      }
     },
     checkboxHoukuttelukielto: false,
     checkboxVapaateksti: false,

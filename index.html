@@ -456,6 +456,7 @@
               >
                 <input
                   x-model="radioLaskutusmuoto"
+                  @change="asetaOletusYlityokorvaus()"
                   type="radio"
                   id="tuntilaskutus"
                   name="radioLaskutusmuoto"
@@ -475,6 +476,7 @@
                 <input
                   id="urakkalaskutus"
                   x-model="radioLaskutusmuoto"
+                  @change="asetaOletusYlityokorvaus()"
                   type="radio"
                   name="radioLaskutusmuoto"
                   value="urakkalaskutus"
