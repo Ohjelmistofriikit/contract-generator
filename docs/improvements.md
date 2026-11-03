@@ -48,6 +48,17 @@ Fix these first. Items 1.1–1.3 affect the text of generated contracts.
 - [ ] **1.13 Continue button says "Jatka →" but generates the PDF.**
   From the deep review. While focus is in 'muut', `userIndicatedMuutIsValmis` is false, so the label is "Jatka →"; mousedown on the button blurs 'muut' (setting it true) before the click, so the one click generates the PDF (and shows the fixed-price confirm). Either intended one-click behaviour with a misleading label, or the click should only collapse 'muut'. Decide which, then fix the label or `continueClicked`.
 
+- [x] **1.14 "pitämään" garbled in every Finnish contract.**
+  From the PR #4 review. The confidentiality clause stored the word with decomposed umlauts (a + U+0308), which the embedded font draws with the dots out of place; present since the first public release. Re-encoded as precomposed "ä" (Unicode NFC). The wording is unchanged.
+
+- [x] **1.15 Overtime default wrong for "1 000" and after switching to fixed price.**
+  From the PR #4 review. `parseFloat('1 000')` is 1, so the default became 1 €/h; and a fixed-price contract kept 50% of an earlier hourly rate. Whitespace is now stripped, and the default is 50 €/h for fixed price (re-applied when the billing type changes, unless the user edited it).
+
+- [x] **1.16 Clicking the active language button dropped the generated PDF.** From the PR #4 review.
+
+- [x] **1.17 Sample PDFs were out of date.**
+  `sample_output_*.pdf` were made in June 2025, before the current clause text (the English one is from a much older version). Regenerated from the current code with the same example data.
+
 ## 2. Text fixes in the English contract
 
 All in [pdfgeneration.js](../js/pdfgeneration.js). Approved in the PR #4 review and done. Apostrophes are standardised on the straight `'` that most strings already used.
