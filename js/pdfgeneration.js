@@ -437,7 +437,7 @@ function getPDF(state) {
     "Confidentiality"
   );
   addParagraph(
-    "Osapuolet sitoutuvat pitämään salassa sopimuksen voimassaoloaikana ja kolme vuotta sen jälkeen toiselta osapuolelta tietoonsa saaman luottamukselliseksi merkityn tai kohtuudella sellaiseksi ymmärrettävän tiedon ja aineiston.",
+    "Osapuolet sitoutuvat pitämään salassa sopimuksen voimassaoloaikana ja kolme vuotta sen jälkeen toiselta osapuolelta tietoonsa saaman luottamukselliseksi merkityn tai kohtuudella sellaiseksi ymmärrettävän tiedon ja aineiston.",
     "The parties commit to keep confidential, during the term of the Agreement and for three years thereafter, any information and material received from the other party that is either marked as confidential or reasonably understood as such."
   );
 
