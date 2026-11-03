@@ -8,6 +8,9 @@ const FONT_STYLE_PARAGRAPH = 'normal';
 
 const MARGIN_TOP = 20;
 const MARGIN_X = 20;
+// Distance (mm) from one line to the next; section titles also get the space below them from this.
+const LINE_HEIGHT_SECTION_TITLE = 11;
+const LINE_HEIGHT_PARAGRAPH = 6;
 // Start a new page once the cursor passes this y position (mm, A4 is 297 mm high).
 const PAGE_BREAK_Y = 270;
 // Start the signature section on a new page if the cursor is below this, so it isn't split.
@@ -39,16 +42,16 @@ function getPDF(state) {
     doc.setFontSize(FONT_SIZE_SECTION_TITLE);
     doc.setFont(FONT_NAME, FONT_STYLE_SECTION_TITLE);
     yPos += 1;
+    // Section titles should be only 1 line, but just in case, split text into lines that fit within the max line width
+    const lines = doc.splitTextToSize(titleText, MAX_LINE_WIDTH);
     // Don't leave a title alone at the bottom of a page: start a new page if its first paragraph line wouldn't fit.
-    if (yPos + 11 > PAGE_BREAK_Y) {
+    if (yPos + lines.length * LINE_HEIGHT_SECTION_TITLE > PAGE_BREAK_Y) {
       doc.addPage();
       yPos = MARGIN_TOP;
     }
-    // Section titles should be only 1 line, but just in case, split text into lines that fit within the max line width
-    const lines = doc.splitTextToSize(titleText, MAX_LINE_WIDTH);
     for (let line of lines) {
       doc.text(line, MARGIN_X, yPos);
-      yPos += 11;
+      yPos += LINE_HEIGHT_SECTION_TITLE;
       addNewPageIfNeeded();
     }
   }
@@ -62,7 +65,7 @@ function getPDF(state) {
     const lines = doc.splitTextToSize(paragraphText, MAX_LINE_WIDTH);
     for (let line of lines) {
       doc.text(line, MARGIN_X, yPos);
-      yPos += 6;
+      yPos += LINE_HEIGHT_PARAGRAPH;
       addNewPageIfNeeded();
     }
     yPos += 4;
