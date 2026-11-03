@@ -6,6 +6,9 @@ function getAlpineState() {
     storedLanguage = localStorage.getItem('contractGenerator_language');
   } catch {}
 
+  // The fields both parties have (tilaajanYritysRaaka, toimittajanYritysRaaka, ...).
+  const osapuolenKentat = ['Yritys', 'Ytunnus', 'Yhteyshenkilo', 'Email', 'Puhelin'];
+
   return {
     // Language preference:
     // - if a supported lang is in query param, use that;
@@ -249,7 +252,7 @@ function getAlpineState() {
       this[`${osapuoli}PuhelinError`] = valid ? '' : phone ? 'phoneInvalid' : 'phoneRequired';
     },
     onkoValmisOsapuoli(osapuoli) {
-      return ['Yritys', 'Ytunnus', 'Yhteyshenkilo', 'Email', 'Puhelin'].every((field) => this[`${osapuoli}${field}Valmis`]);
+      return osapuolenKentat.every((kentta) => this[`${osapuoli}${kentta}Valmis`]);
     },
 
     // Tilaaja
@@ -387,13 +390,13 @@ function getAlpineState() {
       // Only count it as edited if it differs from the court's default (blur alone doesn't count).
       this.matkustusaluettaMuokattuManuaalisesti = this.matkustusalueRaaka !== this.getOletusMatkustusalue();
     },
-    getOletusMatkustusalue(lang = this.currentLanguage) {
-      return locations[lang][this.karajaoikeusValmis] || '';
+    getOletusMatkustusalue() {
+      return locations[this.currentLanguage][this.karajaoikeusValmis] || '';
     },
     // Resets matkustusalue to the court's default, unless the user has edited it.
-    asetaOletusMatkustusalue(lang = this.currentLanguage) {
+    asetaOletusMatkustusalue() {
       if (!this.matkustusaluettaMuokattuManuaalisesti) {
-        this.matkustusalueRaaka = this.getOletusMatkustusalue(lang);
+        this.matkustusalueRaaka = this.getOletusMatkustusalue();
         this.matkustusalueValmis = this.matkustusalueRaaka;
       }
     },
@@ -534,7 +537,7 @@ function getAlpineState() {
     // - done: the step is complete (committed values)
     // - label: the continue-button text while this is the first step not shown yet
     getSteps() {
-      const osapuoliFilled = (osapuoli) => ['Yritys', 'Ytunnus', 'Yhteyshenkilo', 'Email', 'Puhelin'].every((kentta) => this[`${osapuoli}${kentta}Raaka`]);
+      const osapuoliFilled = (osapuoli) => osapuolenKentat.every((kentta) => this[`${osapuoli}${kentta}Raaka`]);
       const steps = [
         {
           shown: true,
